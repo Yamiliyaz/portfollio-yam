@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proyectos — Yamil Arroyo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;500;700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #F5F6F4; color: #121417; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; }
+a { color: #121417; text-decoration: none; }
+a:hover { color: #2340E0; }
+h1, h2, h3 { font-family: Georgia, serif; font-weight: 700; letter-spacing: -0.02em; }
+
+header { max-width: 1280px; margin: 0 auto; padding: 28px 32px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; border-bottom: 1px solid #DCDFD9; }
+header a { font-family: Georgia, serif; font-weight: 700; font-size: 22px; }
+nav { display: flex; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+nav a { padding: 12px 14px; }
+nav a.active { color: #2340E0; border-bottom: 2px solid #2340E0; }
+
+main { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+section { margin-bottom: 80px; }
+
+.breadcrumb { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #646462; padding: 40px 0 20px 0; }
+.breadcrumb a { color: #646462; }
+.breadcrumb a:hover { color: #2340E0; }
+
+.projects-header { padding: 60px 0 40px 0; }
+.projects-header h1 { font-size: clamp(36px, 4.5vw, 60px); margin-bottom: 12px; line-height: 1.2; }
+.projects-header p { font-size: 18px; color: #3A3F46; max-width: 660px; }
+
+.filters-section { margin: 60px 0 40px 0; }
+.filter-chips { display: flex; flex-wrap: wrap; gap: 12px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid #C9CCC6; background: #F5F6F4; color: #121417; cursor: pointer; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 14px; font-weight: 500; transition: all 0.3s ease; }
+.chip:hover { border-color: #2340E0; color: #2340E0; }
+.chip.active { background: #121417; border-color: #121417; color: #F5F6F4; }
+
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin: 40px 0; }
+.project-item { background: #FFFFFF; border: 1px solid #DCDFD9; border-radius: 12px; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; }
+.project-item:hover { border-color: #2340E0; box-shadow: 0 8px 24px rgba(35, 64, 224, 0.12); }
+.project-item.hidden { display: none; }
+
+.project-type { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #2340E0; margin-bottom: 8px; font-weight: 600; }
+.project-title { font-size: 20px; font-family: Georgia, serif; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+.project-meta { font-size: 13px; color: #646462; margin-bottom: 16px; }
+.project-desc { font-size: 15px; color: #3A3F46; line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
+.project-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.metric-chip { background: #E4E6E1; padding: 12px; border-radius: 8px; }
+.metric-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: #646462; margin-bottom: 4px; }
+.metric-value { font-family: Georgia, serif; font-weight: 700; font-size: 16px; color: #121417; }
+
+.project-link { display: inline-flex; align-items: center; gap: 8px; padding: 12px 0; color: #2340E0; font-weight: 600; border-bottom: 1px solid #2340E0; transition: gap 0.3s ease; }
+.project-link:hover { gap: 12px; }
+
+.empty-state { text-align: center; padding: 60px 32px; color: #646462; }
+.empty-state p { font-size: 16px; margin-bottom: 20px; }
+
+footer { margin-top: 80px; padding: 40px 32px; border-top: 1px solid #DCDFD9; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5A5F66; }
+
+.lang-toggle { display: flex; padding: 4px; border-radius: 999px; background: #E4E6E1; font-family: 'IBM Plex Mono', monospace; font-size: 13px; gap: 0; }
+.lang-toggle button { min-height: 36px; min-width: 44px; padding: 0 12px; border: 0; border-radius: 999px; cursor: pointer; font: inherit; background: transparent; color: #121417; }
+.lang-toggle button.active { background: #121417; color: #F5F6F4; }
+
+@media (max-width: 768px) {
+  header { padding: 20px 16px; }
+  main { padding: 0 16px; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .project-metrics { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html">Yamil Arroyo<span style="color: #2340E0">.</span></a>
+  <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+    <nav aria-label="Main Navigation">
+      <a href="../index.html" data-en="Work" data-es="Work">Work</a>
+      <a href="./index.html" class="active" data-en="Projects" data-es="Projects">Projects</a>
+      <a href="../index.html#about" data-en="About" data-es="About">About</a>
+      <a href="../index.html#contact" style="padding: 12px 16px; border: 1px solid #121417; border-radius: 999px;" data-en="Get in touch" data-es="Contactar">Get in touch</a>
+    </nav>
+    <div role="group" aria-label="Language" class="lang-toggle">
+      <button class="lang-btn active" data-lang="es">ES</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb">
+    <a href="../index.html" data-en="Home" data-es="Inicio">Home</a> / <span data-en="Projects" data-es="Proyectos">Projects</span>
+  </div>
+
+  <section class="projects-header">
+    <h1 data-en="All projects" data-es="Todos los proyectos">All projects</h1>
+    <p data-en="A collection of case studies and projects showcasing my approach to user-centered product design and digital transformation." data-es="Una colección de casos de estudio y proyectos que muestran mi enfoque en diseño de producto centrado en usuario y transformación digital.">A collection of case studies and projects showcasing my approach to user-centered product design and digital transformation.</p>
+  </section>
+
+  <section class="filters-section">
+    <div class="filter-chips">
+      <button class="chip active" data-filter="all" data-en="All (9)" data-es="Todos (9)">All (9)</button>
+      <button class="chip" data-filter="mobile-app" data-en="Mobile App (2)" data-es="Mobile App (2)">Mobile App (2)</button>
+      <button class="chip" data-filter="uxui-redesign" data-en="UX/UI Redesign (2)" data-es="UX/UI Redesign (2)">UX/UI Redesign (2)</button>
+      <button class="chip" data-filter="design-system" data-en="Design System (1)" data-es="Design System (1)">Design System (1)</button>
+      <button class="chip" data-filter="enterprise-banking" data-en="Enterprise Banking (1)" data-es="Enterprise Banking (1)">Enterprise Banking (1)</button>
+      <button class="chip" data-filter="research" data-en="Research (1)" data-es="Research (1)">Research (1)</button>
+      <button class="chip" data-filter="analytics" data-en="Analytics (1)" data-es="Analytics (1)">Analytics (1)</button>
+      <button class="chip" data-filter="payment-flow" data-en="Payment Flow (1)" data-es="Payment Flow (1)">Payment Flow (1)</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="projects-grid" id="projectsGrid">
+      <!-- Proyecto 1: In-App NPS -->
+      <article class="project-item" data-project="nps" data-type="mobile-app">
+        <div>
+          <div class="project-type" data-en="Mobile App" data-es="Mobile App">Mobile App</div>
+          <h3 class="project-title" data-en="In-App NPS & Play Store Experiment" data-es="In-App NPS & Play Store Experiment">In-App NPS & Play Store Experiment</h3>
+          <div class="project-meta">Aviva Crédito · 2026 · <span data-en="6 months" data-es="6 meses">6 months</span></div>
+          <p class="project-desc" data-en="An in-app satisfaction system at key moments of the customer lifecycle that automatically opens the Play Store prompt for satisfied users." data-es="An in-app satisfaction system at key moments of the customer lifecycle that automatically opens the Play Store prompt for satisfied users.">An in-app satisfaction system at key moments of the customer lifecycle that automatically opens the Play Store prompt for satisfied users.</p>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Rating" data-es="Rating">Rating</div>
+              <div class="metric-value">3.8→4.7★</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Review Growth" data-es="Review Growth">Review Growth</div>
+              <div class="metric-value">+190%</div>
+            </div>
+          </div>
+        </div>
+        <a href="../projects/nps/index.html" class="project-link" data-en="View case study →" data-es="Ver caso de estudio →">View case study →</a>
+      </article>
+
+      <!-- Proyecto 2: User Differentiation -->
+      <article class="project-item" data-project="user-diff" data-type="uxui-redesign">
+        <div>
+          <div class="project-type" data-en="UX/UI Redesign" data-es="UX/UI Redesign">UX/UI Redesign</div>
+          <h3 class="project-title" data-en="User Differentiation Onboarding" data-es="User Differentiation Onboarding">User Differentiation Onboarding</h3>
+          <div class="project-meta">Aviva Crédito · 2025 · <span data-en="3 months" data-es="3 meses">3 months</span></div>
+          <p class="project-desc" data-en="Redesigned onboarding flow with three parallel user journeys tailored to different customer segments, improving conversion across the funnel." data-es="Redesigned onboarding flow with three parallel user journeys tailored to different customer segments, improving conversion across the funnel.">Redesigned onboarding flow with three parallel user journeys tailored to different customer segments, improving conversion across the funnel.</p>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Rating" data-es="Rating">Rating</div>
+              <div class="metric-value">3.3→3.9★</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Conversion" data-es="Conversion">Conversion</div>
+              <div class="metric-value">70.36%</div>
+            </div>
+          </div>
+        </div>
+        <a href="../projects/user-differentiation/index.html" class="project-link" data-en="View case study →" data-es="Ver caso de estudio →">View case study →</a>
+      </article>
+
+      <!-- Proyecto 3: Konfío DS -->
+      <article class="project-item" data-project="konfio" data-type="design-system">
+        <div>
+          <div class="project-type" data-en="Design System" data-es="Design System">Design System</div>
+          <h3 class="project-title" data-en="Konfío Design System" data-es="Konfío Design System">Konfío Design System</h3>
+          <div class="project-meta">Konfío · 2021–2023 · <span data-en="2 years" data-es="2 años">2 years</span></div>
+          <p class="project-desc" data-en="Comprehensive design system with 150+ components across web and mobile platforms, including a 2-layer documentation structure and design tokens." data-es="Comprehensive design system with 150+ components across web and mobile platforms, including a 2-layer documentation structure and design tokens.">Comprehensive design system with 150+ components across web and mobile platforms, including a 2-layer documentation structure and design tokens.</p>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Components" data-es="Components">Components</div>
+              <div class="metric-value">150+</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Platforms" data-es="Platforms">Platforms</div>
+              <div class="metric-value">Web + App</div>
+            </div>
+          </div>
+        </div>
+        <a href="../projects/konfio-ds/index.html" class="project-link" data-en="View case study →" data-es="Ver caso de estudio →">View case study →</a>
+      </article>
+
+      <!-- Proyecto 4: BancaNet -->
+      <article class="project-item" data-project="bancanet" data-type="enterprise-banking">
+        <div>
+          <div class="project-type" data-en="Enterprise Banking" data-es="Enterprise Banking">Enterprise Banking</div>
+          <h3 class="project-title" data-en="BancaNet Empresarial Redesign" data-es="BancaNet Empresarial Redesign">BancaNet Empresarial Redesign</h3>
+          <div class="project-meta">Citibanamex · 2018–2020 · <span data-en="2 years" data-es="2 años">2 years</span></div>
+          <p class="project-desc" data-en="Complete redesign of enterprise banking platform serving 250K daily users, with 5K+ design screens and biometric integration." data-es="Complete redesign of enterprise banking platform serving 250K daily users, with 5K+ design screens and biometric integration.">Complete redesign of enterprise banking platform serving 250K daily users, with 5K+ design screens and biometric integration.</p>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-label" data-en="DAU" data-es="DAU">DAU</div>
+              <div class="metric-value">250K</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Downloads" data-es="Downloads">Downloads</div>
+              <div class="metric-value">+1M</div>
+            </div>
+          </div>
+        </div>
+        <a href="../projects/bancanet/index.html" class="project-link" data-en="View case study →" data-es="Ver caso de estudio →">View case study →</a>
+      </article>
+
+      <!-- Proyecto 5: User Research & Insights -->
+      <article class="project-item" data-project="research" data-type="research">
+        <div>
+          <div class="project-type" data-en="Research" data-es="Research">Research</div>
+          <h3 class="project-title" data-en="User Research & Insights Program" data-es="User Research & Insights Program">User Research & Insights Program</h3>
+          <div class="project-meta">Aviva Crédito · 2025 · <span data-en="4 months" data-es="4 meses">4 months</span></div>
+          <p class="project-desc" data-en="Established a structured user research program with quarterly studies, user panels, and behavioral analytics to inform product decisions across the organization." data-es="Established a structured user research program with quarterly studies, user panels, and behavioral analytics to inform product decisions across the organization.">Established a structured user research program with quarterly studies, user panels, and behavioral analytics to inform product decisions across the organization.</p>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Studies Conducted" data-es="Studies Conducted">Studies Conducted</div>
+              <div class="metric-value">8</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Users Interviewed" data-es="Users Interviewed">Users Interviewed</div>
+              <div class="metric-value">250+</div>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="project-link" data-en="Coming soon →" data-es="Disponible próximamente →">Coming soon →</a>
+      </article>
+
+      <!-- Proyecto 6: Analytics Dashboard -->
+      <article class="project-item" data-project="analytics" data-type="analytics">
+        <div>
+          <div class="project-type" data-en="Analytics" data-es="Analytics">Analytics</div>
+          <h3 class="project-title" data-en="Product Analytics Dashboard" data-es="Product Analytics Dashboard">Product Analytics Dashboard</h3>
+          <div class="project-meta">Aviva Crédito · 2025 · <span data-en="2 months" data-es="2 meses">2 months</span></div>
+          <p class="project-desc" data-en="Built a comprehensive Looker Studio dashboard to track funnel conversion, user engagement, and retention metrics across the mobile app, enabling data-driven decisions." data-es="Built a comprehensive Looker Studio dashboard to track funnel conversion, user engagement, and retention metrics across the mobile app, enabling data-driven decisions.">Built a comprehensive Looker Studio dashboard to track funnel conversion, user engagement, and retention metrics across the mobile app, enabling data-driven decisions.</p>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Metrics Tracked" data-es="Metrics Tracked">Metrics Tracked</div>
+              <div class="metric-value">40+</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Users Impacted" data-es="Users Impacted">Users Impacted</div>
+              <div class="metric-value">500K+</div>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="project-link" data-en="Coming soon →" data-es="Disponible próximamente →">Coming soon →</a>
+      </article>
+
+      <!-- Proyecto 7: Loan Renewal Flow -->
+      <article class="project-item" data-project="renewal" data-type="payment-flow">
+        <div>
+          <div class="project-type" data-en="Payment Flow" data-es="Payment Flow">Payment Flow</div>
+          <h3 class="project-title" data-en="Loan Renewal & Payment Flow" data-es="Loan Renewal & Payment Flow">Loan Renewal & Payment Flow</h3>
+          <div class="project-meta">Aviva Crédito · 2024 · <span data-en="3 months" data-es="3 meses">3 months</span></div>
+          <p class="project-desc" data-en="Redesigned the loan renewal and payment experience to reduce friction and increase completion rates, with improved clarity on rates and terms." data-es="Redesigned the loan renewal and payment experience to reduce friction and increase completion rates, with improved clarity on rates and terms.">Redesigned the loan renewal and payment experience to reduce friction and increase completion rates, with improved clarity on rates and terms.</p>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Completion Rate" data-es="Completion Rate">Completion Rate</div>
+              <div class="metric-value">+28%</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Drop-offs Reduced" data-es="Drop-offs Reduced">Drop-offs Reduced</div>
+              <div class="metric-value">45%</div>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="project-link" data-en="Coming soon →" data-es="Disponible próximamente →">Coming soon →</a>
+      </article>
+
+      <!-- Proyecto 8: Mobile-First Collections -->
+      <article class="project-item" data-project="collections" data-type="mobile-app">
+        <div>
+          <div class="project-type" data-en="Mobile App" data-es="Mobile App">Mobile App</div>
+          <h3 class="project-title" data-en="Mobile-First Collections Experience" data-es="Mobile-First Collections Experience">Mobile-First Collections Experience</h3>
+          <div class="project-meta">Aviva Crédito · 2024 · <span data-en="5 months" data-es="5 meses">5 months</span></div>
+          <p class="project-desc" data-en="Redesigned collections workflows for mobile-first engagement, with improved payment options and customer communication at scale." data-es="Redesigned collections workflows for mobile-first engagement, with improved payment options and customer communication at scale.">Redesigned collections workflows for mobile-first engagement, with improved payment options and customer communication at scale.</p>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Recovery Rate" data-es="Recovery Rate">Recovery Rate</div>
+              <div class="metric-value">+35%</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-label" data-en="NPS" data-es="NPS">NPS</div>
+              <div class="metric-value">4.1/5</div>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="project-link" data-en="Coming soon →" data-es="Disponible próximamente →">Coming soon →</a>
+      </article>
+
+      <!-- Proyecto 9: Authentication Redesign -->
+      <article class="project-item" data-project="auth" data-type="uxui-redesign">
+        <div>
+          <div class="project-type" data-en="UX/UI Redesign" data-es="UX/UI Redesign">UX/UI Redesign</div>
+          <h3 class="project-title" data-en="Authentication & Security UX" data-es="Authentication & Security UX">Authentication & Security UX</h3>
+          <div class="project-meta">Aviva Crédito · 2024 · <span data-en="2 months" data-es="2 meses">2 months</span></div>
+          <p class="project-desc" data-en="Simplified authentication flow with biometric login, making security feel seamless and reducing login friction by 60%." data-es="Simplified authentication flow with biometric login, making security feel seamless and reducing login friction by 60%.">Simplified authentication flow with biometric login, making security feel seamless and reducing login friction by 60%.</p>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Login Time" data-es="Login Time">Login Time</div>
+              <div class="metric-value">-60%</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-label" data-en="Adoption" data-es="Adoption">Adoption</div>
+              <div class="metric-value">89%</div>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="project-link" data-en="Coming soon →" data-es="Disponible próximamente →">Coming soon →</a>
+      </article>
+    </div>
+
+    <div class="empty-state hidden" id="emptyState">
+      <p data-en="No projects found with this filter." data-es="No hay proyectos con este filtro.">No projects found with this filter.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div data-en="© 2024 Yamil Arroyo. Product Designer." data-es="© 2024 Yamil Arroyo. Diseñador de Producto.">© 2024 Yamil Arroyo. Product Designer.</div>
+  <div style="display: flex; gap: 24px;">
+    <a href="mailto:yamil.arroyo@avivacredito.com">Email</a>
+    <a href="https://linkedin.com/in/yamil-arroyo" target="_blank">LinkedIn</a>
+    <a href="https://figma.com/@yamil" target="_blank">Figma</a>
+  </div>
+</footer>
+
+<script>
+const translations = {
+  es: {
+    'All projects': 'Todos los proyectos',
+    'A collection of case studies and projects showcasing my approach to user-centered product design and digital transformation.': 'Una colección de casos de estudio y proyectos que muestran mi enfoque en diseño de producto centrado en usuario y transformación digital.',
+    'All (9)': 'Todos (9)',
+    'Mobile App (2)': 'Mobile App (2)',
+    'UX/UI Redesign (2)': 'UX/UI Redesign (2)',
+    'Design System (1)': 'Design System (1)',
+    'Enterprise Banking (1)': 'Enterprise Banking (1)',
+    'Research (1)': 'Research (1)',
+    'Analytics (1)': 'Analytics (1)',
+    'Payment Flow (1)': 'Payment Flow (1)',
+    'Home': 'Inicio',
+    'Projects': 'Proyectos',
+    'About': 'Acerca de',
+    'Get in touch': 'Contactar',
+    'Work': 'Trabajo',
+    'View case study →': 'Ver caso de estudio →',
+    'Coming soon →': 'Disponible próximamente →',
+    '6 months': '6 meses',
+    '3 months': '3 meses',
+    '2 years': '2 años',
+    '4 months': '4 meses',
+    '2 months': '2 meses',
+    '5 months': '5 meses',
+    '2 months': '2 meses',
+    'No projects found with this filter.': 'No hay proyectos con este filtro.',
+    '© 2024 Yamil Arroyo. Product Designer.': '© 2024 Yamil Arroyo. Diseñador de Producto.'
+  },
+  en: {}
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+  const langButtons = document.querySelectorAll('.lang-btn');
+  const filterChips = document.querySelectorAll('.chip');
+  const projectItems = document.querySelectorAll('.project-item');
+  const emptyState = document.getElementById('emptyState');
+
+  let currentLang = 'es';
+
+  // Language toggle
+  langButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const lang = this.getAttribute('data-lang');
+      currentLang = lang;
+
+      langButtons.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+
+      updateLanguage(lang);
+    });
+  });
+
+  function updateLanguage(lang) {
+    document.querySelectorAll('[data-en]').forEach(el => {
+      if (lang === 'en') {
+        el.textContent = el.getAttribute('data-en');
+      } else {
+        el.textContent = el.getAttribute('data-es');
+      }
+    });
+  }
+
+  // Filter functionality
+  filterChips.forEach(chip => {
+    chip.addEventListener('click', function() {
+      const filter = this.getAttribute('data-filter');
+
+      filterChips.forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+
+      let visibleCount = 0;
+      projectItems.forEach(project => {
+        const projectType = project.getAttribute('data-type');
+
+        if (filter === 'all' || projectType === filter) {
+          project.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          project.classList.add('hidden');
+        }
+      });
+
+      if (visibleCount === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>
