@@ -1,225 +1,601 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Yamil Arroyo — Product Designer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;500;700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #F5F6F4; color: #121417; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; }
-a { color: #121417; text-decoration: none; }
-a:hover { color: #2340E0; }
-h1, h2, h3 { font-family: Georgia, serif; font-weight: 700; letter-spacing: -0.02em; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yam - Product Designer & Product Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Colores */
+            --gray-25: #FCFCFD;
+            --gray-50: #F9FAFB;
+            --gray-100: #F2F4F7;
+            --gray-200: #EAECF0;
+            --gray-300: #D0D5DD;
+            --gray-400: #98A2B3;
+            --gray-500: #667085;
+            --gray-600: #475467;
+            --gray-700: #344054;
+            --gray-800: #1D2939;
+            --gray-900: #101828;
 
-header { max-width: 1280px; margin: 0 auto; padding: 28px 32px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; border-bottom: 1px solid #DCDFD9; }
-header a { font-family: Georgia, serif; font-weight: 700; font-size: 22px; }
-nav { display: flex; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
-nav a { padding: 12px 14px; }
-nav a.active { color: #2340E0; border-bottom: 2px solid #2340E0; }
+            --blue-500: #2E90FA;
+            --blue-600: #1570EF;
 
-main { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
-section { margin-bottom: 80px; }
+            --purple-600: #6938EF;
 
-.hero { padding: 80px 0 60px 0; }
-.hero h1 { font-size: clamp(48px, 6vw, 72px); margin-bottom: 24px; line-height: 1.15; max-width: 900px; }
-.hero p { font-size: 18px; color: #3A3F46; max-width: 660px; line-height: 1.6; }
+            /* Espaciado */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 12px;
+            --space-lg: 16px;
+            --space-xl: 20px;
+            --space-2xl: 24px;
+            --space-3xl: 32px;
+            --space-4xl: 40px;
+            --space-5xl: 48px;
+            --space-6xl: 64px;
 
-.work-section h2 { font-size: clamp(36px, 4.5vw, 60px); margin-bottom: 12px; line-height: 1.2; }
-.work-section p { font-size: 18px; color: #3A3F46; max-width: 660px; margin-bottom: 40px; }
+            /* Tipografía */
+            --font-primary: 'Manrope', sans-serif;
+            --font-display: 'DM Serif Display', serif;
+        }
 
-.highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin: 40px 0; }
-.highlight-card { background: #FFFFFF; border: 1px solid #DCDFD9; border-radius: 12px; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; }
-.highlight-card:hover { border-color: #2340E0; box-shadow: 0 8px 24px rgba(35, 64, 224, 0.12); }
-.highlight-title { font-size: 18px; font-family: Georgia, serif; font-weight: 700; margin-bottom: 12px; }
-.highlight-desc { font-size: 15px; color: #3A3F46; line-height: 1.6; flex-grow: 1; margin-bottom: 16px; }
-.highlight-link { display: inline-flex; align-items: center; gap: 8px; color: #2340E0; font-weight: 600; border-bottom: 1px solid #2340E0; }
-.highlight-link:hover { gap: 12px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.about-section { padding: 60px 0 40px 0; }
-.about-section h2 { font-size: clamp(36px, 4.5vw, 60px); margin-bottom: 32px; line-height: 1.2; }
-.about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
-.about-text { font-size: 16px; color: #3A3F46; line-height: 1.8; }
-.about-text p { margin-bottom: 20px; }
-.about-list { font-size: 16px; color: #3A3F46; line-height: 1.8; }
-.about-list li { margin-bottom: 16px; margin-left: 24px; }
+        html {
+            scroll-behavior: smooth;
+        }
 
-.cta-section { background: #121417; color: #F5F6F4; padding: 80px 32px; text-align: center; border-radius: 16px; margin: 80px 0; }
-.cta-section h2 { color: #F5F6F4; font-size: clamp(36px, 4.5vw, 60px); margin-bottom: 24px; }
-.cta-section p { font-size: 18px; max-width: 660px; margin: 0 auto 32px; }
-.cta-button { display: inline-flex; padding: 16px 32px; background: #2340E0; color: #F5F6F4; border-radius: 999px; font-weight: 600; border: 1px solid #2340E0; transition: all 0.3s ease; cursor: pointer; }
-.cta-button:hover { background: #1A2FA8; border-color: #1A2FA8; }
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--gray-50);
+            color: var(--gray-700);
+            line-height: 1.6;
+        }
 
-footer { margin-top: 80px; padding: 40px 32px; border-top: 1px solid #DCDFD9; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5A5F66; }
+        /* Header & Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            background: var(--gray-25);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 1000;
+        }
 
-.lang-toggle { display: flex; padding: 4px; border-radius: 999px; background: #E4E6E1; font-family: 'IBM Plex Mono', monospace; font-size: 13px; gap: 0; }
-.lang-toggle button { min-height: 36px; min-width: 44px; padding: 0 12px; border: 0; border-radius: 999px; cursor: pointer; font: inherit; background: transparent; color: #121417; }
-.lang-toggle button.active { background: #121417; color: #F5F6F4; }
+        nav {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: var(--space-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-@media (max-width: 768px) {
-  header { padding: 20px 16px; }
-  main { padding: 0 16px; }
-  .highlights { grid-template-columns: 1fr; }
-  .about-content { grid-template-columns: 1fr; gap: 32px; }
-  .cta-section { padding: 60px 24px; }
-}
-</style>
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--gray-900);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-2xl);
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue-600);
+        }
+
+        .nav-links a.active {
+            color: var(--blue-600);
+            border-bottom: 2px solid var(--blue-600);
+            padding-bottom: 2px;
+        }
+
+        .resume-btn {
+            background: var(--gray-900);
+            color: white;
+            padding: var(--space-md) var(--space-lg);
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .resume-btn:hover {
+            background: var(--gray-800);
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: var(--space-6xl) var(--space-lg);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-5xl);
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-display);
+            font-size: 56px;
+            line-height: 1.2;
+            color: var(--gray-900);
+            margin-bottom: var(--space-lg);
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--gray-600);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .hero-description {
+            font-size: 16px;
+            color: var(--gray-700);
+            margin-bottom: var(--space-3xl);
+            line-height: 1.8;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 400px;
+            background: var(--gray-200);
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Section Container */
+        .section {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: var(--space-6xl) var(--space-lg);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 40px;
+            color: var(--gray-900);
+            margin-bottom: var(--space-lg);
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--gray-600);
+            margin-bottom: var(--space-5xl);
+        }
+
+        /* About Section */
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-5xl);
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 500px;
+            background: var(--gray-200);
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .about-content h3 {
+            font-family: var(--font-display);
+            font-size: 28px;
+            color: var(--gray-900);
+            margin-bottom: var(--space-lg);
+        }
+
+        .about-content p {
+            font-size: 16px;
+            color: var(--gray-700);
+            margin-bottom: var(--space-lg);
+            line-height: 1.8;
+        }
+
+        .about-link {
+            display: inline-block;
+            background: var(--gray-900);
+            color: white;
+            padding: var(--space-md) var(--space-lg);
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+            margin-top: var(--space-lg);
+        }
+
+        .about-link:hover {
+            background: var(--gray-800);
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-2xl);
+            margin-bottom: var(--space-5xl);
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: var(--gray-200);
+            object-fit: cover;
+        }
+
+        .project-content {
+            padding: var(--space-2xl);
+        }
+
+        .project-content h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: var(--space-sm);
+        }
+
+        .project-category {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-bottom: var(--space-md);
+        }
+
+        .project-description {
+            font-size: 14px;
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: var(--space-md);
+        }
+
+        .project-link {
+            color: var(--blue-600);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .project-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-2xl);
+        }
+
+        .skill-card {
+            background: white;
+            padding: var(--space-2xl);
+            border-radius: 12px;
+            border-left: 4px solid var(--blue-600);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .skill-icon {
+            font-size: 28px;
+            margin-bottom: var(--space-md);
+        }
+
+        .skill-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: var(--space-sm);
+        }
+
+        .skill-card p {
+            font-size: 14px;
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--gray-900);
+            color: white;
+            text-align: center;
+            padding: var(--space-6xl) var(--space-lg);
+            border-radius: 12px;
+        }
+
+        .contact .section-title {
+            color: white;
+        }
+
+        .contact-email {
+            font-size: 32px;
+            font-weight: 600;
+            margin: var(--space-2xl) 0;
+            word-break: break-all;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-3xl);
+            margin-top: var(--space-3xl);
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            color: var(--blue-500);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .contact-links a:hover {
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--gray-100);
+            padding: var(--space-3xl) var(--space-lg);
+            text-align: center;
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero, .about {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .nav-links {
+                gap: var(--space-lg);
+                font-size: 14px;
+            }
+
+            .contact-email {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">Yam</div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#work">Work</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <a href="#" class="resume-btn">Resume ↗</a>
+        </nav>
+    </header>
 
-<header>
-  <a href="./index.html">Yamil Arroyo<span style="color: #2340E0">.</span></a>
-  <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
-    <nav aria-label="Main Navigation">
-      <a href="./index.html" class="active" data-en="Work" data-es="Work">Work</a>
-      <a href="./projects/index.html" data-en="Projects" data-es="Projects">Projects</a>
-      <a href="./index.html#about" data-en="About" data-es="About">About</a>
-      <a href="./index.html#contact" style="padding: 12px 16px; border: 1px solid #121417; border-radius: 999px;" data-en="Get in touch" data-es="Contactar">Get in touch</a>
-    </nav>
-    <div role="group" aria-label="Language" class="lang-toggle">
-      <button class="lang-btn active" data-lang="es">ES</button>
-      <button class="lang-btn" data-lang="en">EN</button>
-    </div>
-  </div>
-</header>
-
-<main>
-  <section class="hero">
-    <h1 data-en="Product Designer & Digital Strategist" data-es="Diseñador de Producto y Estratega Digital">Product Designer & Digital Strategist</h1>
-    <p data-en="I help fintech and digital companies build intuitive, scalable experiences that drive growth. Specialized in mobile-first design, design systems, and product strategy." data-es="Ayudo a empresas fintech y digitales a construir experiencias intuitivas y escalables que impulsen el crecimiento. Especializado en diseño móvil, sistemas de diseño y estrategia de producto.">I help fintech and digital companies build intuitive, scalable experiences that drive growth. Specialized in mobile-first design, design systems, and product strategy.</p>
-  </section>
-
-  <section class="work-section">
-    <h2 data-en="Recent Work" data-es="Trabajo Reciente">Recent Work</h2>
-    <p data-en="A selection of projects that showcase my approach to user-centered product design and digital transformation." data-es="Una selección de proyectos que muestran mi enfoque en diseño de producto centrado en usuario y transformación digital.">A selection of projects that showcase my approach to user-centered product design and digital transformation.</p>
-
-    <div class="highlights">
-      <div class="highlight-card">
-        <div>
-          <h3 class="highlight-title" data-en="Aviva Crédito NPS System" data-es="Aviva Crédito NPS System">Aviva Crédito NPS System</h3>
-          <p class="highlight-desc" data-en="In-app satisfaction survey that increased Play Store rating from 3.8★ to 4.7★ and review growth by +190%." data-es="Sistema de encuesta de satisfacción in-app que aumentó la calificación de Play Store de 3.8★ a 4.7★ y crecimiento de reseñas de +190%.">In-app satisfaction survey that increased Play Store rating from 3.8★ to 4.7★ and review growth by +190%.</p>
+    <!-- Hero Section (HOME) -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Hi I'm Yami!</h1>
+            <p class="hero-subtitle">Chasing for Brands</p>
+            <p class="hero-description">
+                I'm a digital product designer with over 11 years of experience, passionate about transforming
+                organizations and building an exceptional digital future.
+            </p>
+            <div style="display: flex; gap: var(--space-lg);">
+                <a href="#work" class="resume-btn" style="background: var(--blue-600); color: white;">Explore my work</a>
+            </div>
         </div>
-        <a href="./projects/index.html" class="highlight-link" data-en="View all projects →" data-es="Ver todos los proyectos →">View all projects →</a>
-      </div>
-
-      <div class="highlight-card">
         <div>
-          <h3 class="highlight-title" data-en="Konfío Design System" data-es="Konfío Design System">Konfío Design System</h3>
-          <p class="highlight-desc" data-en="Comprehensive design system with 150+ components across web and mobile platforms, managing design at scale for 3 product teams." data-es="Sistema de diseño integral con 150+ componentes en plataformas web y móvil, gestionando diseño a escala para 3 equipos de producto.">Comprehensive design system with 150+ components across web and mobile platforms, managing design at scale for 3 product teams.</p>
+            <img src="https://via.placeholder.com/400x400?text=Yam" alt="Yam" class="hero-image">
         </div>
-        <a href="./projects/index.html" class="highlight-link" data-en="View all projects →" data-es="Ver todos los proyectos →">View all projects →</a>
-      </div>
+    </section>
 
-      <div class="highlight-card">
-        <div>
-          <h3 class="highlight-title" data-en="User Research Program" data-es="Programa de Investigación de Usuarios">User Research Program</h3>
-          <p class="highlight-desc" data-en="Established structured user research with quarterly studies, user panels, and behavioral analytics to inform strategic decisions across the organization." data-es="Programa de investigación estructurado con estudios trimestrales, paneles de usuarios y análisis del comportamiento para informar decisiones estratégicas.">Established structured user research with quarterly studies, user panels, and behavioral analytics to inform strategic decisions across the organization.</p>
+    <!-- WORK SECTION - Solo Proyectos -->
+    <section class="section" id="work">
+        <h2 class="section-title">Portfolio</h2>
+        <p class="section-subtitle">I am passionate about creating digital products from a "user-centered" approach.</p>
+
+        <div class="projects-grid">
+            <!-- Project 1: Konfío POS -->
+            <div class="project-card">
+                <img src="https://via.placeholder.com/300x200?text=Konfio+POS" alt="Konfío POS" class="project-image">
+                <div class="project-content">
+                    <h3>Konfío POS</h3>
+                    <p class="project-category">Fintech • POS • Mobile</p>
+                    <p class="project-description">Designing the point-of-sale experience for Konfío merchants. End-to-end design of hardware and mobile app.</p>
+                    <a href="https://app.notion.com/p/379118c0b17281c49065f3b9b7e32ea2" target="_blank" class="project-link">Read more →</a>
+                </div>
+            </div>
+
+            <!-- Project 2: Konfío Design System -->
+            <div class="project-card">
+                <img src="https://via.placeholder.com/300x200?text=Design+System" alt="Konfío Design System" class="project-image">
+                <div class="project-content">
+                    <h3>Konfío Design System</h3>
+                    <p class="project-category">Design System • Tokens • Components</p>
+                    <p class="project-description">Building Konfío's design system from scratch — foundations, tokens, and a full component library.</p>
+                    <a href="https://app.notion.com/p/379118c0b17281d89df2d4224570a0d0" target="_blank" class="project-link">Read more →</a>
+                </div>
+            </div>
+
+            <!-- Project 3: BancaNet Empresarial -->
+            <div class="project-card">
+                <img src="https://via.placeholder.com/300x200?text=BancaNet" alt="BancaNet Empresarial" class="project-image">
+                <div class="project-content">
+                    <h3>BancaNet Empresarial</h3>
+                    <p class="project-category">Banking • Enterprise • Redesign</p>
+                    <p class="project-description">Design and delivery of the new BancaNet Empresarial with user flows, wireframes, UI Kit and visual redesign.</p>
+                    <a href="https://app.notion.com/p/379118c0b1728119a1dedf296ff2373a" target="_blank" class="project-link">Read more →</a>
+                </div>
+            </div>
         </div>
-        <a href="./projects/index.html" class="highlight-link" data-en="View all projects →" data-es="Ver todos los proyectos →">View all projects →</a>
-      </div>
-    </div>
-  </section>
 
-  <section id="about" class="about-section">
-    <h2 data-en="About" data-es="Acerca de">About</h2>
-    <div class="about-content">
-      <div class="about-text">
-        <p data-en="I'm a product designer with 7+ years of experience building digital products for fintech, banking, and emerging markets. My background spans UX/UI design, design systems, and product strategy, working with teams across Mexico, USA, and Europe." data-es="Soy diseñador de producto con 7+ años de experiencia construyendo productos digitales para fintech, banca y mercados emergentes. Mi experiencia abarca diseño UX/UI, sistemas de diseño y estrategia de producto, trabajando con equipos en México, USA y Europa.">I'm a product designer with 7+ years of experience building digital products for fintech, banking, and emerging markets. My background spans UX/UI design, design systems, and product strategy, working with teams across Mexico, USA, and Europe.</p>
-        <p data-en="I believe great design is about solving real problems for real people. I'm passionate about research-driven design, accessibility, and creating design systems that scale." data-es="Creo que el buen diseño consiste en resolver problemas reales de personas reales. Soy apasionado por el diseño basado en investigación, la accesibilidad y la creación de sistemas de diseño que escalen.">I believe great design is about solving real problems for real people. I'm passionate about research-driven design, accessibility, and creating design systems that scale.</p>
-      </div>
-      <div class="about-list">
-        <strong data-en="Expertise" data-es="Experiencia">Expertise</strong>
-        <ul style="list-style: none; margin-top: 12px;">
-          <li>• <span data-en="Product Design & Strategy" data-es="Diseño de Producto y Estrategia">Product Design & Strategy</span></li>
-          <li>• <span data-en="Design Systems" data-es="Sistemas de Diseño">Design Systems</span></li>
-          <li>• <span data-en="Mobile-First Design" data-es="Diseño Mobile-First">Mobile-First Design</span></li>
-          <li>• <span data-en="User Research & Analytics" data-es="Investigación de Usuarios y Análisis">User Research & Analytics</span></li>
-          <li>• <span data-en="Design Tooling" data-es="Herramientas de Diseño">Design Tooling (Figma, Webflow)</span></li>
-        </ul>
-      </div>
-    </div>
-  </section>
+        <div style="text-align: center; margin-top: var(--space-5xl);">
+            <a href="#" class="resume-btn" style="background: var(--gray-900);">See more projects</a>
+        </div>
+    </section>
 
-  <section id="contact" class="cta-section">
-    <h2 data-en="Let's work together" data-es="Trabajemos juntos">Let's work together</h2>
-    <p data-en="I'm always interested in talking about new projects and creative ideas. Feel free to get in touch!" data-es="Siempre estoy interesado en hablar sobre nuevos proyectos e ideas creativas. ¡No dudes en ponerte en contacto!">I'm always interested in talking about new projects and creative ideas. Feel free to get in touch!</p>
-    <a href="mailto:yamil.arroyo@avivacredito.com" class="cta-button" data-en="Send me an email" data-es="Envíame un correo">Send me an email</a>
-  </section>
-</main>
+    <!-- ABOUT SECTION - Historia, Experiencia, Skills -->
+    <section class="section" id="about">
+        <div class="about">
+            <div>
+                <img src="https://via.placeholder.com/400x500?text=About" alt="About Yam" class="about-image">
+            </div>
+            <div class="about-content">
+                <h3>I am passionate about creating functional products that empower people.</h3>
+                <p>
+                    I'm a passionate designer with skills to create user-friendly digital products, helping transforming
+                    organizations and innovating every stage of the process.
+                </p>
+                <p>
+                    Over the past 11 years, I have worked in various sectors such as banking, insurance, hotel, and e-commerce,
+                    focusing on product management and team leadership.
+                </p>
+                <p>
+                    My approach revolves around understanding user needs aligned with business goals to create solutions that
+                    deliver meaningful experiences.
+                </p>
+                <a href="#" class="about-link">Know more about me →</a>
+            </div>
+        </div>
 
-<footer>
-  <div data-en="© 2024 Yamil Arroyo. Product Designer." data-es="© 2024 Yamil Arroyo. Diseñador de Producto.">© 2024 Yamil Arroyo. Product Designer.</div>
-  <div style="display: flex; gap: 24px;">
-    <a href="mailto:yamil.arroyo@avivacredito.com">Email</a>
-    <a href="https://linkedin.com/in/yamil-arroyo" target="_blank">LinkedIn</a>
-    <a href="https://figma.com/@yamil" target="_blank">Figma</a>
-  </div>
-</footer>
+        <!-- Skills Section -->
+        <div style="margin-top: var(--space-6xl);">
+            <h2 class="section-title">Skills</h2>
+            <p class="section-subtitle">I work across a variety of disciplines, bringing a diverse set of skills and a creative approach to each project.</p>
 
-<script>
-const translations = {
-  es: {
-    'Product Designer & Digital Strategist': 'Diseñador de Producto y Estratega Digital',
-    'I help fintech and digital companies build intuitive, scalable experiences that drive growth. Specialized in mobile-first design, design systems, and product strategy.': 'Ayudo a empresas fintech y digitales a construir experiencias intuitivas y escalables que impulsen el crecimiento. Especializado en diseño móvil, sistemas de diseño y estrategia de producto.',
-    'Recent Work': 'Trabajo Reciente',
-    'A selection of projects that showcase my approach to user-centered product design and digital transformation.': 'Una selección de proyectos que muestran mi enfoque en diseño de producto centrado en usuario y transformación digital.',
-    'Aviva Crédito NPS System': 'Aviva Crédito NPS System',
-    'In-app satisfaction survey that increased Play Store rating from 3.8★ to 4.7★ and review growth by +190%.': 'Sistema de encuesta de satisfacción in-app que aumentó la calificación de Play Store de 3.8★ a 4.7★ y crecimiento de reseñas de +190%.',
-    'Konfío Design System': 'Konfío Design System',
-    'Comprehensive design system with 150+ components across web and mobile platforms, managing design at scale for 3 product teams.': 'Sistema de diseño integral con 150+ componentes en plataformas web y móvil, gestionando diseño a escala para 3 equipos de producto.',
-    'User Research Program': 'Programa de Investigación de Usuarios',
-    'Established structured user research with quarterly studies, user panels, and behavioral analytics to inform strategic decisions across the organization.': 'Programa de investigación estructurado con estudios trimestrales, paneles de usuarios y análisis del comportamiento para informar decisiones estratégicas.',
-    'View all projects →': 'Ver todos los proyectos →',
-    'About': 'Acerca de',
-    'I\'m a product designer with 7+ years of experience building digital products for fintech, banking, and emerging markets. My background spans UX/UI design, design systems, and product strategy, working with teams across Mexico, USA, and Europe.': 'Soy diseñador de producto con 7+ años de experiencia construyendo productos digitales para fintech, banca y mercados emergentes. Mi experiencia abarca diseño UX/UI, sistemas de diseño y estrategia de producto, trabajando con equipos en México, USA y Europa.',
-    'I believe great design is about solving real problems for real people. I\'m passionate about research-driven design, accessibility, and creating design systems that scale.': 'Creo que el buen diseño consiste en resolver problemas reales de personas reales. Soy apasionado por el diseño basado en investigación, la accesibilidad y la creación de sistemas de diseño que escalen.',
-    'Expertise': 'Experiencia',
-    'Product Design & Strategy': 'Diseño de Producto y Estrategia',
-    'Design Systems': 'Sistemas de Diseño',
-    'Mobile-First Design': 'Diseño Mobile-First',
-    'User Research & Analytics': 'Investigación de Usuarios y Análisis',
-    'Design Tooling': 'Herramientas de Diseño',
-    'Let\'s work together': 'Trabajemos juntos',
-    'I\'m always interested in talking about new projects and creative ideas. Feel free to get in touch!': 'Siempre estoy interesado en hablar sobre nuevos proyectos e ideas creativas. ¡No dudes en ponerte en contacto!',
-    'Send me an email': 'Envíame un correo',
-    'Work': 'Work',
-    'Projects': 'Projects',
-    'Get in touch': 'Contactar',
-    '© 2024 Yamil Arroyo. Product Designer.': '© 2024 Yamil Arroyo. Diseñador de Producto.'
-  },
-  en: {}
-};
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">🎨</div>
+                    <h3>Product Design</h3>
+                    <p>Creating beautiful and intuitive user interfaces with a focus on usability and accessibility.</p>
+                </div>
 
-document.addEventListener('DOMContentLoaded', function() {
-  const langButtons = document.querySelectorAll('.lang-btn');
+                <div class="skill-card">
+                    <div class="skill-icon">📊</div>
+                    <h3>Product Management</h3>
+                    <p>Leading product strategy, roadmaps, and cross-functional teams to deliver impactful solutions.</p>
+                </div>
 
-  let currentLang = 'es';
+                <div class="skill-card">
+                    <div class="skill-icon">📈</div>
+                    <h3>Data Analytics</h3>
+                    <p>Leveraging data to inform design decisions and measure product performance outcomes.</p>
+                </div>
 
-  // Language toggle
-  langButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const lang = this.getAttribute('data-lang');
-      currentLang = lang;
+                <div class="skill-card">
+                    <div class="skill-icon">🔄</div>
+                    <h3>Design Systems</h3>
+                    <p>Building scalable design systems and component libraries for consistent experiences.</p>
+                </div>
 
-      langButtons.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
+                <div class="skill-card">
+                    <div class="skill-icon">👥</div>
+                    <h3>User Research</h3>
+                    <p>Conducting user interviews and research to understand needs and validate assumptions.</p>
+                </div>
 
-      updateLanguage(lang);
-    });
-  });
+                <div class="skill-card">
+                    <div class="skill-icon">🎯</div>
+                    <h3>Strategy</h3>
+                    <p>Defining vision and strategy aligned with business goals and user needs.</p>
+                </div>
+            </div>
+        </div>
 
-  function updateLanguage(lang) {
-    document.querySelectorAll('[data-en]').forEach(el => {
-      if (lang === 'en') {
-        el.textContent = el.getAttribute('data-en');
-      } else {
-        el.textContent = el.getAttribute('data-es');
-      }
-    });
-  }
-});
-</script>
+        <!-- Contact Section -->
+        <div style="margin-top: var(--space-6xl);">
+            <div class="contact">
+                <h2 class="section-title">Let's work together</h2>
+                <p class="section-subtitle">I'm always interested in hearing about new projects and opportunities.</p>
+                <div class="contact-email">yamil.arroyo@avivacredito.com</div>
 
+                <div class="contact-links">
+                    <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                    <a href="https://github.com" target="_blank">GitHub</a>
+                    <a href="https://twitter.com" target="_blank">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Based in Mexico City, Mexico</p>
+        <p style="margin-top: var(--space-md);">Designed by Yami Arroyo • Copyright © 2025</p>
+    </footer>
+
+    <script>
+        // Smooth scroll navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Active nav link
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
