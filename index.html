@@ -1,601 +1,397 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yam - Product Designer & Product Manager</title>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            /* Colores */
-            --gray-25: #FCFCFD;
-            --gray-50: #F9FAFB;
-            --gray-100: #F2F4F7;
-            --gray-200: #EAECF0;
-            --gray-300: #D0D5DD;
-            --gray-400: #98A2B3;
-            --gray-500: #667085;
-            --gray-600: #475467;
-            --gray-700: #344054;
-            --gray-800: #1D2939;
-            --gray-900: #101828;
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yamil Arroyo — Product Designer</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 16px; line-height: 1.6; background: #F5F6F4; color: #121417; }
+a { color: #121417; text-decoration: none; }
+a:hover { color: #2340E0; }
+h1, h2, h3 { font-family: Georgia, serif; font-weight: 400; }
 
-            --blue-500: #2E90FA;
-            --blue-600: #1570EF;
+header { max-width: 1280px; margin: 0 auto; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; background: #FFFFFF; border-bottom: 1px solid #DCDFD9; }
+header .logo { font-weight: 600; font-size: 16px; letter-spacing: 0.05em; }
+nav { display: flex; gap: 28px; font-size: 14px; }
+nav a { cursor: pointer; }
 
-            --purple-600: #6938EF;
+main { background: #FFFFFF; min-height: 100vh; }
+section { max-width: 1280px; margin: 0 auto; padding: 96px 32px; display: none; }
+section.active { display: block; }
 
-            /* Espaciado */
-            --space-xs: 4px;
-            --space-sm: 8px;
-            --space-md: 12px;
-            --space-lg: 16px;
-            --space-xl: 20px;
-            --space-2xl: 24px;
-            --space-3xl: 32px;
-            --space-4xl: 40px;
-            --space-5xl: 48px;
-            --space-6xl: 64px;
+/* Home Section */
+.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; padding: 64px 32px 96px; }
+.hero-text { display: flex; flex-direction: column; gap: 24px; }
+.hero-text h1 { font-size: 48px; line-height: 1.2; }
+.hero-text p { color: #5A5F66; font-size: 14px; }
+.hero-subtitle { font-size: 16px; line-height: 1.6; color: #3A3F46; max-width: 420px; }
+.media-placeholder { aspect-ratio: 3/4; border-radius: 16px; border: 2px dashed #B8BCB4; background: #F0F1EE; display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center; text-align: center; padding: 24px; }
+.media-placeholder svg { width: 32px; height: 32px; stroke: #5A5F66; stroke-width: 1.8; }
+.media-placeholder span { font-size: 12px; color: #5A5F66; }
 
-            /* Tipografía */
-            --font-primary: 'Manrope', sans-serif;
-            --font-display: 'DM Serif Display', serif;
-        }
+/* Principles */
+.principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+.principle { display: flex; flex-direction: column; gap: 24px; }
+.principle-number { font-size: 36px; font-weight: 600; color: #121417; letter-spacing: -0.02em; }
+.principle-title { font-size: 22px; }
+.principle-text { color: #5A5F66; font-size: 14px; line-height: 1.6; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* Work Section */
+.work-list { display: flex; flex-direction: column; gap: 32px; }
+.work-item { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 0; border-bottom: 1px solid #DCDFD9; cursor: pointer; transition: 0.2s; }
+.work-item:hover { transform: translateX(4px); }
+.work-info { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.work-kicker { font-size: 12px; color: #5A5F66; }
+.work-title { font-size: 28px; }
+.work-years { font-size: 13px; color: #5A5F66; white-space: nowrap; }
 
-        html {
-            scroll-behavior: smooth;
-        }
+/* Projects Grid */
+.filter-chips { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+.chip { font-family: 'Instrument Sans', sans-serif; font-size: 13px; padding: 8px 16px; border-radius: 999px; background: transparent; color: #121417; border: 1px solid #121417; cursor: pointer; font-weight: 400; transition: 0.2s; }
+.chip.active { background: #121417; color: #F5F6F4; font-weight: 600; }
+.chip:hover { border-color: #2340E0; }
 
-        body {
-            font-family: var(--font-primary);
-            background-color: var(--gray-50);
-            color: var(--gray-700);
-            line-height: 1.6;
-        }
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 32px; }
+.project-card { display: flex; flex-direction: column; gap: 20px; padding: 24px; border: 1px solid #DCDFD9; border-radius: 16px; background: #FFFFFF; transition: 0.3s; cursor: pointer; }
+.project-card:hover { border-color: #2340E0; box-shadow: 0 4px 12px rgba(35, 64, 224, 0.1); }
+.project-media { aspect-ratio: 4/3; border-radius: 12px; border: 2px dashed #B8BCB4; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+.project-title { font-family: Georgia, serif; font-size: 24px; line-height: 1.3; }
+.project-meta { font-size: 12px; color: #5A5F66; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: 11px; color: #5A5F66; background: #F0F1EE; padding: 4px 8px; border-radius: 4px; }
+.project-desc { font-size: 14px; line-height: 1.5; color: #3A3F46; }
+.read-more { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+.read-more svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.5; }
 
-        /* Header & Navigation */
-        header {
-            position: sticky;
-            top: 0;
-            background: var(--gray-25);
-            border-bottom: 1px solid var(--gray-200);
-            z-index: 1000;
-        }
+/* Case Study */
+.case-header { display: flex; flex-direction: column; gap: 32px; padding: 48px 32px 64px; }
+.case-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; margin-bottom: 24px; cursor: pointer; }
+.case-back svg { width: 14px; height: 14px; }
+.case-title { font-family: Georgia, serif; font-size: 56px; line-height: 1.1; max-width: 1000px; }
+.case-summary { max-width: 760px; font-size: 16px; line-height: 1.7; color: #3A3F46; }
+.case-meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px 48px; border-top: 1px solid #DCDFD9; padding-top: 24px; margin-top: 24px; }
+.meta-item { display: flex; flex-direction: column; gap: 4px; }
+.meta-label { font-size: 11px; color: #5A5F66; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.meta-value { font-weight: 600; font-size: 15px; }
 
-        nav {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: var(--space-lg);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.metrics-grid { background: #121417; color: #EDEEEA; border-radius: 16px; padding: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; margin: 48px auto 0; }
+.metric { display: flex; flex-direction: column; gap: 4px; }
+.metric-value { font-family: Georgia, serif; font-size: 40px; line-height: 1; color: #FFFFFF; }
+.metric-label { font-size: 12px; color: #A9AEB5; }
 
-        .logo {
-            font-weight: 700;
-            font-size: 20px;
-            color: var(--gray-900);
-        }
+.case-section { display: flex; flex-direction: column; gap: 40px; padding: 96px 32px 0; }
+.section-header { display: grid; grid-template-columns: 320px 1fr; gap: 32px 64px; }
+.section-number { font-size: 12px; color: #2340E0; font-weight: 600; }
+.section-title { font-family: Georgia, serif; font-size: 32px; line-height: 1.2; }
+.section-text { font-size: 15px; color: #2A2E33; white-space: pre-line; line-height: 1.7; }
 
-        .nav-links {
-            display: flex;
-            gap: var(--space-2xl);
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--gray-700);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--blue-600);
-        }
-
-        .nav-links a.active {
-            color: var(--blue-600);
-            border-bottom: 2px solid var(--blue-600);
-            padding-bottom: 2px;
-        }
-
-        .resume-btn {
-            background: var(--gray-900);
-            color: white;
-            padding: var(--space-md) var(--space-lg);
-            border-radius: 24px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background 0.3s;
-        }
-
-        .resume-btn:hover {
-            background: var(--gray-800);
-        }
-
-        /* Hero Section */
-        .hero {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: var(--space-6xl) var(--space-lg);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-5xl);
-            align-items: center;
-        }
-
-        .hero-content h1 {
-            font-family: var(--font-display);
-            font-size: 56px;
-            line-height: 1.2;
-            color: var(--gray-900);
-            margin-bottom: var(--space-lg);
-        }
-
-        .hero-subtitle {
-            font-size: 18px;
-            color: var(--gray-600);
-            margin-bottom: var(--space-2xl);
-        }
-
-        .hero-description {
-            font-size: 16px;
-            color: var(--gray-700);
-            margin-bottom: var(--space-3xl);
-            line-height: 1.8;
-        }
-
-        .hero-image {
-            width: 100%;
-            height: 400px;
-            background: var(--gray-200);
-            border-radius: 12px;
-            object-fit: cover;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Section Container */
-        .section {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: var(--space-6xl) var(--space-lg);
-        }
-
-        .section-title {
-            font-family: var(--font-display);
-            font-size: 40px;
-            color: var(--gray-900);
-            margin-bottom: var(--space-lg);
-        }
-
-        .section-subtitle {
-            font-size: 16px;
-            color: var(--gray-600);
-            margin-bottom: var(--space-5xl);
-        }
-
-        /* About Section */
-        .about {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-5xl);
-            align-items: center;
-        }
-
-        .about-image {
-            width: 100%;
-            height: 500px;
-            background: var(--gray-200);
-            border-radius: 12px;
-            object-fit: cover;
-        }
-
-        .about-content h3 {
-            font-family: var(--font-display);
-            font-size: 28px;
-            color: var(--gray-900);
-            margin-bottom: var(--space-lg);
-        }
-
-        .about-content p {
-            font-size: 16px;
-            color: var(--gray-700);
-            margin-bottom: var(--space-lg);
-            line-height: 1.8;
-        }
-
-        .about-link {
-            display: inline-block;
-            background: var(--gray-900);
-            color: white;
-            padding: var(--space-md) var(--space-lg);
-            border-radius: 24px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background 0.3s;
-            margin-top: var(--space-lg);
-        }
-
-        .about-link:hover {
-            background: var(--gray-800);
-        }
-
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--space-2xl);
-            margin-bottom: var(--space-5xl);
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
-
-        .project-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        }
-
-        .project-image {
-            width: 100%;
-            height: 200px;
-            background: var(--gray-200);
-            object-fit: cover;
-        }
-
-        .project-content {
-            padding: var(--space-2xl);
-        }
-
-        .project-content h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-bottom: var(--space-sm);
-        }
-
-        .project-category {
-            font-size: 14px;
-            color: var(--gray-500);
-            margin-bottom: var(--space-md);
-        }
-
-        .project-description {
-            font-size: 14px;
-            color: var(--gray-600);
-            line-height: 1.6;
-            margin-bottom: var(--space-md);
-        }
-
-        .project-link {
-            color: var(--blue-600);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .project-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Skills Section */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--space-2xl);
-        }
-
-        .skill-card {
-            background: white;
-            padding: var(--space-2xl);
-            border-radius: 12px;
-            border-left: 4px solid var(--blue-600);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .skill-icon {
-            font-size: 28px;
-            margin-bottom: var(--space-md);
-        }
-
-        .skill-card h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-bottom: var(--space-sm);
-        }
-
-        .skill-card p {
-            font-size: 14px;
-            color: var(--gray-600);
-            line-height: 1.6;
-        }
-
-        /* Contact Section */
-        .contact {
-            background: var(--gray-900);
-            color: white;
-            text-align: center;
-            padding: var(--space-6xl) var(--space-lg);
-            border-radius: 12px;
-        }
-
-        .contact .section-title {
-            color: white;
-        }
-
-        .contact-email {
-            font-size: 32px;
-            font-weight: 600;
-            margin: var(--space-2xl) 0;
-            word-break: break-all;
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: var(--space-3xl);
-            margin-top: var(--space-3xl);
-            flex-wrap: wrap;
-        }
-
-        .contact-links a {
-            color: var(--blue-500);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .contact-links a:hover {
-            color: white;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--gray-100);
-            padding: var(--space-3xl) var(--space-lg);
-            text-align: center;
-            color: var(--gray-600);
-            font-size: 14px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero, .about {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-content h1 {
-                font-size: 36px;
-            }
-
-            .section-title {
-                font-size: 28px;
-            }
-
-            .nav-links {
-                gap: var(--space-lg);
-                font-size: 14px;
-            }
-
-            .contact-email {
-                font-size: 20px;
-            }
-        }
-    </style>
+/* Footer */
+footer { max-width: 1280px; margin: 0 auto; padding: 32px; border-top: 1px solid #DCDFD9; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #5A5F66; }
+</style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <nav>
-            <div class="logo">Yam</div>
-            <ul class="nav-links">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#work">Work</a></li>
-                <li><a href="#about">About</a></li>
-            </ul>
-            <a href="#" class="resume-btn">Resume ↗</a>
-        </nav>
-    </header>
+<header>
+<a class="logo" href="javascript:void(0)" onclick="showSection('home')">Vc</a>
+<nav>
+<a onclick="showSection('home')">Work</a>
+<a onclick="showSection('projects')">Projects</a>
+<a onclick="showSection('about')">About</a>
+<a href="mailto:yamil@aviva.com">Contact</a>
+</nav>
+</header>
 
-    <!-- Hero Section (HOME) -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>Hi I'm Yami!</h1>
-            <p class="hero-subtitle">Chasing for Brands</p>
-            <p class="hero-description">
-                I'm a digital product designer with over 11 years of experience, passionate about transforming
-                organizations and building an exceptional digital future.
-            </p>
-            <div style="display: flex; gap: var(--space-lg);">
-                <a href="#work" class="resume-btn" style="background: var(--blue-600); color: white;">Explore my work</a>
-            </div>
+<main>
+<!-- HOME SECTION -->
+<section id="home" class="active">
+<div class="hero">
+<div class="hero-text">
+<div>
+<h1>Hi, I'm Yamil. I design fintech products that <br>empower people</h1>
+<p>"Chino" for friends</p>
+</div>
+<p class="hero-subtitle">Digital product designer with 11+ years of experience across banking and fintech — from Citibanamex's enterprise banking to Konfío's design system and, today, Aviva Crédito's mobile app. I'm passionate about transforming organizations and building an exceptional digital future.</p>
+</div>
+<div class="media-placeholder">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 16l-5-5-8 8"></path></svg>
+<span>MEDIA</span>
+<span>Your portrait — natural light, 4:5</span>
+</div>
+</div>
+
+<section style="padding: 128px 32px 0;">
+<div style="display: flex; flex-direction: column; gap: 64px;">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 600px;">
+<h2 style="font-size: 40px;">How I work</h2>
+<p style="color: #5A5F66; font-size: 15px; line-height: 1.6;">I work across a variety of disciplines, bringing a diverse set of skills and a creative approach to each project.</p>
+</div>
+<div class="principles-grid">
+<div class="principle">
+<span class="principle-number">01</span>
+<div>
+<h3 class="principle-title">Product Management</h3>
+<p class="principle-text">Lidero el diseño y desarrollo de productos innovadores, con habilidades estratégicas, liderazgo y comunicación efectiva.</p>
+</div>
+</div>
+<div class="principle">
+<span class="principle-number">02</span>
+<div>
+<h3 class="principle-title">Product Design</h3>
+<p class="principle-text">Combino creatividad y comprensión del usuario para desarrollar productos digitales atractivos y funcionales a lo largo de su ciclo de vida.</p>
+</div>
+</div>
+<div class="principle">
+<span class="principle-number">03</span>
+<div>
+<h3 class="principle-title">Data Driven</h3>
+<p class="principle-text">Uso datos para tomar decisiones de diseño informadas — desde eventos en GA4 y dashboards en BigQuery hasta A/B tests que prueban qué funciona.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding: 128px 32px; display: flex; flex-direction: column; gap: 64px;">
+<div style="display: flex; flex-direction: column; gap: 24px;">
+<h2 style="font-size: 40px;">Selected work</h2>
+<div class="work-list" id="workList">
+<!-- Work items populated by JS -->
+</div>
+</div>
+</section>
+</section>
+
+<!-- PROJECTS SECTION -->
+<section id="projects" style="padding: 96px 32px 64px; display: flex; flex-direction: column; gap: 48px;">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 700px;">
+<h1 style="font-size: 48px; line-height: 1.2;">Selected Projects</h1>
+<p style="color: #5A5F66; font-size: 15px; line-height: 1.6;">A selection of my recent work across fintech, design systems, and enterprise banking. Click on any category to filter by project type.</p>
+</div>
+
+<div>
+<div class="filter-chips" id="filterChips">
+<!-- Filters populated by JS -->
+</div>
+<div class="projects-grid" id="projectsGrid">
+<!-- Projects populated by JS -->
+</div>
+</div>
+</section>
+
+<!-- CASE STUDY SECTION (dynamic) -->
+<section id="case-study" style="padding: 0;">
+<div id="caseContent">
+<!-- Case study content populated by JS -->
+</div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about" style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; padding: 128px 32px;">
+<div class="media-placeholder">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 16l-5-5-8 8"></path></svg>
+<span>MEDIA</span>
+<span>Your portrait — natural light, 4:5</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 32px;">
+<div style="display: flex; flex-direction: column; gap: 16px;">
+<h2 style="font-size: 40px;">About</h2>
+<p style="color: #5A5F66; font-size: 14px;">I'm passionate about creating beautiful products that empower people.</p>
+</div>
+<p style="color: #3A3F46; font-size: 15px; line-height: 1.7;">Me emociona aportar mi experiencia y pasión a equipos visionarios. Lidero proyectos innovadores con un enfoque estratégico — desde research y heurísticas hasta tokens, A/B tests y los dashboards que nos dicen si funcionó.</p>
+<div style="display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #DCDFD9; padding-top: 24px;">
+<div style="display: flex; flex-direction: column; gap: 12px;">
+<span style="font-size: 12px; color: #5A5F66; font-weight: 600;">EXPERIENCE</span>
+<div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+<div><span style="font-weight: 600;">Aviva Crédito</span><span style="display: block; color: #5A5F66; font-size: 13px;">Product Designer · 2024 — now</span></div>
+<div><span style="font-weight: 600;">Konfío</span><span style="display: block; color: #5A5F66; font-size: 13px;">Design Manager · Lead Designer · 2021 — 2023</span></div>
+<div><span style="font-weight: 600;">Citibanamex</span><span style="display: block; color: #5A5F66; font-size: 13px;">Lead Designer · 2018 — 2020</span></div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px;">
+<span style="font-size: 12px; color: #5A5F66; font-weight: 600;">TOOLKIT</span>
+<div style="display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #3A3F46;">
+<span>Figma · Sketch</span>
+<span>Maze · Hotjar</span>
+<span>GA4 · BigQuery · Looker Studio</span>
+<span>Jira · Confluence · Miro</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+<span>© 2026 Yamil Arroyo</span>
+<span>Based in Mexico City, Mexico</span>
+</footer>
+
+<script>
+const projects = [
+  {
+    slug: "nps", company: "Aviva Crédito", years: "2026", tint: "#E4E8F7", ink: "#2340E0",
+    kicker: "FINTECH · ANALYTICS", title: "In-App NPS & Play Store experiment",
+    categories: ["Fintech", "Analytics", "Mobile"], tags: ["NPS", "A/B Testing", "Mobile"],
+    description: "Designed an in-app NPS system at three lifecycle moments with sequential A/B testing. Improved Play Store rating from 3.8★ to 4.7★.",
+    role: "Product Designer · project owner", timeline: "Feb — Jul 2026", team: "Engineering + Design", tools: "Figma · Jira · Confluence · Firebase Analytics",
+    summary: "An in-app satisfaction system at key moments of the customer lifecycle, independent of store ratings, that automatically opens the Play Store prompt for satisfied users — and the experiment that took the app from 3.8★ to 4.7★.",
+    metrics: [{v:"3.8 → 4.7★", l:"Play Store rating"}, {v:"+190%", l:"reviews (250 → 724)"}, {v:"92.3%", l:"promoters in Phase A"}]
+  },
+  {
+    slug: "diff", company: "Aviva Crédito", years: "2025", tint: "#E6EAF5", ink: "#2340E0",
+    kicker: "ONBOARDING · A/B TEST", title: "User differentiation in the Aviva app",
+    categories: ["Onboarding", "Mobile", "Fintech"], tags: ["Onboarding", "Conversion", "Mobile"],
+    description: "Redesigned onboarding to differentiate three user types. Improved Play Store rating from 3.3★ to 3.9★ with 70% conversion.",
+    role: "Product Designer · project owner", timeline: "Jan — Apr 2025", team: "Michelle Epelstein (PM), Israel Garcia (iOS), Yoni Santana (Android), Irving Herrera (Tech lead)", tools: "Figma · Jira · Confluence · GA4 · Looker",
+    summary: "An onboarding redesign that differentiates three user types, improving the Play Store rating and opening new prospect acquisition channels.",
+    metrics: [{v:"3.3 → 3.9★", l:"Play Store rating"}, {v:"70.36%", l:"registration conversion"}, {v:"1m 30s", l:"average completion time"}]
+  },
+  {
+    slug: "docs", company: "Aviva Crédito", years: "2024–2025", tint: "#E2EFE6", ink: "#1F6B3E",
+    kicker: "MOBILE · UX", title: "Complete your documents in the app",
+    categories: ["Mobile", "Fintech"], tags: ["End-to-End", "Phygital", "OCR"],
+    description: "Designed an end-to-end phygital experience for clients to complete documentation directly in-app using OCR, CLABE validation and video proofs.",
+    role: "Product Designer", timeline: "Jun 2024 — Feb 2025", team: "Michelle Epelstein (PM), Israel Garcia (iOS), Yoni Santana (Android), Irving Herrera (Tech lead)", tools: "Figma · Jira · Confluence",
+    summary: "An end-to-end phygital experience for kiosk-approved clients to complete their documentation — address, CLABE, geolocation and video proofs — directly in the app, without WhatsApp workarounds.",
+    metrics: [{v:"8", l:"modules designed from scratch"}, {v:"+10%", l:"target over a 35% baseline"}, {v:"8", l:"use cases: first loan & renewal"}]
+  },
+  {
+    slug: "bio", company: "Aviva Crédito", years: "2024", tint: "#EFE7F6", ink: "#5B2E91",
+    kicker: "SECURITY · LOGIN", title: "A better biometric experience",
+    categories: ["Security", "Mobile"], tags: ["Biometrics", "Authentication", "UX"],
+    description: "Redesigned biometric access with native OS prompts, automatic re-entry and a dedicated settings module in the user profile.",
+    role: "Product Designer · project owner", timeline: "Jul 2024 — Jan 2025", team: "Michelle Epelstein, Israel Garcia, Yoni Santana, Irving Herrera", tools: "Figma · Jira · Confluence",
+    summary: "A redesign of biometric access in the Aviva app: activation on first login, an automatic prompt on re-entry, and a biometric settings module in the user profile.",
+    metrics: [{v:"3", l:"redesigned scenarios"}, {v:"iOS + Android", l:"native OS prompt"}, {v:"1", l:"central settings module"}]
+  },
+  {
+    slug: "kds", company: "Konfío", years: "2021–2023", tint: "#E6EFEC", ink: "#0F4C45",
+    kicker: "DESIGN SYSTEM · TOKENS", title: "Konfío Design System",
+    categories: ["Design Systems"], tags: ["Design System", "Tokens", "Components"],
+    description: "Built a complete design system from scratch with foundations, token architecture and a component library covering brand basics and layout patterns.",
+    role: "Design Manager", timeline: "2021 — 2023", team: "Co-managed with Jonathan Trujillo · visual designers, UX writers and UX research", tools: "Figma",
+    summary: "Building Konfío's design system from scratch — foundations, tokens and a full component library for every product in the ecosystem.",
+    metrics: [{v:"0 → 1", l:"design system from scratch"}, {v:"2", l:"foundation layers: Brand & Layout"}, {v:"Web + App", l:"reusable templates"}]
+  },
+  {
+    slug: "pos", company: "Konfío", years: "2023", tint: "#F2EBDD", ink: "#8A4B12",
+    kicker: "HARDWARE + APP", title: "Konfío POS",
+    categories: ["Hardware", "Mobile", "Fintech"], tags: ["POS", "Hardware", "Integration"],
+    description: "Led the payment experience design for a point-of-sale system, integrating hardware and app with roles for Owner, Admin and Operator.",
+    role: "Lead Designer", timeline: "2021 — 2023", team: "5 product designers, UX writer, UX researcher · con marketing y frog", tools: "Figma",
+    summary: "Designing the point-of-sale experience for Konfío merchants — hardware, app and packaging under one brand.",
+    metrics: [{v:"5 → 2", l:"terminal types"}, {v:"3", l:"B2B roles: Owner, Admin, Operator"}, {v:"5", l:"competitors benchmarked"}]
+  },
+  {
+    slug: "bne", company: "Citibanamex", years: "2018–2020", tint: "#F6E4E2", ink: "#A1281F",
+    kicker: "ENTERPRISE BANKING", title: "BancaNet Empresarial",
+    categories: ["Enterprise", "Fintech"], tags: ["Enterprise Banking", "Web + Mobile", "Redesign"],
+    description: "Full redesign of Mexico's most used enterprise banking platform. 18 features, 55 flows, 5K+ screens with 30+ user iterations.",
+    role: "Lead Designer", timeline: "Apr 2018 — Mar 2020", team: "Product designers, UX writer y data analytics", tools: "Sketch · Zeplin · InVision · Jira · Confluence",
+    summary: "Redesigning Citibanamex's enterprise electronic banking — the most used in Mexico — across web and mobile.",
+    metrics: [{v:"960K", l:"web visits"}, {v:"+1M", l:"mobile downloads"}, {v:"55", l:"user flows"}]
+  }
+];
+
+const allCategories = ["Fintech", "Design Systems", "Mobile", "Hardware", "Enterprise", "Security", "Analytics", "Onboarding"];
+let activeCategories = new Set(allCategories);
+
+function showSection(sectionId) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.getElementById(sectionId).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function renderProjects() {
+  const filtered = projects.filter(p => p.categories.some(c => activeCategories.has(c)));
+  const grid = document.getElementById('projectsGrid');
+  grid.innerHTML = filtered.map(p => `
+    <div class="project-card" onclick="showCaseStudy('${p.slug}')">
+      <div class="project-media" style="background: ${p.tint};">
+        <svg viewBox="0 0 24 24" fill="none" stroke="${p.ink}" stroke-width="1.5" width="32" height="32"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="9" cy="9" r="1.5"></circle><path d="M21 15l-5-5-8 8"></path></svg>
+        <span style="font-size: 11px; color: ${p.ink}; font-weight: 600;">${p.kicker}</span>
+      </div>
+      <div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <span class="project-meta">${p.company} · ${p.years}</span>
+          <h3 class="project-title">${p.title}</h3>
         </div>
-        <div>
-            <img src="https://via.placeholder.com/400x400?text=Yam" alt="Yam" class="hero-image">
+        <div class="project-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+      <p class="project-desc">${p.description}</p>
+      <div class="read-more" style="color: ${p.ink};">
+        Read case study
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderFilters() {
+  const chips = document.getElementById('filterChips');
+  chips.innerHTML = `<button class="chip ${activeCategories.size === allCategories.length ? 'active' : ''}" onclick="toggleFilter(null)">All</button>` +
+    allCategories.map(cat => `<button class="chip ${activeCategories.has(cat) ? 'active' : ''}" onclick="toggleFilter('${cat}')">${cat}</button>`).join('');
+}
+
+function toggleFilter(category) {
+  if (!category) {
+    activeCategories = new Set(activeCategories.size === allCategories.length ? [] : allCategories);
+  } else {
+    activeCategories.has(category) ? activeCategories.delete(category) : activeCategories.add(category);
+  }
+  renderFilters();
+  renderProjects();
+}
+
+function showCaseStudy(slug) {
+  const project = projects.find(p => p.slug === slug);
+  const html = `
+    <div class="case-header">
+      <a class="case-back" onclick="showSection('projects')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 19l-7-7 7-7"></path></svg>Back to projects</a>
+      <span style="font-size: 13px; color: #5A5F66;">${project.company} · ${project.years}</span>
+      <h1 class="case-title">${project.title}</h1>
+      <p class="case-summary">${project.summary}</p>
+      <div class="case-meta">
+        <div class="meta-item"><span class="meta-label">ROLE</span><span class="meta-value">${project.role}</span></div>
+        <div class="meta-item"><span class="meta-label">TIMELINE</span><span class="meta-value">${project.timeline}</span></div>
+        <div class="meta-item"><span class="meta-label">TEAM</span><span class="meta-value">${project.team}</span></div>
+        <div class="meta-item"><span class="meta-label">TOOLS</span><span class="meta-value">${project.tools}</span></div>
+      </div>
+    </div>
+    <section style="max-width: 1280px; margin: 0 auto; padding: 0 32px;">
+      <div style="aspect-ratio: 16/8; border-radius: 16px; border: 2px dashed #B8BCB4; background: ${project.tint}; display: flex; align-items: center; justify-content: center;">
+        <div style="text-align: center; color: #3A3F46;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="32" height="32" style="margin: 0 auto; display: block;"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 16l-5-5-8 8"></path></svg>
+          <p style="margin-top: 12px; font-size: 15px;">MEDIA · COVER</p>
         </div>
+      </div>
     </section>
-
-    <!-- WORK SECTION - Solo Proyectos -->
-    <section class="section" id="work">
-        <h2 class="section-title">Portfolio</h2>
-        <p class="section-subtitle">I am passionate about creating digital products from a "user-centered" approach.</p>
-
-        <div class="projects-grid">
-            <!-- Project 1: Konfío POS -->
-            <div class="project-card">
-                <img src="https://via.placeholder.com/300x200?text=Konfio+POS" alt="Konfío POS" class="project-image">
-                <div class="project-content">
-                    <h3>Konfío POS</h3>
-                    <p class="project-category">Fintech • POS • Mobile</p>
-                    <p class="project-description">Designing the point-of-sale experience for Konfío merchants. End-to-end design of hardware and mobile app.</p>
-                    <a href="https://app.notion.com/p/379118c0b17281c49065f3b9b7e32ea2" target="_blank" class="project-link">Read more →</a>
-                </div>
-            </div>
-
-            <!-- Project 2: Konfío Design System -->
-            <div class="project-card">
-                <img src="https://via.placeholder.com/300x200?text=Design+System" alt="Konfío Design System" class="project-image">
-                <div class="project-content">
-                    <h3>Konfío Design System</h3>
-                    <p class="project-category">Design System • Tokens • Components</p>
-                    <p class="project-description">Building Konfío's design system from scratch — foundations, tokens, and a full component library.</p>
-                    <a href="https://app.notion.com/p/379118c0b17281d89df2d4224570a0d0" target="_blank" class="project-link">Read more →</a>
-                </div>
-            </div>
-
-            <!-- Project 3: BancaNet Empresarial -->
-            <div class="project-card">
-                <img src="https://via.placeholder.com/300x200?text=BancaNet" alt="BancaNet Empresarial" class="project-image">
-                <div class="project-content">
-                    <h3>BancaNet Empresarial</h3>
-                    <p class="project-category">Banking • Enterprise • Redesign</p>
-                    <p class="project-description">Design and delivery of the new BancaNet Empresarial with user flows, wireframes, UI Kit and visual redesign.</p>
-                    <a href="https://app.notion.com/p/379118c0b1728119a1dedf296ff2373a" target="_blank" class="project-link">Read more →</a>
-                </div>
-            </div>
-        </div>
-
-        <div style="text-align: center; margin-top: var(--space-5xl);">
-            <a href="#" class="resume-btn" style="background: var(--gray-900);">See more projects</a>
-        </div>
+    <section style="max-width: 1280px; margin: 0 auto; padding: 48px 32px 0;">
+      <div style="background: #121417; color: #EDEEEA; border-radius: 16px; padding: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px;">
+        ${project.metrics.map(m => `<div><span style="font-family: Georgia, serif; font-size: 40px; color: #FFFFFF; line-height: 1;">${m.v}</span><span style="font-size: 12px; color: #A9AEB5; display: block; margin-top: 4px;">${m.l}</span></div>`).join('')}
+      </div>
     </section>
+  `;
+  document.getElementById('caseContent').innerHTML = html;
+  showSection('case-study');
+}
 
-    <!-- ABOUT SECTION - Historia, Experiencia, Skills -->
-    <section class="section" id="about">
-        <div class="about">
-            <div>
-                <img src="https://via.placeholder.com/400x500?text=About" alt="About Yam" class="about-image">
-            </div>
-            <div class="about-content">
-                <h3>I am passionate about creating functional products that empower people.</h3>
-                <p>
-                    I'm a passionate designer with skills to create user-friendly digital products, helping transforming
-                    organizations and innovating every stage of the process.
-                </p>
-                <p>
-                    Over the past 11 years, I have worked in various sectors such as banking, insurance, hotel, and e-commerce,
-                    focusing on product management and team leadership.
-                </p>
-                <p>
-                    My approach revolves around understanding user needs aligned with business goals to create solutions that
-                    deliver meaningful experiences.
-                </p>
-                <a href="#" class="about-link">Know more about me →</a>
-            </div>
-        </div>
+function renderWork() {
+  const list = document.getElementById('workList');
+  list.innerHTML = projects.slice(0, 3).map(p => `
+    <div class="work-item" onclick="showCaseStudy('${p.slug}')">
+      <div class="work-info">
+        <span class="work-kicker">${p.kicker} · ${p.company}</span>
+        <h3 class="work-title">${p.title}</h3>
+      </div>
+      <span class="work-years">${p.years}</span>
+    </div>
+  `).join('');
+}
 
-        <!-- Skills Section -->
-        <div style="margin-top: var(--space-6xl);">
-            <h2 class="section-title">Skills</h2>
-            <p class="section-subtitle">I work across a variety of disciplines, bringing a diverse set of skills and a creative approach to each project.</p>
-
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <div class="skill-icon">🎨</div>
-                    <h3>Product Design</h3>
-                    <p>Creating beautiful and intuitive user interfaces with a focus on usability and accessibility.</p>
-                </div>
-
-                <div class="skill-card">
-                    <div class="skill-icon">📊</div>
-                    <h3>Product Management</h3>
-                    <p>Leading product strategy, roadmaps, and cross-functional teams to deliver impactful solutions.</p>
-                </div>
-
-                <div class="skill-card">
-                    <div class="skill-icon">📈</div>
-                    <h3>Data Analytics</h3>
-                    <p>Leveraging data to inform design decisions and measure product performance outcomes.</p>
-                </div>
-
-                <div class="skill-card">
-                    <div class="skill-icon">🔄</div>
-                    <h3>Design Systems</h3>
-                    <p>Building scalable design systems and component libraries for consistent experiences.</p>
-                </div>
-
-                <div class="skill-card">
-                    <div class="skill-icon">👥</div>
-                    <h3>User Research</h3>
-                    <p>Conducting user interviews and research to understand needs and validate assumptions.</p>
-                </div>
-
-                <div class="skill-card">
-                    <div class="skill-icon">🎯</div>
-                    <h3>Strategy</h3>
-                    <p>Defining vision and strategy aligned with business goals and user needs.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contact Section -->
-        <div style="margin-top: var(--space-6xl);">
-            <div class="contact">
-                <h2 class="section-title">Let's work together</h2>
-                <p class="section-subtitle">I'm always interested in hearing about new projects and opportunities.</p>
-                <div class="contact-email">yamil.arroyo@avivacredito.com</div>
-
-                <div class="contact-links">
-                    <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-                    <a href="https://github.com" target="_blank">GitHub</a>
-                    <a href="https://twitter.com" target="_blank">Twitter</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>Based in Mexico City, Mexico</p>
-        <p style="margin-top: var(--space-md);">Designed by Yami Arroyo • Copyright © 2025</p>
-    </footer>
-
-    <script>
-        // Smooth scroll navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
-        // Active nav link
-        window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.nav-links a');
-
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    </script>
+renderWork();
+renderProjects();
+renderFilters();
+</script>
 </body>
 </html>
