@@ -1,0 +1,265 @@
+[
+  {
+    "id": "dev-konfio-pos",
+    "slug": "konfio-pos",
+    "name": "Konfío POS",
+    "company": "Konfío",
+    "level": "Proyecto",
+    "type": "Proyecto completo",
+    "parent": "",
+    "role": "Lead Designer",
+    "status": "Completado",
+    "start": "2023-01-01",
+    "end": "2023-12-01",
+    "tools": [
+      "Figma",
+      "Jira"
+    ],
+    "tags": [
+      "POS",
+      "Fintech",
+      "Hardware"
+    ],
+    "team": "",
+    "cover": "/images/card-konfio-pos.png",
+    "short": {
+      "en": "Experience in collecting payments with point-of-sale terminals, remote payments, deposit management, and user role administration.",
+      "es": "Experiencia de cobro con terminales punto de venta, pagos remotos, gestión de depósitos y administración de roles de usuario."
+    },
+    "problem": {
+      "en": "",
+      "es": ""
+    },
+    "solution": {
+      "en": "",
+      "es": ""
+    },
+    "research": {
+      "en": "",
+      "es": ""
+    },
+    "impact": {
+      "en": "",
+      "es": ""
+    },
+    "postRelease": {
+      "en": "",
+      "es": ""
+    },
+    "order": 1,
+    "featured": true
+  },
+  {
+    "id": "dev-konfio-ds",
+    "slug": "konfio-design-system",
+    "name": "Konfío Design System",
+    "company": "Konfío",
+    "level": "Proyecto",
+    "type": "Design System",
+    "parent": "",
+    "role": "Lead Designer",
+    "status": "Completado",
+    "start": "2021-01-01",
+    "end": "2023-06-01",
+    "tools": [
+      "Figma"
+    ],
+    "tags": [
+      "Design System",
+      "Tokens",
+      "Components"
+    ],
+    "team": "",
+    "cover": null,
+    "short": {
+      "en": "The Konfío Design System boosts the productivity of the design and development team by employing atomic design methodology. It leverages the benefits of variables and Figma's dev mode for development.",
+      "es": "El Design System de Konfío impulsa la productividad del equipo de diseño y desarrollo con metodología de diseño atómico, aprovechando variables y el modo dev de Figma."
+    },
+    "problem": {
+      "en": "",
+      "es": ""
+    },
+    "solution": {
+      "en": "",
+      "es": ""
+    },
+    "research": {
+      "en": "",
+      "es": ""
+    },
+    "impact": {
+      "en": "",
+      "es": ""
+    },
+    "postRelease": {
+      "en": "",
+      "es": ""
+    },
+    "order": 3,
+    "featured": false
+  },
+  {
+    "id": "dev-bne-web",
+    "slug": "bancanet-empresarial-web",
+    "name": "BancaNet Empresarial Web",
+    "company": "Citibanamex",
+    "level": "Proyecto",
+    "type": "Rediseño",
+    "parent": "",
+    "role": "Lead Designer",
+    "status": "Completado",
+    "start": "2018-04-01",
+    "end": "2020-03-31",
+    "tools": [
+      "Sketch",
+      "Zeplin",
+      "InVision",
+      "Photoshop",
+      "Illustrator",
+      "InDesign",
+      "Jira",
+      "Confluence",
+      "Excel",
+      "Google Docs"
+    ],
+    "tags": [
+      "Banking",
+      "Enterprise",
+      "Web"
+    ],
+    "team": "Maru Neme - Product Design Lead | Iliana Mejía - Product Designer | Manuel Juarez - Product Designer | Oscar Colloly - Product Designer | Moisés Bernal - Product Designer | Daniel Salazar - UX Writer | Celia Del Angel - Data Analytics",
+    "cover": null,
+    "short": {
+      "en": "Redesign of the Citibanamex private banking portal for businesses, where the goal was to update the entire experience for Citibanamex's corporate clients, providing a renewed product aligned with the latest usability and technology standards.",
+      "es": "Rediseño del portal de banca privada de Citibanamex para empresas, con el objetivo de actualizar toda la experiencia de sus clientes corporativos con un producto renovado y alineado a los últimos estándares de usabilidad y tecnología."
+    },
+    "problem": {
+      "en": "",
+      "es": ""
+    },
+    "solution": {
+      "en": "",
+      "es": ""
+    },
+    "research": {
+      "en": "",
+      "es": ""
+    },
+    "impact": {
+      "en": "960K visits | 576K daily users | 290K monthly users | 18 features | 55 user flows | +5K screens | +30 iterations",
+      "es": "960K visitas | 576K usuarios diarios | 290K usuarios al mes | 18 funcionalidades | 55 flujos de usuario | +5K pantallas | +30 iteraciones"
+    },
+    "postRelease": {
+      "en": "",
+      "es": ""
+    },
+    "order": 2,
+    "featured": true
+  },
+  {
+    "id": "dev-bne-mobile",
+    "slug": "bancanet-empresarial-movil",
+    "name": "BancaNet Empresarial Móvil",
+    "company": "Citibanamex",
+    "level": "Proyecto",
+    "type": "Rediseño",
+    "parent": "",
+    "role": "Lead Designer",
+    "status": "Completado",
+    "start": "2018-04-01",
+    "end": "2020-03-01",
+    "tools": [
+      "Sketch",
+      "Jira",
+      "Confluence",
+      "Zeplin",
+      "Illustrator",
+      "Photoshop",
+      "Google Docs",
+      "Excel"
+    ],
+    "tags": [
+      "Mobile",
+      "Banking",
+      "Enterprise"
+    ],
+    "team": "Laura Flores (Product Design Lead), Maru Neme (Product Designer), Iliana Mejia (Product Designer), Manuel Juarez (Product Designer), Hector Martinez (Product Designer), Daniel Salazar (UX Writer), Celia del Angel (Data Analytics)",
+    "cover": null,
+    "short": {
+      "en": "Redefining the mobile banking experience for enterprise clients at Citibanamex.",
+      "es": "Redefinición de la experiencia de banca móvil para clientes empresariales en Citibanamex."
+    },
+    "problem": {
+      "en": "BancaNet Empresarial Móvil is the mobile extension of Citibanamex's enterprise electronic banking portal. Like the web portal, the mobile channel had an outdated experience that didn't meet modern usability standards.",
+      "es": "BancaNet Empresarial Móvil es la extensión móvil del portal web de banca electrónica de Citibanamex. Al igual que el portal web, el canal móvil tenía una experiencia desactualizada que no cumplía los estándares modernos de usabilidad."
+    },
+    "solution": {
+      "en": "I coordinated the full redesign of the app, aligning the design team with product, tech, and business leads. We delivered a modern visual language within the bank's institutional design system, incorporating biometric access, simplified architecture, and a UX debt matrix.",
+      "es": "Coordiné el rediseño integral de la app, alineando al equipo de diseño con producto, tecnología y negocio. Entregamos un estilo visual moderno dentro del sistema institucional del banco, con acceso biométrico, arquitectura simplificada y una matriz de deuda UX."
+    },
+    "research": {
+      "en": "",
+      "es": ""
+    },
+    "impact": {
+      "en": "+1M downloads across App Store and Google Play. 250k daily active users.",
+      "es": "+1M descargas en App Store y Google Play. 250k usuarios diarios activos."
+    },
+    "postRelease": {
+      "en": "",
+      "es": ""
+    },
+    "order": 4,
+    "featured": false
+  },
+  {
+    "id": "dev-nps",
+    "slug": "in-app-nps",
+    "name": "In-App NPS",
+    "company": "Aviva Crédito",
+    "level": "Proyecto",
+    "type": "Feature",
+    "parent": "",
+    "role": "Product Designer",
+    "status": "Completado",
+    "start": "2026-02-01",
+    "end": "2026-05-06",
+    "tools": [
+      "Figma",
+      "Maze",
+      "Analytics"
+    ],
+    "tags": [
+      "Mobile",
+      "Research"
+    ],
+    "team": "",
+    "cover": null,
+    "featured": true,
+    "order": 5,
+    "short": {
+      "en": "In-app NPS at three lifecycle moments, with a sequential A/B test on the Play Store rating prompt.",
+      "es": "NPS dentro de la app en tres momentos del ciclo de vida, con un experimento A/B secuencial sobre la calificación en Play Store."
+    },
+    "problem": {
+      "en": "",
+      "es": ""
+    },
+    "solution": {
+      "en": "",
+      "es": ""
+    },
+    "research": {
+      "en": "",
+      "es": ""
+    },
+    "impact": {
+      "en": "",
+      "es": ""
+    },
+    "postRelease": {
+      "en": "",
+      "es": ""
+    }
+  }
+]
