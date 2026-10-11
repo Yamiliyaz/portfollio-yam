@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
+import Stepper from "@/components/Stepper";
 import { dict, isLang, LANGS } from "@/lib/i18n";
 import { formatPeriod, getAllProjects, getProject, pick, projectName, yearRange } from "@/lib/notion";
 
@@ -42,12 +44,12 @@ function Prose({ text }: { text: string }) {
 
 function TextSection({ id, title, text }: { id: string; title: string; text: string }) {
   return (
-    <section className="proj-section" id={id}>
+    <Reveal as="section" className="proj-section" id={id} rise={40}>
       <div className="cols">
         <div className="col-a"><h2>{title}</h2></div>
         <div className="col-b"><Prose text={text} /></div>
       </div>
-    </section>
+    </Reveal>
   );
 }
 
@@ -80,15 +82,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
 
   return (
     <div className="page proj-layout">
-      <aside className="stepper" aria-label={t.project.content}>
-        <Link className="back" href={`/${lang}/work`}>
-          <img src="/icons/arrow-down.svg" alt="" />
-          {t.project.back}
-        </Link>
-        <hr />
-        <p className="label">{t.project.content}</p>
-        {steps.map((x) => <a key={x.id} href={`#${x.id}`}>{x.label}</a>)}
-      </aside>
+      <Stepper steps={steps} backHref={`/${lang}/work`} backLabel={t.project.back} contentLabel={t.project.content} />
 
       <section className="proj-hero">
         <div className="bento-hero">
@@ -136,7 +130,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
         </div>
       </section>
 
-      <section className="proj-section" id="introduction">
+      <Reveal as="section" className="proj-section" id="introduction">
         <div className="cols">
           <div className="col-a">
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -157,7 +151,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
             <Prose text={short} />
           </div>
         </div>
-      </section>
+      </Reveal>
 
       {impact && <TextSection id="highlights" title={s.highlights} text={impact.replace(/\s\|\s/g, "\n")} />}
       {problem && <TextSection id="problem" title={s.problem} text={problem} />}
@@ -166,7 +160,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
       {release && <TextSection id="release" title={s.release} text={release} />}
 
       {related.length > 0 && (
-        <section className="proj-section" id="related">
+        <Reveal as="section" className="proj-section" id="related">
           <div className="cols">
             <div className="col-a"><h2>{s.related}</h2></div>
             <div className="col-b">
@@ -185,7 +179,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
               </div>
             </div>
           </div>
-        </section>
+        </Reveal>
       )}
 
       <div className="clear" />

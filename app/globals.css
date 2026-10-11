@@ -439,3 +439,43 @@ img { display: block; max-width: 100%; }
 .mm[data-step="7"] .mm-cx { left: 0; top: 0; width: 192px; height: 192px; }
 .mm[data-step="7"] .mm-l-sd { opacity: 1; }
 @media (max-width: 960px) { .mm { align-self: center; } }
+
+/* ---------- Animaciones de entrada (frames "— Motion" del Figma) ---------- */
+:root { --ease-out3: cubic-bezier(0.215, 0.61, 0.355, 1); } /* EASE_OUT (cubic) */
+@keyframes appear { from { opacity: 0; transform: translateY(var(--rise, 24px)) scale(var(--from-scale, 1)); } to { opacity: 1; transform: none; } }
+.enter { animation: appear var(--dur, .7s) var(--ease-out3) var(--delay, 0s) both; }
+
+/* Scroll reveal: OPACITY 0→1 + TRANSLATION_Y, .7s (secciones de Home) / .6s (páginas de proyecto) */
+.rv-hidden { opacity: 0; transform: translateY(var(--rise, 40px)); }
+.rv-hidden.rv-in { opacity: 1; transform: none; transition: opacity .7s var(--ease-out3) var(--delay, 0s), transform .7s var(--ease-out3) var(--delay, 0s); }
+.proj-section.rv-hidden.rv-in { transition-duration: .6s; }
+
+/* Home · hero: hello 0.15s, foto 0.3s (escala .94→1), producto 0.45s, intro 0.75s, flecha 1.2s */
+.hero-hello > div:first-child { --rise: 24px; --dur: .7s; --delay: .15s; animation: appear var(--dur) var(--ease-out3) var(--delay) both; }
+.hero-hello .photo { --rise: 0px; --from-scale: .94; --dur: .9s; --delay: .3s; animation: appear var(--dur) var(--ease-out3) var(--delay) both; }
+.hero-hello .right { --rise: 24px; --dur: .7s; --delay: .45s; animation: appear var(--dur) var(--ease-out3) var(--delay) both; }
+.hero-intro { --rise: 24px; --dur: .7s; --delay: .75s; animation: appear var(--dur) var(--ease-out3) var(--delay) both; }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.scroll { animation: fade-in .5s var(--ease-out3) 1.2s both; } /* solo opacidad: .scroll se centra con transform */
+
+/* Página de proyecto · tiles del hero: intro .1s, estadísticas .2s, imagen .3s, periodo .4s, herramientas .5s */
+.bento-hero > .tile { --rise: 20px; --dur: .6s; animation: appear var(--dur) var(--ease-out3) var(--delay, 0s) both; }
+.bento-hero > .intro { --delay: .1s; }
+.bento-hero > .stats { --delay: .2s; }
+.bento-hero > .cover { --delay: .3s; --dur: .6s; }
+.bento-hero > .period { --delay: .4s; }
+.bento-hero > .tools { --delay: .5s; }
+
+/* Página de proyecto · stepper: gray-400 → gray-900 en 0.3s para el paso activo */
+.stepper a { transition: color .3s var(--ease-out3); }
+.stepper a.is-active { color: var(--gray-900); }
+
+/* Work · transición de página: título .1s (rise 16), tarjetas .3s + .12s c/u (rise 24); salida .25s EASE_IN */
+.work-head { --rise: 16px; --dur: .6s; --delay: .1s; animation: appear var(--dur) var(--ease-out3) var(--delay) both; }
+.bento .card { --rise: 24px; --dur: .6s; animation: appear var(--dur) var(--ease-out3) var(--delay, .3s) both; }
+.bento-col:first-child .card:nth-child(1) { --delay: .3s; }
+.bento-col:first-child .card:nth-child(2) { --delay: .42s; }
+.bento-col:last-child .card:nth-child(1) { --delay: .54s; }
+.bento-col:last-child .card:nth-child(2) { --delay: .66s; }
+main { transition: opacity .25s cubic-bezier(.55, .055, .675, .19), transform .25s cubic-bezier(.55, .055, .675, .19); }
+main.route-exit { opacity: 0; transform: translateY(-8px); }

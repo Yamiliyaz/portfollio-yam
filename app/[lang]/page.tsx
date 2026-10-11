@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
 import SmoothLink from "@/components/SmoothLink";
 import { dict, isLang } from "@/lib/i18n";
 import { getFeatured, projectName, yearRange } from "@/lib/notion";
@@ -40,7 +41,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </section>
 
-      <section className="section principles" id="principles">
+      <Reveal as="section" className="section principles" id="principles">
         <div className="section-inner" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <div className="heading-block">
             <h2 className="t-h3-serif">{t.principles.title}</h2>
@@ -58,9 +59,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section projects">
+      <Reveal as="section" className="section projects">
         <div className="section-inner">
           <div className="heading-block">
             <h2 className="t-h3-serif">{t.projects.title}</h2>
@@ -86,9 +87,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </Link>
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section about-home">
+      <Reveal as="section" className="section about-home">
         <div className="section-inner" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <div className="heading-block">
             <h2 className="t-h3-serif">{t.about.title}</h2>
@@ -111,9 +112,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <Footer lang={lang} t={t.footer} nav={t.nav} />
+      <Reveal><Footer lang={lang} t={t.footer} nav={t.nav} /></Reveal>
     </div>
   );
 }
