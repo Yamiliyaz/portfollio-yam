@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
+import SmoothLink from "@/components/SmoothLink";
 import { dict, isLang } from "@/lib/i18n";
 import { getFeatured, projectName, yearRange } from "@/lib/notion";
 
@@ -33,9 +34,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="a"><p className="t-p1">{t.hero.intro1}</p></div>
             <div className="b"><p className="t-p1">{t.hero.intro2}</p></div>
           </div>
-          <a className="scroll" href="#principles" aria-label="Scroll">
+          <SmoothLink className="scroll" href="#principles" aria-label="Scroll">
             <img src="/icons/arrow-down.svg" alt="" />
-          </a>
+          </SmoothLink>
         </div>
       </section>
 
@@ -75,10 +76,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   </div>
                 </div>
                 <div className="right t-p1">{yearRange(p)}</div>
+                <img className="row-arrow icon20" src="/icons/arrow-outward-light.svg" alt="" />
+                {p.cover && <img className="row-preview" src={p.cover} alt="" aria-hidden="true" />}
               </Link>
             ))}
             <Link className="proj-row more" href={`/${lang}/work`}>
               <span className="t-h5">{t.projects.more}</span>
+              <img className="row-arrow icon20" src="/icons/arrow-outward-light.svg" alt="" />
             </Link>
           </div>
         </div>

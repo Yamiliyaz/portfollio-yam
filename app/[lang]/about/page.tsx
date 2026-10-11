@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
+import SmoothLink from "@/components/SmoothLink";
 import { about } from "@/lib/about";
 import { dict, isLang } from "@/lib/i18n";
 
@@ -33,15 +34,20 @@ export default async function About({ params }: { params: Promise<{ lang: string
   return (
     <div className="page">
       <section className="section about-hero">
-        <div className="section-inner">
-          <h1 className="t-h1-serif">{c.hero.heading}</h1>
-          <p className="t-h6 about-sub">{c.hero.sub}</p>
-          <div className="about-ctas">
+        <div className="section-inner about-hero-inner">
+          <div className="about-photo">
+            <img src="/images/about-hero.jpg" alt="Yamil Arroyo" width={448} height={640} />
+          </div>
+          <h1 className="t-h1-serif hero-in hero-in-heading">{c.hero.heading}</h1>
+          <p className="t-h6 about-sub hero-in hero-in-rise">{c.hero.sub}</p>
+          <div className="about-ctas hero-in hero-in-rise">
             {c.hero.ctas.map((x) => (
-              <a key={x.id} href={`#${x.id}`} className="about-cta t-h6">
-                <img className="icon20" src={`/icons/${x.icon}.svg`} alt="" />
-                {x.label}
-              </a>
+              <SmoothLink key={x.id} href={`#${x.id}`} className="about-cta t-h6">
+                <span className="pill">
+                  <img className="icon20" src={`/icons/${x.icon}.svg`} alt="" />
+                  <span>{x.label}</span>
+                </span>
+              </SmoothLink>
             ))}
           </div>
         </div>
@@ -83,8 +89,8 @@ export default async function About({ params }: { params: Promise<{ lang: string
             {c.experience.map((e) => (
               <div className="exp-row" key={e.role + e.company}>
                 <div className="exp-role">
-                  <p className="t-h6" style={{ color: "var(--gray-800)" }}>{e.role}</p>
-                  <p className="t-p1" style={{ color: "var(--gray-500)" }}>{e.company}</p>
+                  <p className="t-h6 exp-title">{e.role}</p>
+                  <p className="t-p1 exp-company">{e.company}</p>
                 </div>
                 <p className="t-p3 exp-period">{e.period}</p>
                 <img className="icon20" src="/icons/expand.svg" alt="" />
