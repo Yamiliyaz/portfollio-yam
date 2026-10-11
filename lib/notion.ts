@@ -116,7 +116,17 @@ async function fetchFromNotion(): Promise<Project[]> {
 /** Con NOTION_TOKEN lee Notion; sin token usa data/fallback.json (solo desarrollo local). */
 export async function getAllProjects(): Promise<Project[]> {
   if (!process.env.NOTION_TOKEN) return fallback as Project[];
-  return fetchFromNotion();
+  try {
+    return await fetchFromNotion();
+  } catch (e: any) {
+    const hint =
+      e?.code === "object_not_found"
+        ? "La base no está compartida con la integración (Notion → ··· → Connections) o NOTION_DATA_SOURCE_ID es incorrecto."
+        : e?.code === "unauthorized"
+          ? "NOTION_TOKEN inválido o incompleto."
+          : "";
+    throw new Error(`[Notion] ${e?.code ?? "error"}: ${e?.message ?? e}. ${hint}`.trim());
+  }
 }
 
 const byDateDesc = (a: Project, b: Project) =>
