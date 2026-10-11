@@ -126,8 +126,11 @@ async function fetchFromNotion(): Promise<Project[]> {
 
 /** Con NOTION_TOKEN lee Notion; sin token usa data/fallback.json (solo desarrollo local). */
 export async function getAllProjects(): Promise<Project[]> {
-  if (!process.env.NOTION_TOKEN)
+  if (!process.env.NOTION_TOKEN) {
+    // En producción nunca publicar datos de prueba por error: mejor fallar el build.
+    if (process.env.VERCEL_ENV === "production") throw new Error("[Notion] Falta NOTION_TOKEN en el entorno de producción.");
     return (fallback as Project[]).map((p) => ({ ...p, cover: LOCAL_COVERS[p.slug] ?? null }));
+  }
   try {
     return await fetchFromNotion();
   } catch (e: any) {
