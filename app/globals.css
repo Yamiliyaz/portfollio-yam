@@ -163,6 +163,7 @@ img { display: block; max-width: 100%; }
 /* Work: bento */
 .work-head { display: flex; flex-direction: column; gap: 8px; margin-bottom: var(--m-25); }
 .work-head p { color: var(--gray-500); }
+.bento + .bento { margin-top: 32px; }
 .bento { display: grid; grid-template-columns: 736px 352px; gap: 32px; align-items: start; }
 .bento-col { display: flex; flex-direction: column; gap: 32px; }
 .card {
@@ -197,7 +198,7 @@ img { display: block; max-width: 100%; }
 .bento-hero .intro { grid-column: 1 / 3; grid-row: 1; display: flex; flex-direction: column; gap: 16px; background: linear-gradient(120deg, var(--gray-100) 40%, #b9cdf1); }
 .bento-hero .cover { grid-column: 3; grid-row: 1 / 3; padding: 0; position: relative; }
 .bento-hero .cover img { width: 100%; height: 100%; object-fit: cover; }
-.bento-hero .stats { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: 16px; }
+.bento-hero .stats { grid-column: 1 / 3; grid-row: 2; display: flex; flex-direction: column; gap: 16px; }
 .stat-row { flex: 1; display: flex; gap: 24px; }
 .stat { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px; background: var(--blue-100); border-radius: 8px; text-align: center; }
 .stat b { font: 700 23.04px/32px var(--font-body); }

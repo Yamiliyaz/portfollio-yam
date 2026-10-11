@@ -172,6 +172,6 @@ export function formatPeriod(p: Project, lang: Lang, present: string) {
 export function yearRange(p: Project) {
   const a = p.start?.slice(0, 4);
   const b = p.end?.slice(0, 4);
-  if (!a) return "";
+  if (!a) return b ?? "";
   return b && b !== a ? `${a} - ${b}` : a;
 }

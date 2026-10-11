@@ -31,14 +31,9 @@ export default async function Work({ params }: { params: Promise<{ lang: string 
   const t = dict[lang];
   const projects = await getProjects();
   // Bento del Figma: 2 tarjetas anchas a la izquierda; columna derecha alta + corta.
-  // Con más de 4 proyectos el patrón se repite.
-  const left: Project[] = [];
-  const right: { p: Project; tall: boolean }[] = [];
-  projects.forEach((p, i) => {
-    const slot = i % 4;
-    if (slot === 0 || slot === 1) left.push(p);
-    else right.push({ p, tall: slot === 2 });
-  });
+  // Cada 4 proyectos forman un bloque, para que los bloques se apilen sin desbalancear columnas.
+  const blocks: Project[][] = [];
+  for (let i = 0; i < projects.length; i += 4) blocks.push(projects.slice(i, i + 4));
 
   return (
     <div className="page">
@@ -48,14 +43,17 @@ export default async function Work({ params }: { params: Promise<{ lang: string 
             <h1 className="t-h2-serif" style={{ color: "var(--gray-900)" }}>{t.work.title}</h1>
             <p className="t-p1">{t.work.lead}</p>
           </div>
-          <div className="bento">
-            <div className="bento-col">
-              {left.map((p) => <Card key={p.id} p={p} lang={lang} label={t.work.readMore} />)}
+          {blocks.map((block, bi) => (
+            <div className="bento" key={bi}>
+              <div className="bento-col">
+                {block.slice(0, 2).map((p) => <Card key={p.id} p={p} lang={lang} label={t.work.readMore} />)}
+              </div>
+              <div className="bento-col">
+                {block[2] && <Card p={block[2]} lang={lang} label={t.work.readMore} tall />}
+                {block[3] && <Card p={block[3]} lang={lang} label={t.work.readMore} />}
+              </div>
             </div>
-            <div className="bento-col">
-              {right.map(({ p, tall }) => <Card key={p.id} p={p} lang={lang} label={t.work.readMore} tall={tall} />)}
-            </div>
-          </div>
+          ))}
         </div>
       </section>
       <Footer lang={lang} t={t.footer} nav={t.nav} />
