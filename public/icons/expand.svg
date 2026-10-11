@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Atoms / Icons / Material">
+<mask id="mask0_0_1213" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+<rect id="Bounding box" width="20" height="20" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_0_1213)">
+<path id="expand_more" d="M10 13.0625L5 8.0625L6.0625 7L10 10.9375L13.9375 7L15 8.0625L10 13.0625Z" fill="#101828"/>
+</g>
+</g>
+</svg>
