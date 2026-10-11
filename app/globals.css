@@ -398,3 +398,44 @@ img { display: block; max-width: 100%; }
 }
 .proj-row .right { transition: color .6s var(--ease-quick), transform .6s var(--ease-quick); }
 .proj-row:hover .right, .proj-row:focus-visible .right { transform: translateX(-36px); }
+
+
+/* ---------- About · metodología animada (8 pasos del prototipo de Figma) ---------- */
+.mm { position: relative; flex: none; width: 256px; height: 432px; font-family: var(--font-body); }
+.mm * { transition: left .3s ease-in, top .3s ease-in, width .3s ease-in, height .3s ease-in, opacity .3s ease-in, font-size .3s ease-in, line-height .3s ease-in; }
+.mm[data-step="8"] *, .mm[data-step="1"] * { transition-timing-function: ease-out; }
+.mm span, .mm b { white-space: nowrap; }
+.mm-dash { position: absolute; left: 8px; top: 215px; width: 240px; height: 1px; border: 1px dashed var(--gray-400); opacity: 0; }
+.mm-da, .mm-pd { position: absolute; display: flex; align-items: center; justify-content: center; border-radius: 256px; background: var(--gray-900); color: var(--gray-25); font: 400 16px/24px var(--font-body); overflow: hidden; }
+.mm-da { left: 8px; top: 177px; width: 240px; height: 78px; z-index: 1; }
+.mm-pd { left: 10px; top: 182px; width: 236px; height: 68px; z-index: 2; }
+.mm-chip { position: absolute; display: flex; align-items: center; padding: 8px; border-radius: 4px; background: var(--gray-100); color: var(--gray-900); font: 400 11px/16px var(--font-body); opacity: 0; overflow: hidden; z-index: 3; }
+.mm-chip span { opacity: 0; transition: opacity .3s ease-in; }
+.mm-dt { left: 50px; top: 200px; width: 155px; height: 32px; }
+.mm-hcd { left: 48px; top: 200px; width: 161px; height: 32px; }
+.mm-ovals { position: absolute; left: 32px; top: 120px; width: 192px; height: 192px; }
+.mm-c { position: absolute; left: 191px; top: 95px; width: 1px; height: 1px; border-radius: 50%; opacity: 0; }
+.mm-cx { background: #98a2b3; z-index: 1; }
+.mm-ux { background: #475467; z-index: 2; }
+.mm-ui { background: #101828; z-index: 3; }
+.mm-l { position: absolute; top: 86px; font: 700 16px/20px var(--font-body); color: #fff; opacity: 0; z-index: 4; }
+.mm-l-sd { left: 23px; } .mm-l-ux { left: 93px; } .mm-l-ui { left: 156px; }
+
+/* pasos 2–7: las pastillas se contraen y aparece el marco punteado */
+.mm:is([data-step="2"], [data-step="3"], [data-step="4"], [data-step="5"], [data-step="6"], [data-step="7"]) .mm-dash { left: 8px; top: 16px; width: 240px; height: 400px; opacity: 1; }
+.mm:is([data-step="2"], [data-step="3"], [data-step="4"], [data-step="5"], [data-step="6"], [data-step="7"]) .mm-pd { left: 74px; top: 0; width: 109px; height: 32px; font-size: 13px; line-height: 16px; }
+.mm:is([data-step="2"], [data-step="3"], [data-step="4"], [data-step="5"], [data-step="6"], [data-step="7"]) .mm-da { left: 80px; top: 400px; width: 96px; height: 32px; font-size: 13px; line-height: 16px; }
+/* paso 3: aparecen los dos chips (vacíos) · paso 4: se abren y muestran el texto */
+.mm:is([data-step="3"], [data-step="4"], [data-step="5"], [data-step="6"], [data-step="7"]) .mm-chip { opacity: 1; }
+.mm:is([data-step="4"], [data-step="5"], [data-step="6"], [data-step="7"]) .mm-chip span { opacity: 1; }
+.mm:is([data-step="4"], [data-step="5"], [data-step="6"], [data-step="7"]) .mm-dt { left: 79px; top: 328px; width: 97px; }
+.mm:is([data-step="4"], [data-step="5"], [data-step="6"], [data-step="7"]) .mm-hcd { top: 72px; }
+/* pasos 5–7: círculos concéntricos UI → UX → exterior */
+.mm:is([data-step="5"], [data-step="6"], [data-step="7"]) :is(.mm-cx, .mm-ux) { opacity: 1; }
+.mm:is([data-step="5"], [data-step="6"], [data-step="7"]) .mm-ui { left: 136px; top: 68px; width: 56px; height: 56px; opacity: 1; }
+.mm:is([data-step="5"], [data-step="6"], [data-step="7"]) .mm-l-ui { opacity: 1; }
+.mm:is([data-step="6"], [data-step="7"]) .mm-ux { left: 64px; top: 32px; width: 128px; height: 128px; }
+.mm:is([data-step="6"], [data-step="7"]) .mm-l-ux { opacity: 1; }
+.mm[data-step="7"] .mm-cx { left: 0; top: 0; width: 192px; height: 192px; }
+.mm[data-step="7"] .mm-l-sd { opacity: 1; }
+@media (max-width: 960px) { .mm { align-self: center; } }

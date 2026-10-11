@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
+import MethodologyPiece from "@/components/MethodologyPiece";
 import SmoothLink from "@/components/SmoothLink";
 import { about } from "@/lib/about";
 import { dict, isLang } from "@/lib/i18n";
@@ -107,7 +108,7 @@ export default async function About({ params }: { params: Promise<{ lang: string
             <p className="t-h6" style={{ color: "var(--gray-700)", maxWidth: 360 }}>{m.sub}</p>
           </div>
           <div className="method-content">
-            <div className="method-center">{m.center}</div>
+            <MethodologyPiece labels={{ center: m.center, ...m.piece }} />
             <div className="method-frame" role="img" aria-label={m.title}>
               <div className="method-lines">
                 <img src="/images/methodology-ring-left.png" alt="" width={383} height={351} />

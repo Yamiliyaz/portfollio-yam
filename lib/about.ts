@@ -13,6 +13,7 @@ export type AboutContent = {
     title: string;
     sub: string;
     center: string;
+    piece: { dataAnalysis: string; approach: string; framework: string; outer: string };
     top: [string, string];
     bottom: [string, string];
     steps: string[];
@@ -85,6 +86,7 @@ export const about: Record<Lang, AboutContent> = {
       title: "Work Methodology",
       sub: "The experience within each touchpoint creates emotions.",
       center: "Product Design",
+      piece: { dataAnalysis: "Data analysis", approach: "HCD - Approach", framework: "Design Thinking - Framework", outer: "SD" },
       top: ["Product Management", "Design Ops Strategy"],
       bottom: ["Data Analysis", "Iteration process"],
       steps: ["Empathize", "Define", "Ideate", "Prototype", "Test"],
@@ -162,6 +164,7 @@ export const about: Record<Lang, AboutContent> = {
       title: "Metodología de trabajo",
       sub: "La experiencia en cada punto de contacto genera emociones.",
       center: "Diseño de producto",
+      piece: { dataAnalysis: "Análisis de datos", approach: "HCD - Enfoque", framework: "Design Thinking - Marco", outer: "SD" },
       top: ["Gestión de producto", "Estrategia de Design Ops"],
       bottom: ["Análisis de datos", "Proceso de iteración"],
       steps: ["Empatizar", "Definir", "Idear", "Prototipar", "Probar"],
