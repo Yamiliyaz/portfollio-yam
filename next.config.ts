@@ -38,7 +38,10 @@ const config: NextConfig = {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
   async redirects() {
-    return [{ source: "/", destination: "/en", permanent: false }];
+    return [
+      { source: "/", destination: "/en", permanent: false },
+      { source: "/favicon.ico", destination: "/favicon.svg", permanent: false },
+    ];
   },
   images: {
     remotePatterns: [

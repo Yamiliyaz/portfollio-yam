@@ -5,8 +5,16 @@ import Reveal from "@/components/Reveal";
 import SmoothLink from "@/components/SmoothLink";
 import { dict, isLang } from "@/lib/i18n";
 import { getFeatured, projectName, yearRange } from "@/lib/notion";
+import { SITE_URL, pageMetadata } from "@/lib/seo";
+import type { Metadata } from "next";
 
 export const revalidate = 1800;
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isLang(lang)) return {};
+  return pageMetadata({ lang, path: "", absolute: true, ...dict[lang].seo.home });
+}
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -14,8 +22,21 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const t = dict[lang];
   const featured = await getFeatured();
 
+  // Datos estructurados (schema.org) para que buscadores entiendan quién es la persona detrás del sitio.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Yamil Arroyo",
+    jobTitle: "Product Designer",
+    url: `${SITE_URL}/${lang}`,
+    image: `${SITE_URL}/images/profile.jpg`,
+    description: t.seo.home.description,
+    sameAs: ["https://www.linkedin.com/in/yamilarroyo", "https://adplist.org/mentors/yamil-arroyo"],
+  };
+
   return (
     <div className="page">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <section className="hero section" id="hero">
         <div className="hero-inner">
           <div className="hero-hello">
