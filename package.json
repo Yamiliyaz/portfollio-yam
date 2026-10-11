@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "audit:deps": "npm audit --audit-level=moderate"
   },
   "dependencies": {
     "@notionhq/client": "^5.27.0",
