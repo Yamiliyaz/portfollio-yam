@@ -9,6 +9,11 @@ export function isLang(v: string): v is Lang {
 export const dict = {
   en: {
     nav: { home: "Home", work: "Work", about: "About", resume: "Resume" },
+    seo: {
+      home: { title: "Yamil Arroyo — Product Designer", description: "I am a digital product designer with over 11 years of experience, passionate about transforming organizations and building an exceptional digital future." },
+      work: { title: "Work", description: "I am passionate about creating digital products from a “user-centered” approach." },
+      about: { title: "About", description: "I am passionate about creating functional products that empower people." },
+    },
     hero: {
       hello: "Hi I’m Yamil!",
       nickname: "Chinno for friends",
@@ -76,6 +81,11 @@ export const dict = {
   },
   es: {
     nav: { home: "Inicio", work: "Proyectos", about: "Sobre mí", resume: "CV" },
+    seo: {
+      home: { title: "Yamil Arroyo — Product Designer", description: "Soy diseñador de producto digital con más de 11 años de experiencia, apasionado por transformar organizaciones y construir un futuro digital excepcional." },
+      work: { title: "Proyectos", description: "Me apasiona crear productos digitales desde un enfoque “centrado en el usuario”." },
+      about: { title: "Sobre mí", description: "Me apasiona crear productos funcionales que empoderen a las personas." },
+    },
     hero: {
       hello: "¡Hola, soy Yamil!",
       nickname: "Chinno para los amigos",

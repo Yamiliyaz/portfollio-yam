@@ -1,12 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import { dict, isLang } from "@/lib/i18n";
 import { getProjects, pick, projectName, type Project } from "@/lib/notion";
+import { pageMetadata } from "@/lib/seo";
 import type { Lang } from "@/lib/i18n";
 
 export const revalidate = 1800;
-export const metadata = { title: "Work" };
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isLang(lang)) return {};
+  return pageMetadata({ lang, path: "/work", ...dict[lang].seo.work });
+}
 
 function Card({ p, lang, label, tall }: { p: Project; lang: Lang; label: string; tall?: boolean }) {
   return (

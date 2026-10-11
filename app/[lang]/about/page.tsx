@@ -1,11 +1,17 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import MethodologyPiece from "@/components/MethodologyPiece";
 import SmoothLink from "@/components/SmoothLink";
 import { about } from "@/lib/about";
 import { dict, isLang } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "About" };
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isLang(lang)) return {};
+  return pageMetadata({ lang, path: "/about", ...dict[lang].seo.about });
+}
 
 function Story({ title, paras }: { title: string; paras: string[] }) {
   return (

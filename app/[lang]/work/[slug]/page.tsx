@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import Stepper from "@/components/Stepper";
+import { pageMetadata } from "@/lib/seo";
 import { dict, isLang, LANGS } from "@/lib/i18n";
 import { formatPeriod, getAllProjects, getProject, pick, projectName, yearRange } from "@/lib/notion";
 
@@ -20,7 +21,14 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang, slug } = await params;
   const data = isLang(lang) ? await getProject(slug) : null;
   if (!data || !isLang(lang)) return {};
-  return { title: projectName(data.project, lang), description: pick(data.project.short, lang) };
+  const { project } = data;
+  return pageMetadata({
+    lang,
+    path: `/work/${slug}`,
+    title: projectName(project, lang),
+    description: pick(project.short, lang),
+    image: project.cover ?? undefined,
+  });
 }
 
 const paragraphs = (s: string) => s.split(/\n+/).map((x) => x.trim()).filter(Boolean);
