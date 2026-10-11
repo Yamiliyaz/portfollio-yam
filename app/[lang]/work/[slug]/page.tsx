@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import { dict, isLang, LANGS } from "@/lib/i18n";
-import { formatPeriod, getAllProjects, getProject, pick, yearRange } from "@/lib/notion";
+import { formatPeriod, getAllProjects, getProject, pick, projectName, yearRange } from "@/lib/notion";
 
 export const revalidate = 1800;
 
@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang, slug } = await params;
   const data = isLang(lang) ? await getProject(slug) : null;
   if (!data || !isLang(lang)) return {};
-  return { title: data.project.name, description: pick(data.project.short, lang) };
+  return { title: projectName(data.project, lang), description: pick(data.project.short, lang) };
 }
 
 const paragraphs = (s: string) => s.split(/\n+/).map((x) => x.trim()).filter(Boolean);
@@ -93,7 +93,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
       <section className="proj-hero">
         <div className="bento-hero">
           <div className="tile intro">
-            <h1 className="t-h5">{p.name}</h1>
+            <h1 className="t-h5">{projectName(p, lang)}</h1>
             <p className="t-p2" style={{ color: "var(--gray-700)", maxWidth: 380 }}>{short}</p>
             <div style={{ marginTop: "auto" }}>
               <a className="btn btn-dark" href="#introduction">
@@ -175,7 +175,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
                   <div className="proj-row" key={r.id} style={{ height: "auto", padding: "24px 16px" }}>
                     <div className="left">
                       <div className="meta">
-                        <span className="t-h5">{r.name}</span>
+                        <span className="t-h5">{projectName(r, lang)}</span>
                         <span className="sub">{pick(r.short, lang)}</span>
                       </div>
                     </div>

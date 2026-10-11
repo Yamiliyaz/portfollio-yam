@@ -8,6 +8,7 @@ export type Project = {
   id: string;
   slug: string;
   name: string;
+  nameEn: string;
   company: string;
   level: string; // Proyecto | Iniciativa | Feature
   type: string;
@@ -28,6 +29,14 @@ export type Project = {
   research: Bi;
   impact: Bi;
   postRelease: Bi;
+};
+
+/** Portadas del Figma guardadas en /public/images; la portada de la página de Notion tiene prioridad. */
+const LOCAL_COVERS: Record<string, string> = {
+  "konfio-pos": "/images/card-konfio-pos.jpg",
+  "konfio-design-system": "/images/card-konfio-design-system.jpg",
+  "bancanet-enterprise-web": "/images/card-bancanet-empresarial-web.jpg",
+  "bancanet-enterprise-mobile": "/images/card-bancanet-empresarial-movil.jpg",
 };
 
 const DATA_SOURCE_ID =
@@ -64,6 +73,7 @@ function mapPage(page: any): Project {
     es: cleanText(text(p[`${base} ES`])),
   });
   const name = text(p["Nombre"]);
+  const nameEn = text(p["Nombre EN"]);
   const cover =
     page.cover?.type === "external"
       ? page.cover.external.url
@@ -72,8 +82,9 @@ function mapPage(page: any): Project {
         : null;
   return {
     id: page.id,
-    slug: slugify(name),
+    slug: slugify(nameEn || name),
     name,
+    nameEn,
     company: sel(p["Empresa / Producto"]),
     level: sel(p["Nivel"]),
     type: sel(p["Tipo"]),
@@ -85,7 +96,7 @@ function mapPage(page: any): Project {
     tools: multi(p["Herramientas"]),
     tags: multi(p["Tags"]),
     team: cleanText(text(p["Equipo"])),
-    cover,
+    cover: cover ?? LOCAL_COVERS[slugify(nameEn || name)] ?? null,
     featured: !!p["Destacado"]?.checkbox,
     order: p["Orden"]?.number ?? 999,
     short: bi("Descripción corta"),
@@ -155,6 +166,8 @@ export async function getProject(slug: string) {
     .sort(byDateDesc);
   return { project, related };
 }
+
+export const projectName = (p: Project, lang: Lang) => (lang === "en" ? p.nameEn || p.name : p.name);
 
 export const pick = (b: Bi, lang: Lang) => b[lang] || b.en || b.es;
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import { dict, isLang } from "@/lib/i18n";
-import { getProjects, pick, type Project } from "@/lib/notion";
+import { getProjects, pick, projectName, type Project } from "@/lib/notion";
 import type { Lang } from "@/lib/i18n";
 
 export const revalidate = 1800;
@@ -14,7 +14,7 @@ function Card({ p, lang, label, tall }: { p: Project; lang: Lang; label: string;
       {p.cover && <img className="bg" src={p.cover} alt="" />}
       <div className="scrim" />
       <div className="text">
-        <p className="t-h6">{p.name}</p>
+        <p className="t-h6">{projectName(p, lang)}</p>
         <p className="desc">{pick(p.short, lang)}</p>
       </div>
       <span className="cta">

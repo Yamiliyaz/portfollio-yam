@@ -47,7 +47,8 @@
       "es": ""
     },
     "order": 1,
-    "featured": true
+    "featured": true,
+    "nameEn": ""
   },
   {
     "id": "dev-konfio-ds",
@@ -96,11 +97,12 @@
       "es": ""
     },
     "order": 3,
-    "featured": false
+    "featured": false,
+    "nameEn": ""
   },
   {
     "id": "dev-bne-web",
-    "slug": "bancanet-empresarial-web",
+    "slug": "bancanet-enterprise-web",
     "name": "BancaNet Empresarial Web",
     "company": "Citibanamex",
     "level": "Proyecto",
@@ -154,11 +156,12 @@
       "es": ""
     },
     "order": 2,
-    "featured": true
+    "featured": true,
+    "nameEn": "BancaNet Enterprise Web"
   },
   {
     "id": "dev-bne-mobile",
-    "slug": "bancanet-empresarial-movil",
+    "slug": "bancanet-enterprise-mobile",
     "name": "BancaNet Empresarial Móvil",
     "company": "Citibanamex",
     "level": "Proyecto",
@@ -210,7 +213,8 @@
       "es": ""
     },
     "order": 4,
-    "featured": false
+    "featured": false,
+    "nameEn": "BancaNet Enterprise Mobile"
   },
   {
     "id": "dev-nps",
@@ -260,6 +264,7 @@
     "postRelease": {
       "en": "",
       "es": ""
-    }
+    },
+    "nameEn": ""
   }
 ]

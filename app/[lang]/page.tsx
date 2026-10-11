@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import { dict, isLang } from "@/lib/i18n";
-import { getFeatured, yearRange } from "@/lib/notion";
+import { getFeatured, projectName, yearRange } from "@/lib/notion";
 
 export const revalidate = 1800;
 
@@ -21,8 +21,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               <p className="t-h2-serif name">{t.hero.hello}</p>
               <p className="t-p1 muted">{t.hero.nickname}</p>
             </div>
-            <div className="photo" role="img" aria-label="Yamil Arroyo">
-              {/* TODO: foto de perfil → public/images/profile.jpg */}
+            <div className="photo">
+              <img src="/images/profile.jpg" alt="Yamil Arroyo" width={352} height={352} />
             </div>
             <div className="right">
               <p className="t-h2-serif name">{t.hero.role}</p>
@@ -70,7 +70,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 <div className="left">
                   <span className="t-h6">{String(i + 1).padStart(2, "0")}</span>
                   <div className="meta">
-                    <span className="t-h5">{p.name}</span>
+                    <span className="t-h5">{projectName(p, lang)}</span>
                     <span className="sub">{p.company}</span>
                   </div>
                 </div>
@@ -91,8 +91,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <p className="t-h6" style={{ color: "var(--gray-700)", maxWidth: 360 }}>{t.about.lead}</p>
           </div>
           <div className="about-grid">
-            <div className="portrait" role="img" aria-label="Yamil Arroyo">
-              {/* TODO: foto about → public/images/about.jpg */}
+            <div className="portrait">
+              <img src="/images/about-home.jpg" alt="Yamil Arroyo" width={352} height={440} />
             </div>
             <div className="about-copy">
               <div className="t-p1">
