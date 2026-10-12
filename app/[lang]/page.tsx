@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import SmoothLink from "@/components/SmoothLink";
+import TestimonialsMarquee from "@/components/TestimonialsMarquee";
 import { dict, isLang } from "@/lib/i18n";
 import { getFeatured, hasDetail, projectName, yearRange } from "@/lib/notion";
+import { getTestimonials } from "@/lib/testimonials";
 import { SITE_URL, pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
@@ -21,6 +23,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   if (!isLang(lang)) notFound();
   const t = dict[lang];
   const featured = await getFeatured();
+  const testimonials = await getTestimonials();
 
   // Datos estructurados (schema.org) para que buscadores entiendan quién es la persona detrás del sitio.
   const jsonLd = {
@@ -109,6 +112,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </div>
       </Reveal>
+
+      {testimonials.length > 0 && (
+        <Reveal as="div">
+          <TestimonialsMarquee items={testimonials} labels={t.testimonials} />
+        </Reveal>
+      )}
 
       <Reveal as="section" className="section about-home">
         <div className="section-inner" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
