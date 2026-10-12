@@ -75,6 +75,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
     { id: "research", title: s.research, text: pick(p.research, lang) },
     { id: "solution", title: s.solution, text: pick(p.solution, lang) },
     { id: "release", title: s.release, text: pick(p.postRelease, lang) },
+    { id: "learnings-notes", title: s.learnings, text: pick(p.learnings, lang) },
+    { id: "next-steps", title: s.next, text: pick(p.next, lang) },
   ].filter((x) => x.text);
 
   const steps = [
