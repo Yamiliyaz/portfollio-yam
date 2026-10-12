@@ -33,6 +33,11 @@ export type Project = {
   research: Bi;
   impact: Bi;
   postRelease: Bi;
+  /** "Aprendizajes" y "Próximos pasos" (EN/ES). */
+  learnings: Bi;
+  next: Bi;
+  /** "Métricas clave" (EN/ES): cifras verificadas; se muestran en el detalle y en About. */
+  metrics: Bi;
 };
 
 /** Portadas del Figma guardadas en /public/images; la portada de la página de Notion tiene prioridad. */
@@ -114,6 +119,9 @@ function mapPage(page: any): Project {
     research: bi("Research"),
     impact: bi("Impacto"),
     postRelease: bi("Impacto post-release"),
+    metrics: bi("Métricas clave"),
+    learnings: bi("Aprendizajes"),
+    next: bi("Próximos pasos"),
   };
 }
 
@@ -138,7 +146,7 @@ export async function getAllProjects(): Promise<Project[]> {
   if (!process.env.NOTION_TOKEN) {
     // En producción nunca publicar datos de prueba por error: mejor fallar el build.
     if (process.env.VERCEL_ENV === "production") throw new Error("[Notion] Falta NOTION_TOKEN en el entorno de producción.");
-    return (fallback as Project[]).map((p) => ({ ...p, cover: LOCAL_COVERS[p.slug] ?? null, featuredImage: LOCAL_COVERS[p.slug] ?? null, figmaUrl: "" }));
+    return (fallback as Project[]).map((p) => ({ ...p, cover: LOCAL_COVERS[p.slug] ?? null, featuredImage: LOCAL_COVERS[p.slug] ?? null, figmaUrl: "", metrics: { en: "", es: "" }, learnings: { en: "", es: "" }, next: { en: "", es: "" } }));
   }
   try {
     return await fetchFromNotion();
@@ -159,12 +167,14 @@ const byDateDesc = (a: Project, b: Project) =>
 const byOrder = (a: Project, b: Project) => a.order - b.order || byDateDesc(a, b);
 
 const HIDDEN_STATUS = ["Archivado", "Pausado"];
+/** Filas de la base que no son proyectos (p. ej. notas del sitio) no tienen Nivel: no se publican. */
+const LEVELS = ["Proyecto", "Iniciativa", "Feature"];
 const RECENT_MONTHS = 6;
 
 /** Entradas visibles en Work/detalle: cualquier Nivel, salvo Archivado/Pausado. */
 export async function getVisible(): Promise<Project[]> {
   const all = await getAllProjects();
-  return all.filter((p) => !HIDDEN_STATUS.includes(p.status));
+  return all.filter((p) => LEVELS.includes(p.level) && !HIDDEN_STATUS.includes(p.status));
 }
 
 export function isRecent(p: Project, now = new Date()) {
@@ -242,7 +252,7 @@ export function formatPeriod(p: Project, lang: Lang, present: string) {
       month: "short",
       year: "numeric",
     });
-  if (!p.start) return "";
+  if (!p.start) return p.end ? fmt(p.end) : "";
   const end = p.end ? fmt(p.end) : p.status === "En progreso" ? present : "";
   return end ? `${fmt(p.start)} – ${end}` : fmt(p.start);
 }

@@ -38,7 +38,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 const paragraphs = (s: string) => s.split(/\n+/).map((x) => x.trim()).filter(Boolean);
 
 
-function Prose({ text }: { text: string }) {
+function Prose({ text, list }: { text: string; list?: boolean }) {
+  if (list) return <ul className="nb-list">{paragraphs(text).map((x, i) => <li key={i}>{x}</li>)}</ul>;
   return <div className="prose t-p1">{paragraphs(text).map((p, i) => <p key={i}>{p}</p>)}</div>;
 }
 
@@ -64,17 +65,20 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
   const g = t.work.gallery;
 
   const short = pick(p.short, lang);
-  const sections = toSections(await getBlocks(p.id));
+  const sections = toSections(await getBlocks(p.id), lang);
   const prototype = p.figmaUrl && figmaEmbedUrl(p.figmaUrl) ? p.figmaUrl : "";
 
   // Igual que la página de Notion: primero los campos de texto (Impacto, Problema, Research, Solución…)
   // y después el cuerpo de la página. Nada se omite (Métricas clave queda fuera a propósito: es para About).
   const fallback = [
     { id: "highlights", title: s.highlights, text: pick(p.impact, lang).replace(/\s\|\s/g, "\n") },
+    { id: "metrics", title: s.metrics, text: pick(p.metrics, lang).replace(/\s[|·]\s/g, "\n"), list: true },
     { id: "problem", title: s.problem, text: pick(p.problem, lang) },
     { id: "research", title: s.research, text: pick(p.research, lang) },
     { id: "solution", title: s.solution, text: pick(p.solution, lang) },
     { id: "release", title: s.release, text: pick(p.postRelease, lang) },
+    { id: "learnings-notes", title: s.learnings, text: pick(p.learnings, lang) },
+    { id: "next-steps", title: s.next, text: pick(p.next, lang) },
   ].filter((x) => x.text);
 
   const steps = [
@@ -147,12 +151,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
       )}
 
       {fallback.map((x) => (
-        <Section key={x.id} id={x.id} title={x.title}><Prose text={x.text} /></Section>
+        <Section key={x.id} id={x.id} title={x.title}><Prose text={x.text} list={"list" in x} /></Section>
       ))}
 
       {sections.map((x) => (
         <Section key={x.id} id={x.id} title={x.title || undefined}>
-          <div className="nb"><Blocks blocks={x.blocks} /></div>
+          <div className="nb"><Blocks blocks={x.blocks} lang={lang} /></div>
         </Section>
       ))}
       {prototype && (
