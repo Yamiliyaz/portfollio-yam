@@ -48,6 +48,13 @@ export const dict = {
       title: "Portfolio",
       lead: "I am passionate about creating digital products from a “user-centered” approach.",
       readMore: "Read more",
+      gallery: {
+        all: "All", level: "Type", company: "Company", status: "Status",
+        featured: "Featured", recent: "Recent", more: "more", impact: "Impact",
+        soon: "Coming soon", empty: "No projects match these filters.", clear: "Clear filters", count: "projects",
+        levels: { Proyecto: "Project", Iniciativa: "Initiative", Feature: "Feature" },
+        statuses: { Completado: "Completed", "En progreso": "In progress" },
+      },
     },
     footer: {
       ping: "Ping me at",
@@ -77,6 +84,8 @@ export const dict = {
         related: "Related content",
       },
       present: "Present",
+      prototype: "Prototype",
+      facts: { company: "Company", period: "Period" },
     },
   },
   es: {
@@ -120,6 +129,13 @@ export const dict = {
       title: "Portafolio",
       lead: "Me apasiona crear productos digitales desde un enfoque “centrado en el usuario”.",
       readMore: "Leer más",
+      gallery: {
+        all: "Todos", level: "Tipo", company: "Empresa", status: "Estado",
+        featured: "Destacado", recent: "Reciente", more: "más", impact: "Impacto",
+        soon: "Próximamente", empty: "Ningún proyecto coincide con estos filtros.", clear: "Quitar filtros", count: "proyectos",
+        levels: { Proyecto: "Proyecto", Iniciativa: "Iniciativa", Feature: "Feature" },
+        statuses: { Completado: "Completado", "En progreso": "En progreso" },
+      },
     },
     footer: {
       ping: "Escríbeme a",
@@ -149,6 +165,8 @@ export const dict = {
         related: "Contenido relacionado",
       },
       present: "Actual",
+      prototype: "Prototipo",
+      facts: { company: "Empresa", period: "Periodo" },
     },
   },
 };

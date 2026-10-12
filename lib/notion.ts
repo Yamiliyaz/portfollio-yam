@@ -21,6 +21,10 @@ export type Project = {
   tags: string[];
   team: string;
   cover: string | null;
+  /** Propiedad "Imagen destacada"; si está vacía, la portada de la página. */
+  featuredImage: string | null;
+  /** Link del prototipo de Figma (propiedad "Prototipo Figma"). */
+  figmaUrl: string;
   featured: boolean;
   order: number;
   short: Bi;
@@ -80,6 +84,9 @@ function mapPage(page: any): Project {
       : page.cover?.type === "file"
         ? page.cover.file.url
         : null;
+  const file = p["Imagen destacada"]?.files?.[0];
+  const featuredImage: string | null =
+    file?.type === "external" ? file.external.url : file?.type === "file" ? file.file.url : null;
   return {
     id: page.id,
     slug: slugify(nameEn || name),
@@ -97,6 +104,8 @@ function mapPage(page: any): Project {
     tags: multi(p["Tags"]),
     team: cleanText(text(p["Equipo"])),
     cover: cover ?? LOCAL_COVERS[slugify(nameEn || name)] ?? null,
+    featuredImage: featuredImage ?? cover ?? LOCAL_COVERS[slugify(nameEn || name)] ?? null,
+    figmaUrl: p["Prototipo Figma"]?.url ?? "",
     featured: !!p["Destacado"]?.checkbox,
     order: p["Orden"]?.number ?? 999,
     short: bi("Descripción corta"),
@@ -129,7 +138,7 @@ export async function getAllProjects(): Promise<Project[]> {
   if (!process.env.NOTION_TOKEN) {
     // En producción nunca publicar datos de prueba por error: mejor fallar el build.
     if (process.env.VERCEL_ENV === "production") throw new Error("[Notion] Falta NOTION_TOKEN en el entorno de producción.");
-    return (fallback as Project[]).map((p) => ({ ...p, cover: LOCAL_COVERS[p.slug] ?? null }));
+    return (fallback as Project[]).map((p) => ({ ...p, cover: LOCAL_COVERS[p.slug] ?? null, featuredImage: LOCAL_COVERS[p.slug] ?? null, figmaUrl: "" }));
   }
   try {
     return await fetchFromNotion();
@@ -149,6 +158,35 @@ const byDateDesc = (a: Project, b: Project) =>
 // Orden manual desde Notion ("Orden"); empata por fecha más reciente.
 const byOrder = (a: Project, b: Project) => a.order - b.order || byDateDesc(a, b);
 
+const HIDDEN_STATUS = ["Archivado", "Pausado"];
+const RECENT_MONTHS = 6;
+
+/** Entradas visibles en Work/detalle: cualquier Nivel, salvo Archivado/Pausado. */
+export async function getVisible(): Promise<Project[]> {
+  const all = await getAllProjects();
+  return all.filter((p) => !HIDDEN_STATUS.includes(p.status));
+}
+
+export function isRecent(p: Project, now = new Date()) {
+  if (!p.start) return false;
+  const limit = new Date(now);
+  limit.setMonth(limit.getMonth() - RECENT_MONTHS);
+  return new Date(p.start + "T12:00:00") >= limit;
+}
+
+/** Galería de Work: Destacado/Reciente primero → Fecha inicio desc → Orden asc. */
+export async function getGallery(): Promise<(Project & { pinned: "featured" | "recent" | null })[]> {
+  const visible = await getVisible();
+  return visible
+    .map((p) => ({ ...p, pinned: p.featured ? ("featured" as const) : isRecent(p) ? ("recent" as const) : null }))
+    .sort(
+      (a, b) =>
+        Number(!!b.pinned) - Number(!!a.pinned) ||
+        (b.start || "").localeCompare(a.start || "") ||
+        a.order - b.order,
+    );
+}
+
 export async function getProjects(): Promise<Project[]> {
   const all = await getAllProjects();
   return all.filter((p) => p.level === "Proyecto" && p.status !== "Archivado").sort(byOrder);
@@ -161,10 +199,33 @@ export async function getFeatured(): Promise<Project[]> {
   return (featured.length ? featured : projects).slice(0, 3);
 }
 
+/** Cuerpo de la página de Notion (bloques), con sus hijos. Vacío sin token (desarrollo). */
+export type NBlock = any;
+async function fetchChildren(notion: Client, id: string): Promise<NBlock[]> {
+  const out: NBlock[] = [];
+  let cursor: string | undefined;
+  do {
+    const res: any = await notion.blocks.children.list({ block_id: id, start_cursor: cursor, page_size: 100 });
+    out.push(...res.results);
+    cursor = res.has_more ? res.next_cursor : undefined;
+  } while (cursor);
+  for (const b of out) {
+    if (b.has_children && b.type !== "child_page" && b.type !== "child_database") b.children = await fetchChildren(notion, b.id);
+  }
+  return out;
+}
+export async function getBlocks(pageId: string): Promise<NBlock[]> {
+  if (!process.env.NOTION_TOKEN) return [];
+  return fetchChildren(new Client({ auth: process.env.NOTION_TOKEN }), pageId);
+}
+
+/** Estados sin página de detalle: se muestran deshabilitados ("Próximamente"). */
+export const hasDetail = (p: Pick<Project, "status">) => p.status !== "En progreso";
+
 export async function getProject(slug: string) {
   const all = await getAllProjects();
   const project = all.find((p) => p.slug === slug);
-  if (!project) return null;
+  if (!project || !hasDetail(project)) return null;
   const related = all
     .filter((p) => p.parent === project.name && p.id !== project.id)
     .sort(byDateDesc);
