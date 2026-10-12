@@ -519,11 +519,13 @@ main.route-exit { opacity: 0; transform: translateY(-8px); }
 .ab-role-title { color: var(--gray-800); transition: color .5s var(--ease-quick); }
 .ab-company { color: var(--gray-500); transition: color .5s var(--ease-quick); }
 .ab-role-desc { color: var(--gray-700); transition: color .5s var(--ease-quick); }
+.ab-progress { color: var(--gray-700); margin-top: var(--m-1); max-width: 340px; transition: color .5s var(--ease-quick); }
 /* hover del Figma (experiencia): fondo #101828, cargo claro */
 .ab-role:hover { background: var(--gray-900); }
 .ab-role:hover .ab-role-title { color: var(--gray-100); }
 .ab-role:hover .ab-period, .ab-role:hover .ab-company { color: var(--gray-400); }
 .ab-role:hover .ab-role-desc { color: var(--gray-300); }
+.ab-role:hover .ab-progress { color: var(--gray-300); }
 
 /* E · Más allá del trabajo */
 .ab-beyond { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: var(--m-6); align-items: start; }

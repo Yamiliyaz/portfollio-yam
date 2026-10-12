@@ -87,6 +87,7 @@ export default async function About({ params }: { params: Promise<{ lang: string
                 <div className="ab-role-main">
                   <h3 className="t-h6 ab-role-title">{r.role}</h3>
                   <p className="t-p1 ab-company">{r.company}</p>
+                  {r.progression && <p className="t-p2 ab-progress">{r.progression}</p>}
                 </div>
                 <p className="t-p1 ab-role-desc">{r.description}</p>
               </div>

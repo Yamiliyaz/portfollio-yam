@@ -22,7 +22,7 @@ export type AboutContent = {
   hero: { heading: string; paragraphs: string[]; photoAlt: string };
   impact: { title: string; items: Metric[] };
   approach: { title: string; items: { title: string; text: string }[] };
-  career: { title: string; items: { company: string; role: string; period: string; description: string }[] };
+  career: { title: string; items: { company: string; role: string; period: string; progression?: string; description: string }[] };
   beyond: { title: string; paragraphs: string[]; caption: string; photos: { n: number; alt: string }[] };
   closing: { heading: string; email: string; linkedin: string };
 };
@@ -96,6 +96,7 @@ export const about: Record<Lang, AboutContent> = {
           company: "Konfío",
           role: "Product Design Manager",
           period: "Feb 2021 – Jan 2024",
+          progression: "Progressed from Product Design Lead to Product Design Manager.",
           description:
             "Worked across payment experiences, product integration and Design Systems, connecting customer needs with product delivery and cross-functional execution.",
         },
@@ -103,6 +104,7 @@ export const about: Record<Lang, AboutContent> = {
           company: "Anzen Digital",
           role: "Head of Design",
           period: "May 2014 – Feb 2021",
+          progression: "Progressed through several roles, from UX/UI Designer to Product Design Lead, ending as Head of Design.",
           description:
             "Led design initiatives for enterprise financial products, including the Citibanamex Business Banking redesign, alongside the standardization of design processes for financial-services clients.",
         },
@@ -195,6 +197,7 @@ export const about: Record<Lang, AboutContent> = {
           company: "Konfío",
           role: "Product Design Manager",
           period: "Feb 2021 – Ene 2024",
+          progression: "Evolucioné de Product Design Lead a Product Design Manager.",
           description:
             "Trabajé en experiencias de pago, integración de producto y Design Systems, conectando las necesidades del cliente con la entrega de producto y la ejecución multifuncional.",
         },
@@ -202,6 +205,7 @@ export const about: Record<Lang, AboutContent> = {
           company: "Anzen Digital",
           role: "Head of Design",
           period: "May 2014 – Feb 2021",
+          progression: "Crecí a través de varios roles, de UX/UI Designer a Product Design Lead, hasta terminar como Head of Design.",
           description:
             "Lideré iniciativas de diseño para productos financieros empresariales, incluido el rediseño de Banca Empresarial de Citibanamex, junto con la estandarización de procesos de diseño para clientes de servicios financieros.",
         },
