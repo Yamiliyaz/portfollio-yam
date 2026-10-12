@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import type { NBlock } from "@/lib/notion";
 import type { Lang } from "@/lib/i18n";
 import { localizeRich, plainText } from "@/lib/bilingual";
-import FigmaEmbed, { figmaEmbedUrl } from "./FigmaEmbed";
+import { figmaEmbedUrl } from "@/lib/figma";
+import FigmaEmbed from "./FigmaEmbed";
 
 /* Espejo del cuerpo de la página de Notion: mismos bloques, mismo orden. */
 

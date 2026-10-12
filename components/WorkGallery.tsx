@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LevelIcon, palette } from "./ProjectVisual";
 
 export type GalleryItem = {
@@ -24,7 +24,7 @@ export type GalleryItem = {
 
 export type GalleryLabels = {
   all: string; level: string; company: string; status: string;
-  featured: string; recent: string; soon: string; more: string; impact: string;
+  featured: string; recent: string; soon: string; inProgress: string; done: string; more: string; impact: string;
   empty: string; clear: string; count: string; readMore: string;
   levels: Record<string, string>;
   statuses: Record<string, string>;
@@ -35,6 +35,17 @@ const MAX_TOOLS = 4;
 
 export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: GalleryLabels }) {
   const [sel, setSel] = useState<Record<Group, string[]>>({ level: [], company: [], status: [] });
+
+  // Recuerda los filtros al abrir un proyecto y volver (sessionStorage; se lee tras montar para no romper la hidratación).
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("wg-filters");
+      if (raw) setSel({ level: [], company: [], status: [], ...JSON.parse(raw) });
+    } catch {}
+  }, []);
+  useEffect(() => {
+    try { sessionStorage.setItem("wg-filters", JSON.stringify(sel)); } catch {}
+  }, [sel]);
 
   const options = useMemo(() => {
     const uniq = (f: (i: GalleryItem) => string) => [...new Set(items.map(f).filter(Boolean))];
@@ -89,8 +100,9 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
           <button type="button" className="btn btn-outline" onClick={clear}>{t.clear}</button>
         </div>
       ) : (
-        <div className="wg-grid">
-          {shown.map((p, idx) => {
+        <>
+          {(() => {
+            const card = (p: GalleryItem, idx: number) => {
             const c = palette(p.company);
             const Card: React.ElementType = p.enabled ? Link : "div";
             return (
@@ -128,8 +140,24 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
                 <div className="wg-overlay" />
               </Card>
             );
-          })}
-        </div>
+          };
+            const done = shown.filter((p) => p.enabled);
+            const wip = shown.filter((p) => !p.enabled);
+            return (
+              <>
+                {done.length > 0 && <div className="wg-grid">{done.map((p, i) => card(p, i))}</div>}
+                {wip.length > 0 && (
+                  <>
+                    <div className="wg-divider" role="separator" aria-label={t.inProgress}>
+                      <span>{t.inProgress}</span>
+                    </div>
+                    <div className="wg-grid">{wip.map((p, i) => card(p, done.length + i))}</div>
+                  </>
+                )}
+              </>
+            );
+          })()}
+        </>
       )}
     </>
   );

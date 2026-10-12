@@ -51,7 +51,7 @@ export const dict = {
       gallery: {
         all: "All", level: "Type", company: "Company", status: "Status",
         featured: "Featured", recent: "Recent", more: "more", impact: "Impact",
-        soon: "Coming soon", empty: "No projects match these filters.", clear: "Clear filters", count: "projects",
+        soon: "Coming soon", inProgress: "In progress", done: "Completed", empty: "No projects match these filters.", clear: "Clear filters", count: "projects",
         levels: { Proyecto: "Project", Iniciativa: "Initiative", Feature: "Feature" },
         statuses: { Completado: "Completed", "En progreso": "In progress" },
       },
@@ -88,6 +88,7 @@ export const dict = {
       },
       present: "Present",
       prototype: "Prototype",
+      figma: { fullscreen: "Full screen", exit: "Exit full screen", open: "Open in Figma" },
       facts: { company: "Company", period: "Period" },
     },
   },
@@ -135,7 +136,7 @@ export const dict = {
       gallery: {
         all: "Todos", level: "Tipo", company: "Empresa", status: "Estado",
         featured: "Destacado", recent: "Reciente", more: "más", impact: "Impacto",
-        soon: "Próximamente", empty: "Ningún proyecto coincide con estos filtros.", clear: "Quitar filtros", count: "proyectos",
+        soon: "Próximamente", inProgress: "En progreso", done: "Completados", empty: "Ningún proyecto coincide con estos filtros.", clear: "Quitar filtros", count: "proyectos",
         levels: { Proyecto: "Proyecto", Iniciativa: "Iniciativa", Feature: "Feature" },
         statuses: { Completado: "Completado", "En progreso": "En progreso" },
       },
@@ -172,6 +173,7 @@ export const dict = {
       },
       present: "Actual",
       prototype: "Prototipo",
+      figma: { fullscreen: "Pantalla completa", exit: "Salir de pantalla completa", open: "Abrir en Figma" },
       facts: { company: "Empresa", period: "Periodo" },
     },
   },

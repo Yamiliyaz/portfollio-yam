@@ -14,7 +14,7 @@ const csp = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   `connect-src 'self'${live}${isDev ? " ws: wss:" : ""}`,
-  `frame-src 'self' https://embed.figma.com${live}`,
+  `frame-src 'self' https://embed.figma.com https://www.figma.com${live}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
