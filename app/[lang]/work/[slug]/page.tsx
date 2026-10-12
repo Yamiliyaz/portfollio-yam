@@ -65,23 +65,21 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
 
   const short = pick(p.short, lang);
   const sections = toSections(await getBlocks(p.id));
-  const mirrored = sections.length > 0;
   const prototype = p.figmaUrl && figmaEmbedUrl(p.figmaUrl) ? p.figmaUrl : "";
 
-  // Sin cuerpo en Notion: se usan las propiedades de texto (Problema, Solución…) como respaldo.
-  const fallback = mirrored
-    ? []
-    : [
-        { id: "highlights", title: s.highlights, text: pick(p.impact, lang).replace(/\s\|\s/g, "\n") },
-        { id: "problem", title: s.problem, text: pick(p.problem, lang) },
-        { id: "research", title: s.research, text: pick(p.research, lang) },
-        { id: "solution", title: s.solution, text: pick(p.solution, lang) },
-        { id: "release", title: s.release, text: pick(p.postRelease, lang) },
-      ].filter((x) => x.text);
+  // Igual que la página de Notion: primero los campos de texto (Impacto, Problema, Research, Solución…)
+  // y después el cuerpo de la página. Nada se omite (Métricas clave queda fuera a propósito: es para About).
+  const fallback = [
+    { id: "highlights", title: s.highlights, text: pick(p.impact, lang).replace(/\s\|\s/g, "\n") },
+    { id: "problem", title: s.problem, text: pick(p.problem, lang) },
+    { id: "research", title: s.research, text: pick(p.research, lang) },
+    { id: "solution", title: s.solution, text: pick(p.solution, lang) },
+    { id: "release", title: s.release, text: pick(p.postRelease, lang) },
+  ].filter((x) => x.text);
 
   const steps = [
-    ...sections.map((x) => ({ id: x.id, label: x.title || s.introduction })),
     ...fallback.map((x) => ({ id: x.id, label: x.title })),
+    ...sections.map((x) => ({ id: x.id, label: x.title || s.introduction })),
     ...(prototype ? [{ id: "prototype", label: t.project.prototype }] : []),
     ...(related.length ? [{ id: "related", label: s.related }] : []),
   ];
@@ -148,15 +146,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
         </section>
       )}
 
+      {fallback.map((x) => (
+        <Section key={x.id} id={x.id} title={x.title}><Prose text={x.text} /></Section>
+      ))}
+
       {sections.map((x) => (
         <Section key={x.id} id={x.id} title={x.title || undefined}>
           <div className="nb"><Blocks blocks={x.blocks} /></div>
         </Section>
       ))}
-      {fallback.map((x) => (
-        <Section key={x.id} id={x.id} title={x.title}><Prose text={x.text} /></Section>
-      ))}
-
       {prototype && (
         <Section id="prototype" title={t.project.prototype}>
           <FigmaEmbed url={prototype} title={`${projectName(p, lang)} — ${t.project.prototype}`} />
