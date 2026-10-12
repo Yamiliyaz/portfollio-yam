@@ -1,187 +1,233 @@
 import type { Lang } from "./i18n";
 
-// Contenido de la página About, tomado del frame "Portfolio / About" del Figma (EN).
-// El ES es traducción para revisar.
-type Block = { title: string; paras: string[] };
+// Contenido de la página About. EN sigue el brief de posicionamiento tal cual; ES es traducción para revisar.
+// Las métricas se muestran SOLO con la atribución indicada en cada elemento (no mezclar iniciativas).
 
-export type AboutContent = {
-  hero: { heading: string; sub: string; ctas: { id: string; label: string; icon: string }[] };
-  story: { title: string; sub: string; left: Block[]; right: Block[] };
-  experienceTitle: string;
-  experience: { role: string; company: string; period: string }[];
-  methodology: {
-    title: string;
-    sub: string;
-    center: string;
-    piece: { dataAnalysis: string; approach: string; framework: string; outer: string };
-    top: [string, string];
-    bottom: [string, string];
-    steps: string[];
-  };
-  skillsTitle: string;
-  skillsSub: string;
-  skills: { icon: string; title: string; text: string }[];
+export type Metric = {
+  /** Número visible, p. ej. "25%". */
+  value: string;
+  /** Lectura para lectores de pantalla cuando el símbolo no basta (p. ej. "~15%" → "Approximately 15%"). */
+  valueSr?: string;
+  /** Palabra que acompaña al número: "reduction", "increase"… */
+  change: string;
+  label: string;
+  /** Iniciativa a la que pertenece la métrica. */
+  context: string;
+  description?: string;
+  /** Resultado adicional de la misma iniciativa. */
+  extra?: string;
 };
 
-const experience = [
-  { role: "Product Design Manager", company: "Konfio", period: "Sep 2022 – Dec 2023" },
-  { role: "Product Design Lead", company: "Konfio", period: "Feb 2021 – Aug 2022" },
-  { role: "Design Director", company: "AgileThought (before Anzen Digital)", period: "Mar 2020 – Feb 2021" },
-  { role: "Product Design Lead", company: "Citibanamex Empresarial (by Anzen Digital)", period: "Apr 2018 – Mar 2020" },
-  { role: "UX/UI Designer", company: "Citibanamex Personal (by Anzen Digital)", period: "Jan 2017 – Apr 2018" },
-  { role: "UX/UI Designer", company: "Anzen Digital", period: "May 2014 – Dec 2016" },
-];
-
-const icons = ["folder-managed", "strategy", "inventory", "toys-games", "donut", "architecture", "design-services", "animation", "data-loss"];
+export type AboutContent = {
+  hero: { heading: string; paragraphs: string[]; photoAlt: string };
+  impact: { title: string; items: Metric[] };
+  approach: { title: string; items: { title: string; text: string }[] };
+  career: { title: string; items: { company: string; role: string; period: string; progression?: string; description: string }[] };
+  beyond: { title: string; paragraphs: string[]; caption: string; photos: { n: number; alt: string }[] };
+  closing: { heading: string; email: string; linkedin: string };
+};
 
 export const about: Record<Lang, AboutContent> = {
   en: {
     hero: {
-      heading: "I am passionate about creating functional products that empower people.",
-      sub: "I love design, food, and playing music. Choose what else you would like to know about me:",
-      ctas: [
-        { id: "experience", label: "Experience", icon: "cta-experience" },
-        { id: "methodology", label: "Methodology", icon: "cta-methodology" },
-        { id: "skills", label: "Skills", icon: "cta-skills" },
+      heading: "I design financial products — and the systems that help them scale.",
+      paragraphs: [
+        "I'm a Principal Product Designer with 12+ years of experience across fintech, financial services, e-commerce and digital products in Latin America.",
+        "I work at the intersection of product strategy, customer experience and design operations. My focus is turning complex business problems into clear, intuitive experiences while helping teams build the systems and ways of working needed to deliver better products at scale.",
+        "Throughout my career, I've moved between hands-on product design, design leadership and strategic initiatives. That perspective helps me connect the details of a user journey with the broader business, technical and organizational challenges behind it.",
       ],
+      photoAlt: "Close-up portrait of Yamil wearing a cap and mirrored sunglasses in front of palm leaves.",
     },
-    story: {
-      title: "This is my story",
-      sub: "With some snapshots from my recent trip to Costa Rica.",
-      left: [
+    impact: {
+      title: "Selected impact",
+      items: [
         {
-          title: "The Evolution of Design: UX and More",
-          paras: [
-            "I come from a time when the term UX or product design didn't exist; it was simply being a web/app designer. Fortunately, I have witnessed and been part of the evolution of digital design in Mexico.",
-            "The discipline of experience design, combined with a user-centered methodology, has helped me better understand user needs and align them with business objectives through viable technological solutions.",
-          ],
+          value: "25%",
+          change: "reduction",
+          label: "Design implementation time",
+          context: "Konfío Design System",
+          description: "Contributed to the rollout of a multi-platform Design System that helped teams work more consistently and efficiently.",
         },
         {
-          title: "In moments of relaxation",
-          paras: [
-            "When I'm not immersed in design, I dedicate my time to continue learning about design and product management. I read various articles about technology and enjoy my free time with video games, culinary experiments, or putting together DJ sets to liven up a good party.",
-          ],
-        },
-      ],
-      right: [
-        {
-          title: "Story of a Passion: Journey in Design",
-          paras: [
-            "Talking about myself is usually uncomfortable, but during high school, a hidden fascination was revealed: design. Computer science sparked my interest in digital tools like Photoshop and Macromedia Flash, triggering my desire to explore more in this field.",
-            "In September 2013, I graduated in Digital Graphic Design. The job opportunity came quickly, leading me into the world of web design. Modularity, adaptability, and digital composition of web pages became my constant fascinations.",
-          ],
+          value: "~15%",
+          valueSr: "Approximately 15%",
+          change: "improvement",
+          label: "Time-to-market",
+          context: "Konfío Design System",
+          description: "The initiative helped accelerate product delivery by reducing repeated design work and improving collaboration between design and engineering.",
         },
         {
-          title: "Life between Design and Management",
-          paras: [
-            "Throughout my 11 years of experience, I have evolved from being a design area director to becoming a product manager, designing products in a different way. Why not both?",
-            "Although the role of the designer is sometimes underestimated, applying management skills, data analysis, and product vision (Design Ops) has positively impacted how I design experiences and communicate results within the organization, improving user satisfaction.",
-          ],
+          value: "30%",
+          change: "increase",
+          label: "Customer satisfaction",
+          context: "Citibanamex Business Banking redesign",
+          extra: "Additional result: 10% improvement in customer retention.",
         },
       ],
     },
-    experienceTitle: "Experience",
-    experience,
-    methodology: {
-      title: "Work Methodology",
-      sub: "The experience within each touchpoint creates emotions.",
-      center: "Product Design",
-      piece: { dataAnalysis: "Data analysis", approach: "HCD - Approach", framework: "Design Thinking - Framework", outer: "SD" },
-      top: ["Product Management", "Design Ops Strategy"],
-      bottom: ["Data Analysis", "Iteration process"],
-      steps: ["Empathize", "Define", "Ideate", "Prototype", "Test"],
+    approach: {
+      title: "How I approach design",
+      items: [
+        {
+          title: "Simplifying financial complexity",
+          text: "Financial products involve trust, risk, business rules and operational constraints. I enjoy making these experiences easier to understand and use without losing the control and clarity customers need.",
+        },
+        {
+          title: "Connecting design with business outcomes",
+          text: "I approach design as part of product strategy, not as a layer added at the end. I work to connect customer needs, business priorities, data and technical feasibility, using evidence and iteration to inform decisions.",
+        },
+        {
+          title: "Building for scale",
+          text: "Great design shouldn't depend on individual heroics. Through Design Systems, clear principles and cross-functional collaboration, I help teams reduce duplication, improve consistency and deliver more effectively.",
+        },
+      ],
     },
-    skillsTitle: "Skills",
-    skillsSub:
-      "I work in a variety of disciplines, bringing a diverse set of skills, constantly learning new concepts, staying up-to-date with the technology industry, digital products, and research and management methodologies.",
-    skills: [
-      ["Product Management", "Project management with an Agile/SCRUM approach, unifying execution and communication throughout the product lifecycle and the areas involved in it."],
-      ["Product Strategy", "I help define goals and actions for product development and positioning in the market, focusing on user needs and implementing effective marketing and communication strategies."],
-      ["Product design", "I provide end-to-end seamless experiences by considering user needs, business goals, and technological constraints in planning and execution."],
-      ["Design Systems", "I apply my experience to lead the development of efficient design systems that ensure consistency in digital products using the atomic design methodology."],
-      ["Data Driven", "My approach uses qualitative and quantitative data for informed design decisions and effective outcomes at every stage of the process."],
-      ["UX Strategy", "Strategic planning with a methodology focused on universal design principles to obtain high-value qualitative and quantitative data."],
-      ["UI Design", "Designing visually appealing and user-friendly interfaces following fundamental rules. By adopting these principles, the product will be well on its way to success."],
-      ["Interaction Design", "Intuitive design of effective interactions tailored to user needs, thus contributing to the creation of memorable and user-centered digital experiences."],
-      ["User Research", "Research planning with a methodology focused on asking the right questions and gathering user feedback, ensuring the creation of valuable insights."],
-    ].map(([title, text], i) => ({ icon: icons[i], title, text })),
+    career: {
+      title: "Career",
+      items: [
+        {
+          company: "Aviva",
+          role: "Principal Product Designer",
+          period: "Oct 2024 – Present",
+          description:
+            "Working across lending journeys and internal sales operations, exploring how product design, data and emerging technologies can improve digital experiences and operational workflows.",
+        },
+        {
+          company: "Konfío",
+          role: "Product Design Manager",
+          period: "Feb 2021 – Jan 2024",
+          progression: "Progressed from Product Design Lead to Product Design Manager.",
+          description:
+            "Worked across payment experiences, product integration and Design Systems, connecting customer needs with product delivery and cross-functional execution.",
+        },
+        {
+          company: "Anzen Digital",
+          role: "Head of Design",
+          period: "May 2014 – Feb 2021",
+          progression: "Progressed through several roles, from UX/UI Designer to Product Design Lead, ending as Head of Design.",
+          description:
+            "Led design initiatives for enterprise financial products, including the Citibanamex Business Banking redesign, alongside the standardization of design processes for financial-services clients.",
+        },
+      ],
+    },
+    beyond: {
+      title: "Beyond work",
+      paragraphs: [
+        "Outside work, I'm curious about food, music and technology. I enjoy experimenting in the kitchen, putting together DJ sets, playing video games and discovering new ideas in product and design.",
+        "For me, creativity isn't limited to the design process. It's a way of exploring, connecting ideas and looking at familiar problems from a different perspective.",
+      ],
+      caption: "Snapshots from a trip to Costa Rica.",
+      photos: [
+        { n: 1, alt: "Colorful mural of stacked houses and a large stylized face covering the corner of a building." },
+        { n: 2, alt: "Yamil wearing a captain's cap at the helm of a boat, looking out over the sea." },
+        { n: 4, alt: "Yamil taking a selfie on a beach, wearing a cap and sunglasses and making a peace sign." },
+      ],
+    },
+    closing: {
+      heading: "Interested in complex financial products, design strategy or building scalable design teams? Let's connect.",
+      email: "Send an email",
+      linkedin: "LinkedIn",
+    },
   },
   es: {
     hero: {
-      heading: "Me apasiona crear productos funcionales que empoderen a las personas.",
-      sub: "Me encantan el diseño, la comida y tocar música. Elige qué más te gustaría saber de mí:",
-      ctas: [
-        { id: "experience", label: "Experiencia", icon: "cta-experience" },
-        { id: "methodology", label: "Metodología", icon: "cta-methodology" },
-        { id: "skills", label: "Habilidades", icon: "cta-skills" },
+      heading: "Diseño productos financieros — y los sistemas que ayudan a escalarlos.",
+      paragraphs: [
+        "Soy Principal Product Designer con más de 12 años de experiencia en fintech, servicios financieros, e-commerce y productos digitales en Latinoamérica.",
+        "Trabajo en la intersección entre estrategia de producto, experiencia del cliente y operaciones de diseño. Mi enfoque es convertir problemas de negocio complejos en experiencias claras e intuitivas, a la vez que ayudo a los equipos a construir los sistemas y las formas de trabajo necesarios para entregar mejores productos a escala.",
+        "A lo largo de mi carrera he transitado entre el diseño de producto práctico, el liderazgo de diseño y las iniciativas estratégicas. Esa perspectiva me ayuda a conectar los detalles de un recorrido del usuario con los desafíos de negocio, técnicos y organizacionales que hay detrás.",
       ],
+      photoAlt: "Retrato de Yamil con gorra y lentes de espejo frente a hojas de palmera.",
     },
-    story: {
-      title: "Esta es mi historia",
-      sub: "Con algunas fotos de mi reciente viaje a Costa Rica.",
-      left: [
+    impact: {
+      title: "Impacto destacado",
+      items: [
         {
-          title: "La evolución del diseño: UX y más",
-          paras: [
-            "Vengo de una época en la que el término UX o diseño de producto no existía; simplemente eras diseñador web o de apps. Afortunadamente, he sido testigo y parte de la evolución del diseño digital en México.",
-            "La disciplina del diseño de experiencia, combinada con una metodología centrada en el usuario, me ha ayudado a entender mejor sus necesidades y alinearlas con los objetivos de negocio mediante soluciones tecnológicas viables.",
-          ],
+          value: "25%",
+          change: "de reducción",
+          label: "Tiempo de implementación de diseño",
+          context: "Design System de Konfío",
+          description: "Contribuí al despliegue de un Design System multiplataforma que ayudó a los equipos a trabajar con más consistencia y eficiencia.",
         },
         {
-          title: "En momentos de descanso",
-          paras: [
-            "Cuando no estoy inmerso en el diseño, dedico mi tiempo a seguir aprendiendo sobre diseño y gestión de producto. Leo artículos de tecnología y disfruto mi tiempo libre con videojuegos, experimentos culinarios o armando sets de DJ para animar una buena fiesta.",
-          ],
-        },
-      ],
-      right: [
-        {
-          title: "Historia de una pasión: mi camino en el diseño",
-          paras: [
-            "Hablar de mí suele ser incómodo, pero en la preparatoria se reveló una fascinación oculta: el diseño. La informática despertó mi interés por herramientas digitales como Photoshop y Macromedia Flash, y con ello mis ganas de explorar más este campo.",
-            "En septiembre de 2013 me gradué en Diseño Gráfico Digital. La oportunidad laboral llegó pronto y me llevó al mundo del diseño web. La modularidad, la adaptabilidad y la composición digital de páginas web se volvieron mis fascinaciones constantes.",
-          ],
+          value: "~15%",
+          valueSr: "Aproximadamente 15%",
+          change: "de mejora",
+          label: "Time-to-market",
+          context: "Design System de Konfío",
+          description: "La iniciativa ayudó a acelerar la entrega de producto al reducir el trabajo de diseño repetido y mejorar la colaboración entre diseño e ingeniería.",
         },
         {
-          title: "Una vida entre el diseño y la gestión",
-          paras: [
-            "A lo largo de mis 11 años de experiencia, pasé de ser director de un área de diseño a ser product manager, diseñando productos de otra manera. ¿Por qué no ambos?",
-            "Aunque el rol del diseñador a veces se subestima, aplicar habilidades de gestión, análisis de datos y visión de producto (Design Ops) ha impactado positivamente cómo diseño experiencias y comunico resultados dentro de la organización, mejorando la satisfacción de los usuarios.",
-          ],
+          value: "30%",
+          change: "de aumento",
+          label: "Satisfacción del cliente",
+          context: "Rediseño de Banca Empresarial de Citibanamex",
+          extra: "Resultado adicional: 10% de mejora en la retención de clientes.",
         },
       ],
     },
-    experienceTitle: "Experiencia",
-    experience: [
-      { role: "Product Design Manager", company: "Konfio", period: "Sep 2022 – Dic 2023" },
-      { role: "Product Design Lead", company: "Konfio", period: "Feb 2021 – Ago 2022" },
-      { role: "Design Director", company: "AgileThought (antes Anzen Digital)", period: "Mar 2020 – Feb 2021" },
-      { role: "Product Design Lead", company: "Citibanamex Empresarial (por Anzen Digital)", period: "Abr 2018 – Mar 2020" },
-      { role: "UX/UI Designer", company: "Citibanamex Personal (por Anzen Digital)", period: "Ene 2017 – Abr 2018" },
-      { role: "UX/UI Designer", company: "Anzen Digital", period: "May 2014 – Dic 2016" },
-    ],
-    methodology: {
-      title: "Metodología de trabajo",
-      sub: "La experiencia en cada punto de contacto genera emociones.",
-      center: "Diseño de producto",
-      piece: { dataAnalysis: "Análisis de datos", approach: "HCD - Enfoque", framework: "Design Thinking - Marco", outer: "SD" },
-      top: ["Gestión de producto", "Estrategia de Design Ops"],
-      bottom: ["Análisis de datos", "Proceso de iteración"],
-      steps: ["Empatizar", "Definir", "Idear", "Prototipar", "Probar"],
+    approach: {
+      title: "Cómo abordo el diseño",
+      items: [
+        {
+          title: "Simplificar la complejidad financiera",
+          text: "Los productos financieros implican confianza, riesgo, reglas de negocio y restricciones operativas. Disfruto hacer estas experiencias más fáciles de entender y usar sin perder el control y la claridad que los clientes necesitan.",
+        },
+        {
+          title: "Conectar el diseño con resultados de negocio",
+          text: "Entiendo el diseño como parte de la estrategia de producto, no como una capa que se agrega al final. Trabajo para conectar las necesidades del cliente, las prioridades del negocio, los datos y la factibilidad técnica, usando evidencia e iteración para informar las decisiones.",
+        },
+        {
+          title: "Construir para escalar",
+          text: "El buen diseño no debería depender de esfuerzos heroicos individuales. A través de Design Systems, principios claros y colaboración multifuncional, ayudo a los equipos a reducir duplicidad, mejorar la consistencia y entregar con más eficacia.",
+        },
+      ],
     },
-    skillsTitle: "Habilidades",
-    skillsSub:
-      "Trabajo en distintas disciplinas, aportando habilidades diversas, aprendiendo conceptos nuevos de forma constante y manteniéndome al día con la industria tecnológica, los productos digitales y las metodologías de investigación y gestión.",
-    skills: [
-      ["Gestión de producto", "Gestión de proyectos con enfoque Agile/SCRUM, unificando ejecución y comunicación durante todo el ciclo de vida del producto y las áreas involucradas."],
-      ["Estrategia de producto", "Ayudo a definir objetivos y acciones para el desarrollo y posicionamiento del producto en el mercado, enfocándome en las necesidades del usuario e implementando estrategias efectivas de marketing y comunicación."],
-      ["Diseño de producto", "Ofrezco experiencias integrales y fluidas considerando necesidades del usuario, objetivos de negocio y restricciones tecnológicas en la planeación y la ejecución."],
-      ["Design Systems", "Aplico mi experiencia para liderar el desarrollo de design systems eficientes que aseguran consistencia en los productos digitales con la metodología de diseño atómico."],
-      ["Basado en datos", "Mi enfoque usa datos cualitativos y cuantitativos para tomar decisiones de diseño informadas y lograr resultados efectivos en cada etapa del proceso."],
-      ["Estrategia UX", "Planeación estratégica con una metodología basada en principios de diseño universal para obtener datos cualitativos y cuantitativos de alto valor."],
-      ["Diseño UI", "Diseño de interfaces atractivas y fáciles de usar siguiendo reglas fundamentales. Al adoptar estos principios, el producto va por buen camino hacia el éxito."],
-      ["Diseño de interacción", "Diseño intuitivo de interacciones efectivas a la medida de las necesidades del usuario, contribuyendo a experiencias digitales memorables y centradas en las personas."],
-      ["User Research", "Planeación de investigación con una metodología enfocada en hacer las preguntas correctas y recopilar retroalimentación de los usuarios, asegurando insights valiosos."],
-    ].map(([title, text], i) => ({ icon: icons[i], title, text })),
+    career: {
+      title: "Trayectoria",
+      items: [
+        {
+          company: "Aviva",
+          role: "Principal Product Designer",
+          period: "Oct 2024 – Presente",
+          description:
+            "Trabajo en recorridos de crédito y operaciones internas de ventas, explorando cómo el diseño de producto, los datos y las tecnologías emergentes pueden mejorar las experiencias digitales y los flujos operativos.",
+        },
+        {
+          company: "Konfío",
+          role: "Product Design Manager",
+          period: "Feb 2021 – Ene 2024",
+          progression: "Evolucioné de Product Design Lead a Product Design Manager.",
+          description:
+            "Trabajé en experiencias de pago, integración de producto y Design Systems, conectando las necesidades del cliente con la entrega de producto y la ejecución multifuncional.",
+        },
+        {
+          company: "Anzen Digital",
+          role: "Head of Design",
+          period: "May 2014 – Feb 2021",
+          progression: "Crecí a través de varios roles, de UX/UI Designer a Product Design Lead, hasta terminar como Head of Design.",
+          description:
+            "Lideré iniciativas de diseño para productos financieros empresariales, incluido el rediseño de Banca Empresarial de Citibanamex, junto con la estandarización de procesos de diseño para clientes de servicios financieros.",
+        },
+      ],
+    },
+    beyond: {
+      title: "Más allá del trabajo",
+      paragraphs: [
+        "Fuera del trabajo, soy curioso con la comida, la música y la tecnología. Disfruto experimentar en la cocina, armar sets de DJ, jugar videojuegos y descubrir ideas nuevas sobre producto y diseño.",
+        "Para mí, la creatividad no se limita al proceso de diseño. Es una forma de explorar, conectar ideas y mirar problemas conocidos desde otra perspectiva.",
+      ],
+      caption: "Fotos de un viaje a Costa Rica.",
+      photos: [
+        { n: 1, alt: "Mural colorido de casas apiladas y un gran rostro estilizado que cubre la esquina de un edificio." },
+        { n: 2, alt: "Yamil con gorra de capitán al timón de un barco, mirando hacia el mar." },
+        { n: 4, alt: "Yamil tomándose una selfie en la playa, con gorra y lentes de sol, haciendo la señal de paz." },
+      ],
+    },
+    closing: {
+      heading: "¿Te interesan los productos financieros complejos, la estrategia de diseño o construir equipos de diseño escalables? Conectemos.",
+      email: "Enviar un correo",
+      linkedin: "LinkedIn",
+    },
   },
 };

@@ -479,3 +479,87 @@ img { display: block; max-width: 100%; }
 .bento-col:last-child .card:nth-child(2) { --delay: .66s; }
 main { transition: opacity .25s cubic-bezier(.55, .055, .675, .19), transform .25s cubic-bezier(.55, .055, .675, .19); }
 main.route-exit { opacity: 0; transform: translateY(-8px); }
+
+/* ---------- About (rediseño de posicionamiento) ---------- */
+.ab-h2 { color: var(--gray-900); margin-bottom: var(--m-5); }
+#impact, #approach, #career, #beyond, #contact { padding-top: var(--m-8); padding-bottom: 0; }
+#contact { padding-bottom: var(--m-8); }
+
+/* A · Hero */
+.ab-hero { padding-bottom: 0; }
+.ab-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 392px; gap: var(--m-6); align-items: start; padding-top: 38px; }
+.ab-hero-copy { max-width: 640px; }
+.ab-hero-copy h1 { color: var(--gray-900); margin-bottom: var(--m-15); }
+.ab-lead { color: var(--gray-800); margin-bottom: var(--m-1); }
+.ab-hero-copy p:not(.ab-lead) { color: var(--gray-700); }
+.ab-hero-copy p + p { margin-top: var(--m-1); }
+.ab-photo { width: 392px; height: 560px; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-lg); background: var(--gray-100); transform-origin: top left; animation: photo-grow 2084ms var(--ease-slow) .8s both; }
+.ab-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* B · Impacto */
+.ab-impact { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--m-4) var(--m-2); }
+.ab-metric { display: flex; flex-direction: column; gap: var(--m-05); padding-top: var(--m-15); border-top: 1px solid var(--gray-200); }
+.ab-metric-value { display: flex; align-items: baseline; gap: 12px; }
+.ab-num { font: 300 48px/64px var(--font-body); color: var(--gray-900); }
+.ab-chg { font: 400 19px/24px var(--font-body); color: var(--gray-500); }
+.ab-metric h3 { color: var(--gray-900); }
+.ab-context { color: var(--gray-500); }
+.ab-desc { color: var(--gray-700); margin-top: var(--m-05); }
+.ab-extra { color: var(--gray-800); margin-top: var(--m-05); padding-top: var(--m-1); border-top: 1px dashed var(--gray-300); }
+
+/* C · Enfoque */
+.ab-approach { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--m-4); }
+.ab-approach h3 { color: var(--gray-900); margin-bottom: var(--m-1); }
+.ab-approach p { color: var(--gray-700); }
+
+/* D · Trayectoria */
+.ab-career { border-bottom: 1px solid var(--gray-200); }
+.ab-role { display: grid; grid-template-columns: 180px minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--m-2); align-items: start; padding: var(--m-2) var(--m-1); border-top: 1px solid var(--gray-200); transition: background-color .5s var(--ease-quick); }
+.ab-period { color: var(--gray-500); padding-top: 6px; transition: color .5s var(--ease-quick); }
+.ab-role-title { color: var(--gray-800); transition: color .5s var(--ease-quick); }
+.ab-company { color: var(--gray-500); transition: color .5s var(--ease-quick); }
+.ab-role-desc { color: var(--gray-700); transition: color .5s var(--ease-quick); }
+.ab-progress { color: var(--gray-700); margin-top: var(--m-1); max-width: 340px; transition: color .5s var(--ease-quick); }
+/* hover del Figma (experiencia): fondo #101828, cargo claro */
+.ab-role:hover { background: var(--gray-900); }
+.ab-role:hover .ab-role-title { color: var(--gray-100); }
+.ab-role:hover .ab-period, .ab-role:hover .ab-company { color: var(--gray-400); }
+.ab-role:hover .ab-role-desc { color: var(--gray-300); }
+.ab-role:hover .ab-progress { color: var(--gray-300); }
+
+/* E · Más allá del trabajo */
+.ab-beyond { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: var(--m-6); align-items: start; }
+.ab-beyond-copy p { color: var(--gray-700); max-width: 520px; }
+.ab-beyond-copy p + p { margin-top: var(--m-1); }
+.ab-gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--m-1); }
+.ab-gallery-grid img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 12px; background: var(--gray-100); }
+.ab-beyond-copy .ab-h2 { margin-bottom: var(--m-3); }
+.ab-gallery figcaption { margin-top: var(--m-1); color: var(--gray-500); }
+
+/* F · Cierre */
+.ab-closing h2 { max-width: 760px; color: var(--gray-900); }
+.ab-actions { display: flex; flex-wrap: wrap; gap: var(--m-1); margin-top: var(--m-3); }
+
+@media (max-width: 1280px) {
+  .ab-hero-grid { grid-template-columns: minmax(0, 1fr) 320px; gap: var(--m-4); }
+  .ab-photo { width: 320px; height: 457px; }
+  .ab-role { grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1.2fr); }
+  .ab-beyond { gap: var(--m-4); }
+}
+@media (max-width: 960px) {
+  #impact, #approach, #career, #beyond, #contact { padding-top: var(--m-6); }
+  #contact { padding-bottom: var(--m-6); }
+  .ab-h2 { margin-bottom: var(--m-4); }
+  .ab-hero-grid { grid-template-columns: 1fr; gap: var(--m-4); }
+  .ab-photo { width: 100%; max-width: 420px; height: auto; aspect-ratio: 3 / 4; }
+  .ab-impact, .ab-approach { grid-template-columns: 1fr; }
+  .ab-role { grid-template-columns: 1fr; gap: var(--m-05); }
+  .ab-period { padding-top: 0; }
+  .ab-beyond { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .ab-num { font-size: 40px; line-height: 52px; }
+  .ab-gallery-grid { grid-template-columns: 1fr 1fr; }
+  .ab-gallery-grid img:nth-child(3) { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+  .ab-actions .btn { width: 100%; justify-content: center; }
+}

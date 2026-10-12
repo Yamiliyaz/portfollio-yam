@@ -12,7 +12,7 @@ export const dict = {
     seo: {
       home: { title: "Yamil Arroyo — Product Designer", description: "I am a digital product designer with over 11 years of experience, passionate about transforming organizations and building an exceptional digital future." },
       work: { title: "Work", description: "I am passionate about creating digital products from a “user-centered” approach." },
-      about: { title: "About", description: "I am passionate about creating functional products that empower people." },
+      about: { title: "About", description: "Principal Product Designer with 12+ years of experience designing financial products and the systems that help them scale." },
     },
     hero: {
       hello: "Hi I’m Yamil!",
@@ -84,7 +84,7 @@ export const dict = {
     seo: {
       home: { title: "Yamil Arroyo — Product Designer", description: "Soy diseñador de producto digital con más de 11 años de experiencia, apasionado por transformar organizaciones y construir un futuro digital excepcional." },
       work: { title: "Proyectos", description: "Me apasiona crear productos digitales desde un enfoque “centrado en el usuario”." },
-      about: { title: "Sobre mí", description: "Me apasiona crear productos funcionales que empoderen a las personas." },
+      about: { title: "Sobre mí", description: "Principal Product Designer con más de 12 años de experiencia diseñando productos financieros y los sistemas que ayudan a escalarlos." },
     },
     hero: {
       hello: "¡Hola, soy Yamil!",
