@@ -25,8 +25,10 @@ const safeLink = (u: string) => (/^https:\/\/(www\.)?linkedin\.com\//.test(u) ? 
  * Si la base no está compartida con la integración o falla Notion, la sección se oculta (devuelve []):
  * los testimonios nunca deben tumbar el build del sitio.
  */
-export async function getTestimonials(): Promise<Testimonial[]> {
-  if (!process.env.NOTION_TOKEN) return process.env.VERCEL_ENV === "production" ? [] : (fallback as Testimonial[]);
+export type TestimonialsResult = { items: Testimonial[]; error?: string };
+
+export async function getTestimonials(): Promise<TestimonialsResult> {
+  if (!process.env.NOTION_TOKEN) return { items: process.env.VERCEL_ENV === "production" ? [] : (fallback as Testimonial[]) };
   try {
     const notion = new Client({ auth: process.env.NOTION_TOKEN });
     const out: Testimonial[] = [];
@@ -55,9 +57,10 @@ export async function getTestimonials(): Promise<Testimonial[]> {
       }
       cursor = res.has_more ? res.next_cursor : undefined;
     } while (cursor);
-    return out;
+    return { items: out, error: out.length ? undefined : "La base no tiene testimonios con Visible marcado." };
   } catch (e: any) {
-    console.warn(`[Notion] Testimonios no disponibles (${e?.code ?? "error"}): ¿la base está compartida con la integración?`);
-    return [];
+    const code = e?.code ?? "error";
+    console.warn(`[Notion] Testimonios no disponibles (${code}): ¿la base está compartida con la integración?`);
+    return { items: [], error: code === "object_not_found" ? "La base de Testimonios no está compartida con la integración de Notion (··· → Conexiones)." : `Notion respondió con error: ${code}.` };
   }
 }

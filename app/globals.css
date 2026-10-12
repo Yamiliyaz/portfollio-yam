@@ -731,3 +731,5 @@ main.route-exit { opacity: 0; transform: translateY(-8px); }
   .tm-viewport { overflow-x: auto; }
   .tm-clone, .tm-toggle { display: none; }
 }
+
+.tm-debug { margin: 0 var(--gutter); border: 1px dashed var(--gray-300); border-radius: 12px; color: var(--gray-500); font: 400 13px/20px var(--font-body); text-align: center; }

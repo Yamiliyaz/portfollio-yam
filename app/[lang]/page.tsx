@@ -23,7 +23,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   if (!isLang(lang)) notFound();
   const t = dict[lang];
   const featured = await getFeatured();
-  const testimonials = await getTestimonials();
+  const { items: testimonials, error: testimonialsError } = await getTestimonials();
 
   // Datos estructurados (schema.org) para que buscadores entiendan quién es la persona detrás del sitio.
   const jsonLd = {
@@ -117,6 +117,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <Reveal as="div">
           <TestimonialsMarquee items={testimonials} labels={t.testimonials} />
         </Reveal>
+      )}
+      {/* Solo en previews: explica por qué no aparece la sección (en producción simplemente se oculta). */}
+      {testimonials.length === 0 && testimonialsError && process.env.VERCEL_ENV !== "production" && (
+        <p className="section tm-debug">Testimonios (solo visible en preview): {testimonialsError}</p>
       )}
 
       <Reveal as="section" className="section about-home">
