@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
-import FigmaEmbed, { figmaEmbedUrl } from "@/components/FigmaEmbed";
+import FigmaEmbed from "@/components/FigmaEmbed";
+import { figmaEmbedUrl } from "@/lib/figma";
 import { Blocks, toSections } from "@/components/NotionBlocks";
 import { LevelIcon, palette } from "@/components/ProjectVisual";
 import Stepper from "@/components/Stepper";
@@ -161,7 +162,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
       ))}
       {prototype && (
         <Section id="prototype" title={t.project.prototype}>
-          <FigmaEmbed url={prototype} title={`${projectName(p, lang)} — ${t.project.prototype}`} />
+          <FigmaEmbed url={prototype} title={`${projectName(p, lang)} — ${t.project.prototype}`} labels={t.project.figma} />
         </Section>
       )}
 

@@ -3,6 +3,7 @@ import { DM_Serif_Display, Manrope } from "next/font/google";
 import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import RouteTransition from "@/components/RouteTransition";
+import ScrollMemory from "@/components/ScrollMemory";
 import { LANGS, dict, isLang } from "@/lib/i18n";
 import { IS_PRODUCTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "../globals.css";
@@ -37,6 +38,7 @@ export default async function RootLayout({
     <html lang={lang} className={`${manrope.variable} ${dmSerif.variable}`}>
       <body>
         <Nav lang={lang} t={dict[lang].nav} />
+        <ScrollMemory />
         <RouteTransition>
           <main>{children}</main>
         </RouteTransition>
