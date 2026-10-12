@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import SmoothLink from "@/components/SmoothLink";
 import { dict, isLang } from "@/lib/i18n";
-import { getFeatured, projectName, yearRange } from "@/lib/notion";
+import { getFeatured, hasDetail, projectName, yearRange } from "@/lib/notion";
 import { SITE_URL, pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
@@ -89,7 +89,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
           <div className="proj-list">
             {featured.map((p, i) => (
-              <Link className="proj-row" key={p.id} href={`/${lang}/work/${p.slug}`}>
+              <Link className="proj-row" key={p.id} href={hasDetail(p) ? `/${lang}/work/${p.slug}` : "#"} aria-disabled={!hasDetail(p) || undefined} style={hasDetail(p) ? undefined : { opacity: 0.5, pointerEvents: "none" }}>
                 <div className="left">
                   <span className="t-h6">{String(i + 1).padStart(2, "0")}</span>
                   <div className="meta">

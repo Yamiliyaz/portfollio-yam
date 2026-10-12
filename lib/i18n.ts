@@ -51,7 +51,7 @@ export const dict = {
       gallery: {
         all: "All", level: "Type", company: "Company", status: "Status",
         featured: "Featured", recent: "Recent", more: "more", impact: "Impact",
-        empty: "No projects match these filters.", clear: "Clear filters", count: "projects",
+        soon: "Coming soon", empty: "No projects match these filters.", clear: "Clear filters", count: "projects",
         levels: { Proyecto: "Project", Iniciativa: "Initiative", Feature: "Feature" },
         statuses: { Completado: "Completed", "En progreso": "In progress" },
       },
@@ -84,6 +84,8 @@ export const dict = {
         related: "Related content",
       },
       present: "Present",
+      prototype: "Prototype",
+      facts: { company: "Company", period: "Period" },
     },
   },
   es: {
@@ -130,7 +132,7 @@ export const dict = {
       gallery: {
         all: "Todos", level: "Tipo", company: "Empresa", status: "Estado",
         featured: "Destacado", recent: "Reciente", more: "más", impact: "Impacto",
-        empty: "Ningún proyecto coincide con estos filtros.", clear: "Quitar filtros", count: "proyectos",
+        soon: "Próximamente", empty: "Ningún proyecto coincide con estos filtros.", clear: "Quitar filtros", count: "proyectos",
         levels: { Proyecto: "Proyecto", Iniciativa: "Iniciativa", Feature: "Feature" },
         statuses: { Completado: "Completado", "En progreso": "En progreso" },
       },
@@ -163,6 +165,8 @@ export const dict = {
         related: "Contenido relacionado",
       },
       present: "Actual",
+      prototype: "Prototipo",
+      facts: { company: "Empresa", period: "Periodo" },
     },
   },
 };

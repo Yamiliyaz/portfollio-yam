@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import { dict, isLang } from "@/lib/i18n";
 import WorkGallery, { type GalleryItem } from "@/components/WorkGallery";
-import { formatPeriod, getGallery, pick, projectName } from "@/lib/notion";
+import { formatPeriod, getGallery, hasDetail, pick, projectName } from "@/lib/notion";
 import { pageMetadata } from "@/lib/seo";
 
 export const revalidate = 1800;
@@ -34,6 +34,7 @@ export default async function Work({ params }: { params: Promise<{ lang: string 
     tools: p.tools,
     cover: p.cover,
     pinned: p.pinned,
+    enabled: hasDetail(p),
   }));
 
   return (
