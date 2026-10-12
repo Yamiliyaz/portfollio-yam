@@ -77,6 +77,7 @@ export const dict = {
       sections: {
         introduction: "Introduction",
         highlights: "Highlights",
+        metrics: "Key metrics",
         problem: "Problem",
         research: "Research",
         solution: "Solution",
@@ -160,6 +161,7 @@ export const dict = {
       sections: {
         introduction: "Introducción",
         highlights: "Resultados",
+        metrics: "Métricas clave",
         problem: "Problema",
         research: "Research",
         solution: "Solución",

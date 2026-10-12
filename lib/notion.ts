@@ -36,6 +36,8 @@ export type Project = {
   /** "Aprendizajes" y "Próximos pasos" (EN/ES). */
   learnings: Bi;
   next: Bi;
+  /** "Métricas clave" (EN/ES): cifras verificadas; se muestran en el detalle y en About. */
+  metrics: Bi;
 };
 
 /** Portadas del Figma guardadas en /public/images; la portada de la página de Notion tiene prioridad. */
@@ -117,6 +119,7 @@ function mapPage(page: any): Project {
     research: bi("Research"),
     impact: bi("Impacto"),
     postRelease: bi("Impacto post-release"),
+    metrics: bi("Métricas clave"),
     learnings: bi("Aprendizajes"),
     next: bi("Próximos pasos"),
   };
@@ -143,7 +146,7 @@ export async function getAllProjects(): Promise<Project[]> {
   if (!process.env.NOTION_TOKEN) {
     // En producción nunca publicar datos de prueba por error: mejor fallar el build.
     if (process.env.VERCEL_ENV === "production") throw new Error("[Notion] Falta NOTION_TOKEN en el entorno de producción.");
-    return (fallback as Project[]).map((p) => ({ ...p, cover: LOCAL_COVERS[p.slug] ?? null, featuredImage: LOCAL_COVERS[p.slug] ?? null, figmaUrl: "", learnings: { en: "", es: "" }, next: { en: "", es: "" } }));
+    return (fallback as Project[]).map((p) => ({ ...p, cover: LOCAL_COVERS[p.slug] ?? null, featuredImage: LOCAL_COVERS[p.slug] ?? null, figmaUrl: "", metrics: { en: "", es: "" }, learnings: { en: "", es: "" }, next: { en: "", es: "" } }));
   }
   try {
     return await fetchFromNotion();

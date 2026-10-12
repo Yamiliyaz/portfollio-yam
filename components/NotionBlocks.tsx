@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import type { NBlock } from "@/lib/notion";
+import type { Lang } from "@/lib/i18n";
+import { localizeRich, plainText } from "@/lib/bilingual";
 import FigmaEmbed, { figmaEmbedUrl } from "./FigmaEmbed";
 
 /* Espejo del cuerpo de la página de Notion: mismos bloques, mismo orden. */
@@ -7,10 +9,11 @@ import FigmaEmbed, { figmaEmbedUrl } from "./FigmaEmbed";
 const safeHref = (h?: string | null) => (h && /^(https?:|mailto:)/i.test(h) ? h : undefined);
 const plain = (rich: any[] = []) => rich.map((t) => t.plain_text).join("");
 
-export function Rich({ text }: { text: any[] }) {
+export function Rich({ text, lang }: { text: any[]; lang?: Lang }) {
+  const segs = lang ? localizeRich(text, lang) : text;
   return (
     <>
-      {text.map((t, i) => {
+      {segs.map((t, i) => {
         const a = t.annotations ?? {};
         let node: ReactNode = t.plain_text;
         if (a.code) node = <code>{node}</code>;
@@ -43,7 +46,7 @@ export function cleanBlocks(blocks: NBlock[]): NBlock[] {
 export type Section = { id: string; title: string; blocks: NBlock[] };
 
 /** Agrupa por encabezados de nivel 1–2; lo anterior al primero queda sin título. */
-export function toSections(blocks: NBlock[]): Section[] {
+export function toSections(blocks: NBlock[], lang: Lang): Section[] {
   const out: Section[] = [];
   const used = new Set<string>();
   let cur: Section = { id: "introduction", title: "", blocks: [] };
@@ -51,7 +54,7 @@ export function toSections(blocks: NBlock[]): Section[] {
   for (const b of cleanBlocks(blocks)) {
     if (b.type === "heading_1" || b.type === "heading_2") {
       push();
-      const title = plain(b[b.type].rich_text);
+      const title = plainText(localizeRich(b[b.type].rich_text, lang));
       let id = title.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "section";
       while (used.has(id)) id += "-2";
       used.add(id);
@@ -62,15 +65,15 @@ export function toSections(blocks: NBlock[]): Section[] {
   return out;
 }
 
-function Children({ b }: { b: NBlock }) {
-  return b.children?.length ? <Blocks blocks={b.children} /> : null;
+function Children({ b, lang }: { b: NBlock; lang: Lang }) {
+  return b.children?.length ? <Blocks blocks={b.children} lang={lang} /> : null;
 }
 
 function mediaUrl(m: any): string {
   return m?.type === "external" ? m.external.url : m?.file?.url ?? "";
 }
 
-export function Blocks({ blocks }: { blocks: NBlock[] }) {
+export function Blocks({ blocks, lang }: { blocks: NBlock[]; lang: Lang }) {
   const nodes: ReactNode[] = [];
   for (let i = 0; i < blocks.length; i++) {
     const b = blocks[i];
@@ -83,43 +86,43 @@ export function Blocks({ blocks }: { blocks: NBlock[] }) {
       nodes.push(
         <Tag key={b.id} className="nb-list">
           {items.map((it) => (
-            <li key={it.id}><Rich text={it[type].rich_text} /><Children b={it} /></li>
+            <li key={it.id}><Rich text={it[type].rich_text} lang={lang} /><Children b={it} lang={lang} /></li>
           ))}
         </Tag>,
       );
       continue;
     }
-    nodes.push(<Block key={b.id} b={b} />);
+    nodes.push(<Block key={b.id} b={b} lang={lang} />);
   }
   return <>{nodes}</>;
 }
 
-function Block({ b }: { b: NBlock }) {
+function Block({ b, lang }: { b: NBlock; lang: Lang }) {
   switch (b.type) {
     case "paragraph":
       return plain(b.paragraph.rich_text) || b.children?.length ? (
-        <><p className="nb-p"><Rich text={b.paragraph.rich_text} /></p><Children b={b} /></>
+        <><p className="nb-p"><Rich text={b.paragraph.rich_text} lang={lang} /></p><Children b={b} lang={lang} /></>
       ) : null;
     case "heading_3":
-      return <h3 className="nb-h3"><Rich text={b.heading_3.rich_text} /></h3>;
+      return <h3 className="nb-h3"><Rich text={b.heading_3.rich_text} lang={lang} /></h3>;
     case "heading_1":
     case "heading_2":
-      return <h3 className="nb-h3"><Rich text={b[b.type].rich_text} /></h3>;
+      return <h3 className="nb-h3"><Rich text={b[b.type].rich_text} lang={lang} /></h3>;
     case "to_do":
       return (
-        <p className="nb-p nb-todo"><input type="checkbox" checked={b.to_do.checked} readOnly aria-label="" /> <Rich text={b.to_do.rich_text} /></p>
+        <p className="nb-p nb-todo"><input type="checkbox" checked={b.to_do.checked} readOnly aria-label="" /> <Rich text={b.to_do.rich_text} lang={lang} /></p>
       );
     case "toggle":
       return (
-        <details className="nb-toggle"><summary><Rich text={b.toggle.rich_text} /></summary><Children b={b} /></details>
+        <details className="nb-toggle"><summary><Rich text={b.toggle.rich_text} lang={lang} /></summary><Children b={b} lang={lang} /></details>
       );
     case "quote":
-      return <blockquote className="nb-quote"><Rich text={b.quote.rich_text} /><Children b={b} /></blockquote>;
+      return <blockquote className="nb-quote"><Rich text={b.quote.rich_text} lang={lang} /><Children b={b} lang={lang} /></blockquote>;
     case "callout":
       return (
         <aside className="nb-callout">
           {b.callout.icon?.type === "emoji" && <span aria-hidden="true">{b.callout.icon.emoji}</span>}
-          <div><p className="nb-p"><Rich text={b.callout.rich_text} /></p><Children b={b} /></div>
+          <div><p className="nb-p"><Rich text={b.callout.rich_text} lang={lang} /></p><Children b={b} lang={lang} /></div>
         </aside>
       );
     case "divider":
@@ -131,7 +134,7 @@ function Block({ b }: { b: NBlock }) {
       return src ? (
         <figure className="nb-figure">
           <img src={src} alt={plain(b.image.caption) || ""} loading="lazy" />
-          {b.image.caption?.length > 0 && <figcaption><Rich text={b.image.caption} /></figcaption>}
+          {b.image.caption?.length > 0 && <figcaption><Rich text={b.image.caption} lang={lang} /></figcaption>}
         </figure>
       ) : null;
     }
@@ -157,7 +160,7 @@ function Block({ b }: { b: NBlock }) {
       return url ? <p className="nb-p"><a href={url} target="_blank" rel="noopener noreferrer">{plain(b[b.type].caption) || b[b.type].name || "Download"}</a></p> : null;
     }
     case "column_list":
-      return <div className="nb-cols">{(b.children ?? []).map((c: NBlock) => <div key={c.id}><Children b={c} /></div>)}</div>;
+      return <div className="nb-cols">{(b.children ?? []).map((c: NBlock) => <div key={c.id}><Children b={c} lang={lang} /></div>)}</div>;
     case "table": {
       const rows: NBlock[] = b.children ?? [];
       return (
@@ -169,7 +172,7 @@ function Block({ b }: { b: NBlock }) {
                   {r.table_row.cells.map((cell: any[], ci: number) => {
                     const head = (b.table.has_column_header && ri === 0) || (b.table.has_row_header && ci === 0);
                     const Cell = head ? "th" : "td";
-                    return <Cell key={ci}><Rich text={cell} /></Cell>;
+                    return <Cell key={ci}><Rich text={cell} lang={lang} /></Cell>;
                   })}
                 </tr>
               ))}
