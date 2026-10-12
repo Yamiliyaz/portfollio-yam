@@ -6,14 +6,14 @@ import Reveal from "@/components/Reveal";
 import Stepper from "@/components/Stepper";
 import { pageMetadata } from "@/lib/seo";
 import { dict, isLang, LANGS } from "@/lib/i18n";
-import { formatPeriod, getAllProjects, getProject, pick, projectName, yearRange } from "@/lib/notion";
+import { formatPeriod, getVisible, getProject, pick, projectName, yearRange } from "@/lib/notion";
 
 export const revalidate = 1800;
 
 export async function generateStaticParams() {
-  const all = await getAllProjects();
+  const all = await getVisible();
   return LANGS.flatMap((lang) =>
-    all.filter((p) => p.level === "Proyecto").map((p) => ({ lang, slug: p.slug })),
+    all.map((p) => ({ lang, slug: p.slug })),
   );
 }
 
@@ -95,6 +95,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
       <section className="proj-hero">
         <div className="bento-hero">
           <div className="tile intro">
+            <div className="wg-foot" style={{ justifyContent: "flex-start", gap: 12 }}>
+              <span className="wg-tag">{t.work.gallery.levels[p.level as keyof typeof t.work.gallery.levels] ?? p.level}</span>
+              {p.status && (
+                <span className="wg-status">
+                  <i className={`wg-dot ${p.status === "En progreso" ? "live" : "done"}`} />
+                  {t.work.gallery.statuses[p.status as keyof typeof t.work.gallery.statuses] ?? p.status}
+                </span>
+              )}
+            </div>
             <h1 className="t-h5">{projectName(p, lang)}</h1>
             <p className="t-p2" style={{ color: "var(--gray-700)", maxWidth: 380 }}>{short}</p>
             <div style={{ marginTop: "auto" }}>
@@ -174,7 +183,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
             <div className="col-b">
               <div className="related">
                 {related.map((r) => (
-                  <div className="proj-row" key={r.id} style={{ height: "auto", padding: "24px 16px" }}>
+                  <Link href={`/${lang}/work/${r.slug}`} className="proj-row" key={r.id} style={{ height: "auto", padding: "24px 16px" }}>
                     <div className="left">
                       <div className="meta">
                         <span className="t-h5">{projectName(r, lang)}</span>
@@ -182,7 +191,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
                       </div>
                     </div>
                     <div className="right t-p1">{yearRange(r)}</div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

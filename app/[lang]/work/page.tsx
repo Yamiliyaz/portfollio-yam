@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import { dict, isLang } from "@/lib/i18n";
-import { getProjects, pick, projectName, type Project } from "@/lib/notion";
+import WorkGallery, { type GalleryItem } from "@/components/WorkGallery";
+import { formatPeriod, getGallery, pick, projectName } from "@/lib/notion";
 import { pageMetadata } from "@/lib/seo";
-import type { Lang } from "@/lib/i18n";
 
 export const revalidate = 1800;
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -14,52 +13,38 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return pageMetadata({ lang, path: "/work", ...dict[lang].seo.work });
 }
 
-function Card({ p, lang, label, tall }: { p: Project; lang: Lang; label: string; tall?: boolean }) {
-  return (
-    <Link href={`/${lang}/work/${p.slug}`} className={`card${tall ? " tall" : ""}`}>
-      {p.cover && <img className="bg" src={p.cover} alt="" />}
-      <div className="scrim" />
-      <div className="text">
-        <p className="t-h6">{projectName(p, lang)}</p>
-        <p className="desc">{pick(p.short, lang)}</p>
-      </div>
-      <span className="cta">
-        {label}
-        <img className="icon20" src="/icons/arrow-outward-light.svg" alt="" />
-      </span>
-    </Link>
-  );
-}
+const firstLine = (s: string) => s.split(/\s\|\s|\n/)[0]?.trim() ?? "";
 
 export default async function Work({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const t = dict[lang];
-  const projects = await getProjects();
-  // Bento del Figma: 2 tarjetas anchas a la izquierda; columna derecha alta + corta.
-  // Cada 4 proyectos forman un bloque, para que los bloques se apilen sin desbalancear columnas.
-  const blocks: Project[][] = [];
-  for (let i = 0; i < projects.length; i += 4) blocks.push(projects.slice(i, i + 4));
+  const projects = await getGallery();
+  const items: GalleryItem[] = projects.map((p) => ({
+    id: p.id,
+    href: `/${lang}/work/${p.slug}`,
+    title: projectName(p, lang),
+    company: p.company,
+    level: p.level,
+    status: p.status,
+    role: p.role,
+    period: formatPeriod(p, lang, t.project.present),
+    short: pick(p.short, lang),
+    impact: firstLine(pick(p.impact, lang)),
+    tools: p.tools,
+    cover: p.cover,
+    pinned: p.pinned,
+  }));
 
   return (
     <div className="page">
-      <section className="section" style={{ minHeight: 1136 }}>
+      <section className="section wg-section">
         <div className="section-inner">
           <div className="work-head">
             <h1 className="t-h2-serif" style={{ color: "var(--gray-900)" }}>{t.work.title}</h1>
             <p className="t-p1">{t.work.lead}</p>
           </div>
-          {blocks.map((block, bi) => (
-            <div className="bento" key={bi}>
-              <div className="bento-col">
-                {block.slice(0, 2).map((p) => <Card key={p.id} p={p} lang={lang} label={t.work.readMore} />)}
-              </div>
-              <div className="bento-col">
-                {block[2] && <Card p={block[2]} lang={lang} label={t.work.readMore} tall />}
-                {block[3] && <Card p={block[3]} lang={lang} label={t.work.readMore} />}
-              </div>
-            </div>
-          ))}
+          <WorkGallery items={items} t={{ ...t.work.gallery, readMore: t.work.readMore }} />
         </div>
       </section>
       <Footer lang={lang} t={t.footer} nav={t.nav} />

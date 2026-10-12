@@ -149,6 +149,35 @@ const byDateDesc = (a: Project, b: Project) =>
 // Orden manual desde Notion ("Orden"); empata por fecha más reciente.
 const byOrder = (a: Project, b: Project) => a.order - b.order || byDateDesc(a, b);
 
+const HIDDEN_STATUS = ["Archivado", "Pausado"];
+const RECENT_MONTHS = 6;
+
+/** Entradas visibles en Work/detalle: cualquier Nivel, salvo Archivado/Pausado. */
+export async function getVisible(): Promise<Project[]> {
+  const all = await getAllProjects();
+  return all.filter((p) => !HIDDEN_STATUS.includes(p.status));
+}
+
+export function isRecent(p: Project, now = new Date()) {
+  if (!p.start) return false;
+  const limit = new Date(now);
+  limit.setMonth(limit.getMonth() - RECENT_MONTHS);
+  return new Date(p.start + "T12:00:00") >= limit;
+}
+
+/** Galería de Work: Destacado/Reciente primero → Fecha inicio desc → Orden asc. */
+export async function getGallery(): Promise<(Project & { pinned: "featured" | "recent" | null })[]> {
+  const visible = await getVisible();
+  return visible
+    .map((p) => ({ ...p, pinned: p.featured ? ("featured" as const) : isRecent(p) ? ("recent" as const) : null }))
+    .sort(
+      (a, b) =>
+        Number(!!b.pinned) - Number(!!a.pinned) ||
+        (b.start || "").localeCompare(a.start || "") ||
+        a.order - b.order,
+    );
+}
+
 export async function getProjects(): Promise<Project[]> {
   const all = await getAllProjects();
   return all.filter((p) => p.level === "Proyecto" && p.status !== "Archivado").sort(byOrder);
