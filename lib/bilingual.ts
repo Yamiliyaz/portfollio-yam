@@ -13,6 +13,8 @@ function isPair(a: string, b: string, allBold: boolean, loose = false) {
   if (!a.trim() || !b.trim() || a.trim().toLowerCase() === b.trim().toLowerCase()) return false;
   const esA = score(a, ES), enA = score(a, EN), esB = score(b, ES), enB = score(b, EN);
   if (esA > enA && enB > esB) return true;
+  // Primera mitad claramente en español y segunda sin evidencia de español (p. ej. "…Gestión de equipos / Product Design Manager — Team management").
+  if (esA >= 2 && esA > enA && enB === esB && words(b).length >= 3) return true;
   // Textos cortos (encabezados, celdas de tabla, viñetas): sin palabras de apoyo basta la convención ES / EN.
   if (loose && words(a).length <= 12 && words(b).length <= 12 && esA >= enA && enB >= esB) return true;
   // Títulos cortos en negritas ("Resiliencia / Resilience"): sin palabras de apoyo, basta la convención.
@@ -58,7 +60,7 @@ export function localizeRich(rich: Seg[] = [], lang: Lang, loose = false): Seg[]
     const allBold = line.length > 0 && line.every((s) => !s.plain_text.trim() || s.annotations?.bold);
     // Prueba cada " / ": la primera con mitades ES + EN válidas separa los idiomas.
     for (let i = text.indexOf(" / "); i !== -1; i = text.indexOf(" / ", i + 1)) {
-      if (isPair(text.slice(0, i), text.slice(i + 3), allBold, loose)) {
+      if (isPair(text.slice(0, i), text.slice(i + 3), allBold, loose && text.split(" / ").length === 2)) {
         out.push(...(lang === "es" ? slice(line, 0, i) : slice(line, i + 3, text.length)));
         return;
       }
