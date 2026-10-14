@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import SmoothLink from "@/components/SmoothLink";
+import TestimonialsMarquee from "@/components/TestimonialsMarquee";
 import { dict, isLang } from "@/lib/i18n";
 import { getFeatured, hasDetail, keyFacts, projectName, yearRange } from "@/lib/notion";
+import { getTestimonials } from "@/lib/testimonials";
 import { RESUME_URL } from "@/components/Nav";
 import { SITE_URL, pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -22,6 +24,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   if (!isLang(lang)) notFound();
   const t = dict[lang];
   const featured = await getFeatured();
+  const { items: testimonials, error: testimonialsError } = await getTestimonials();
 
   // Datos estructurados (schema.org) para que buscadores entiendan quién es la persona detrás del sitio.
   const jsonLd = {
@@ -115,6 +118,16 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </div>
       </Reveal>
+
+      {testimonials.length > 0 && (
+        <Reveal as="div">
+          <TestimonialsMarquee items={testimonials} labels={t.testimonials} />
+        </Reveal>
+      )}
+      {/* Solo en previews: explica por qué no aparece la sección (en producción simplemente se oculta). */}
+      {testimonials.length === 0 && testimonialsError && process.env.VERCEL_ENV !== "production" && (
+        <p className="section tm-debug">Testimonios (solo visible en preview): {testimonialsError}</p>
+      )}
 
       <Reveal as="section" className="section about-home">
         <div className="section-inner" style={{ display: "flex", flexDirection: "column", gap: 24 }}>

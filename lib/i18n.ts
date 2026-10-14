@@ -35,6 +35,11 @@ export const dict = {
       ],
     },
     projects: { title: "Featured Projects", more: "See more projects" },
+    testimonials: {
+      title: "What people I've worked with say",
+      lead: "Recommendations received on LinkedIn, in their original language.",
+      pause: "Pause", play: "Play", opens: "(opens LinkedIn)",
+    },
     about: {
       title: "A little bit about me",
       lead: "I am passionate about creating beautiful products that empower people.",
@@ -125,6 +130,11 @@ export const dict = {
       ],
     },
     projects: { title: "Proyectos destacados", more: "Ver más proyectos" },
+    testimonials: {
+      title: "Lo que dicen quienes han trabajado conmigo",
+      lead: "Recomendaciones recibidas en LinkedIn.",
+      pause: "Pausar", play: "Reproducir", opens: "(abre LinkedIn)",
+    },
     about: {
       title: "Un poco sobre mí",
       lead: "Me apasiona crear productos hermosos que empoderen a las personas.",
