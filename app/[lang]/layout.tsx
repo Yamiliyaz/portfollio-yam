@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Serif_Display, Manrope } from "next/font/google";
 import { notFound } from "next/navigation";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/Nav";
 import RouteTransition from "@/components/RouteTransition";
 import ScrollMemory from "@/components/ScrollMemory";
@@ -44,6 +45,7 @@ export default async function RootLayout({
           <main>{children}</main>
         </RouteTransition>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
