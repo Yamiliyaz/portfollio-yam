@@ -110,7 +110,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
     <div className="page proj-layout">
       <Stepper steps={steps} backHref={`/${lang}/work`} backLabel={t.project.back} contentLabel={t.project.content} />
 
-      <section className="proj-hero2">
+      <section className={`proj-hero2${p.featuredImage ? " has-img" : ""}`}>
         <div className="ph-copy">
           <div className="wg-foot" style={{ justifyContent: "flex-start", gap: 12 }}>
             <span className="wg-tag">{g.levels[p.level as keyof typeof g.levels] ?? p.level}</span>
