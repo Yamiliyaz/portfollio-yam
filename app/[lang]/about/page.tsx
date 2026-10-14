@@ -76,6 +76,21 @@ export default async function About({ params }: { params: Promise<{ lang: string
         </div>
       </Reveal>
 
+      {/* C2 · Liderazgo */}
+      <Reveal as="section" className="section" id="lead" aria-labelledby="ab-lead-title">
+        <div className="section-inner">
+          <h2 id="ab-lead-title" className="t-h3-serif ab-h2">{c.lead.title}</h2>
+          <div className="ab-approach">
+            {c.lead.items.map((it) => (
+              <div key={it.title}>
+                <h3 className="t-h5">{it.title}</h3>
+                <p className="t-p1">{it.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Reveal>
+
       {/* D · Trayectoria */}
       <Reveal as="section" className="section" id="career" aria-labelledby="ab-career-title">
         <div className="section-inner">

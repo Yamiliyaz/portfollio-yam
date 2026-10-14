@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import { dict, isLang } from "@/lib/i18n";
 import WorkGallery, { type GalleryItem } from "@/components/WorkGallery";
-import { formatPeriod, getGallery, hasDetail, pick, projectName } from "@/lib/notion";
+import { formatPeriod, getGallery, hasDetail, impactIsTarget, keyFacts, pick, projectName } from "@/lib/notion";
 import { pageMetadata } from "@/lib/seo";
 
 export const revalidate = 1800;
@@ -30,7 +30,7 @@ export default async function Work({ params }: { params: Promise<{ lang: string 
     role: p.role,
     period: formatPeriod(p, lang, t.project.present),
     short: pick(p.short, lang),
-    impact: firstLine(pick(p.impact, lang)),
+    impact: keyFacts(p, lang, 1)?.items[0] ?? (impactIsTarget(pick(p.impact, lang)) ? "" : firstLine(pick(p.impact, lang))),
     tools: p.tools,
     cover: p.cover,
     pinned: p.pinned,

@@ -4,7 +4,8 @@ import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import SmoothLink from "@/components/SmoothLink";
 import { dict, isLang } from "@/lib/i18n";
-import { getFeatured, hasDetail, projectName, yearRange } from "@/lib/notion";
+import { getFeatured, hasDetail, keyFacts, projectName, yearRange } from "@/lib/notion";
+import { RESUME_URL } from "@/components/Nav";
 import { SITE_URL, pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
@@ -27,7 +28,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Yamil Arroyo",
-    jobTitle: "Product Designer",
+    jobTitle: "Principal Product Designer",
     url: `${SITE_URL}/${lang}`,
     image: `${SITE_URL}/images/profile.jpg`,
     description: t.seo.home.description,
@@ -48,13 +49,18 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               <img src="/images/profile.jpg" alt="Yamil Arroyo" width={352} height={352} />
             </div>
             <div className="right">
-              <p className="t-h2-serif name">{t.hero.role}</p>
+              <h1 className="t-h2-serif name">{t.hero.role}</h1>
               <p className="t-p1 muted">{t.hero.roleSub}</p>
             </div>
           </div>
           <div className="hero-intro">
             <div className="a"><p className="t-p1">{t.hero.intro1}</p></div>
             <div className="b"><p className="t-p1">{t.hero.intro2}</p></div>
+          </div>
+          <div className="hero-cta">
+            <Link className="btn btn-dark" href={`/${lang}/work`}>{t.hero.cta.work}</Link>
+            <a className="btn btn-outline" href={RESUME_URL} target="_blank" rel="noreferrer">{t.hero.cta.cv}</a>
+            <a className="btn btn-outline" href="mailto:iarroyozuniga@gmail.com">{t.hero.cta.contact}</a>
           </div>
           <SmoothLink className="scroll" href="#principles" aria-label="Scroll">
             <img src="/icons/arrow-down.svg" alt="" />
@@ -94,7 +100,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   <span className="t-h6">{String(i + 1).padStart(2, "0")}</span>
                   <div className="meta">
                     <span className="t-h5">{projectName(p, lang)}</span>
-                    <span className="sub">{p.company}</span>
+                    <span className="sub">{[p.company, keyFacts(p, lang, 1)?.items[0]].filter(Boolean).join(" · ")}</span>
                   </div>
                 </div>
                 <div className="right t-p1">{yearRange(p)}</div>

@@ -22,6 +22,7 @@ export type AboutContent = {
   hero: { heading: string; paragraphs: string[]; photoAlt: string };
   impact: { title: string; items: Metric[] };
   approach: { title: string; items: { title: string; text: string }[] };
+  lead: { title: string; items: { title: string; text: string }[] };
   career: { title: string; items: { company: string; role: string; period: string; progression?: string; description: string }[] };
   beyond: { title: string; paragraphs: string[]; caption: string; photos: { n: number; alt: string }[] };
   closing: { heading: string; email: string; linkedin: string };
@@ -79,6 +80,23 @@ export const about: Record<Lang, AboutContent> = {
         {
           title: "Building for scale",
           text: "Great design shouldn't depend on individual heroics. Through Design Systems, clear principles and cross-functional collaboration, I help teams reduce duplication, improve consistency and deliver more effectively.",
+        },
+      ],
+    },
+    lead: {
+      title: "How I lead",
+      items: [
+        {
+          title: "Leading designers",
+          text: "I've supervised product designers on the BancaNet Empresarial mobile app at Citibanamex and on the payments product at Konfío.",
+        },
+        {
+          title: "Aligning vision and priorities",
+          text: "Leading a team as coordinator means aligning different visions, prioritizing under real constraints and trusting the team to execute. The hardest part is often managing expectations across business, product and technology.",
+        },
+        {
+          title: "Unifying and growing teams",
+          text: "I learned to unify divided teams, practice active listening and share experience to drive collective growth.",
         },
       ],
     },
@@ -180,6 +198,23 @@ export const about: Record<Lang, AboutContent> = {
         {
           title: "Construir para escalar",
           text: "El buen diseño no debería depender de esfuerzos heroicos individuales. A través de Design Systems, principios claros y colaboración multifuncional, ayudo a los equipos a reducir duplicidad, mejorar la consistencia y entregar con más eficacia.",
+        },
+      ],
+    },
+    lead: {
+      title: "Cómo lidero",
+      items: [
+        {
+          title: "Liderar diseñadores",
+          text: "He supervisado a diseñadores de producto en la app móvil de BancaNet Empresarial en Citibanamex y en el producto de pagos de Konfío.",
+        },
+        {
+          title: "Alinear visiones y prioridades",
+          text: "Liderar un equipo como coordinador exige alinear visiones distintas, priorizar con restricciones reales y confiar en el equipo para la ejecución. Lo más difícil suele ser gestionar las expectativas entre negocio, producto y tecnología.",
+        },
+        {
+          title: "Unificar y hacer crecer equipos",
+          text: "Aprendí a unificar equipos divididos, practicar la escucha activa y compartir experiencia para impulsar el crecimiento colectivo.",
         },
       ],
     },
