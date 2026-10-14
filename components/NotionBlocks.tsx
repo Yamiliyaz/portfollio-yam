@@ -131,11 +131,13 @@ function Block({ b, lang }: { b: NBlock; lang: Lang }) {
     case "code":
       return <pre className="nb-code"><code>{plain(b.code.rich_text)}</code></pre>;
     case "image": {
-      const src = mediaUrl(b.image);
+      // Notion-hosted: la URL firmada caduca; se sirve por /api/img, que pide la vigente.
+      const src = b.image.type === "file" ? `/api/img/block/${b.id}` : mediaUrl(b.image);
+      const cap = plainText(localizeRich(b.image.caption ?? [], lang, true));
       return src ? (
         <figure className="nb-figure">
-          <img src={src} alt={plain(b.image.caption) || ""} loading="lazy" />
-          {b.image.caption?.length > 0 && <figcaption><Rich text={b.image.caption} lang={lang} /></figcaption>}
+          <img src={src} alt={cap} loading="lazy" />
+          {cap && <figcaption><Rich text={b.image.caption} lang={lang} loose /></figcaption>}
         </figure>
       ) : null;
     }

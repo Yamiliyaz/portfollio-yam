@@ -83,15 +83,16 @@ function mapPage(page: any): Project {
   });
   const name = text(p["Nombre"]);
   const nameEn = text(p["Nombre EN"]);
+  // Archivos alojados en Notion: se sirven por /api/img (la URL firmada caduca a la hora).
   const cover =
     page.cover?.type === "external"
       ? page.cover.external.url
       : page.cover?.type === "file"
-        ? page.cover.file.url
+        ? `/api/img/cover/${page.id}`
         : null;
   const file = p["Imagen destacada"]?.files?.[0];
   const featuredImage: string | null =
-    file?.type === "external" ? file.external.url : file?.type === "file" ? file.file.url : null;
+    file?.type === "external" ? file.external.url : file?.type === "file" ? `/api/img/featured/${page.id}` : null;
   return {
     id: page.id,
     slug: slugify(nameEn || name),
