@@ -10,7 +10,7 @@ import { LevelIcon, palette } from "@/components/ProjectVisual";
 import Stepper from "@/components/Stepper";
 import { pageMetadata } from "@/lib/seo";
 import { dict, isLang, LANGS } from "@/lib/i18n";
-import { formatPeriod, getBlocks, getProject, getVisible, hasDetail, pick, projectName, yearRange } from "@/lib/notion";
+import { formatPeriod, getBlocks, getProject, getVisible, hasDetail, impactIsTarget, isTarget, keyFacts, pick, projectName, splitFacts, yearRange } from "@/lib/notion";
 
 // Las URLs de archivos de Notion caducan a la hora: regenerar seguido.
 export const revalidate = 900;
@@ -39,8 +39,16 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 const paragraphs = (s: string) => s.split(/\n+/).map((x) => x.trim()).filter(Boolean);
 
 
-function Prose({ text, list }: { text: string; list?: boolean }) {
-  if (list) return <ul className="nb-list">{paragraphs(text).map((x, i) => <li key={i}>{x}</li>)}</ul>;
+function Prose({ text, list, targetTag }: { text: string; list?: boolean; targetTag?: string }) {
+  if (list) {
+    return (
+      <ul className="nb-list">
+        {paragraphs(text).map((x, i) => (
+          <li key={i}>{x}{targetTag && isTarget(x) && <span className="nb-target">{targetTag}</span>}</li>
+        ))}
+      </ul>
+    );
+  }
   return <div className="prose t-p1">{paragraphs(text).map((p, i) => <p key={i}>{p}</p>)}</div>;
 }
 
@@ -66,21 +74,26 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
   const g = t.work.gallery;
 
   const short = pick(p.short, lang);
-  const sections = toSections(await getBlocks(p.id), lang);
+  const allSections = toSections(await getBlocks(p.id), lang);
+  // "Aprendizajes" existe como campo y como sección del cuerpo: se unen en una sola sección.
+  const isLearn = (x: { title: string }) => /^(learnings|aprendizajes)$/i.test(x.title.trim());
+  const bodyLearn = allSections.find(isLearn);
+  const sections = allSections.filter((x) => !isLearn(x));
   const prototype = p.figmaUrl && figmaEmbedUrl(p.figmaUrl) ? p.figmaUrl : "";
 
   // Igual que la página de Notion: primero los campos de texto (Impacto, Problema, Research, Solución…)
   // y después el cuerpo de la página. Nada se omite (Métricas clave queda fuera a propósito: es para About).
-  const fallback = [
-    { id: "highlights", title: s.highlights, text: pick(p.impact, lang).replace(/\s\|\s/g, "\n") },
-    { id: "metrics", title: s.metrics, text: pick(p.metrics, lang).replace(/\s[|·]\s/g, "\n"), list: true },
+  const impactText = pick(p.impact, lang);
+  const fallback: { id: string; title: string; text: string; list?: boolean; extra?: typeof bodyLearn }[] = [
+    { id: "highlights", title: impactIsTarget(impactText) ? s.targets : s.highlights, text: impactText.replace(/\s\|\s/g, "\n") },
+    { id: "metrics", title: s.metrics, text: splitFacts(pick(p.metrics, lang)).join("\n"), list: true },
     { id: "problem", title: s.problem, text: pick(p.problem, lang) },
     { id: "research", title: s.research, text: pick(p.research, lang) },
     { id: "solution", title: s.solution, text: pick(p.solution, lang) },
     { id: "release", title: s.release, text: pick(p.postRelease, lang) },
-    { id: "learnings-notes", title: s.learnings, text: pick(p.learnings, lang) },
+    { id: "learnings", title: s.learnings, text: pick(p.learnings, lang), extra: bodyLearn },
     { id: "next-steps", title: s.next, text: pick(p.next, lang) },
-  ].filter((x) => x.text);
+  ].filter((x) => x.text || x.extra);
 
   const steps = [
     ...fallback.map((x) => ({ id: x.id, label: x.title })),
@@ -89,6 +102,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
     ...(related.length ? [{ id: "related", label: s.related }] : []),
   ];
 
+  const facts = keyFacts(p, lang);
   const c = palette(p.company);
   const status = p.status ? g.statuses[p.status as keyof typeof g.statuses] ?? p.status : "";
 
@@ -114,6 +128,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
             {p.role && <div><dt>{t.project.role}</dt><dd>{p.role}</dd></div>}
             {formatPeriod(p, lang, t.project.present) && <div><dt>{t.project.facts.period}</dt><dd>{formatPeriod(p, lang, t.project.present)}</dd></div>}
           </dl>
+          {facts && (
+            <div className="ph-keyfacts">
+              <span className="ph-keyfacts-label">{facts.kind === "outcomes" ? t.project.outcomesLabel : t.project.scaleLabel}</span>
+              <ul>{facts.items.map((f) => <li key={f}>{f}</li>)}</ul>
+            </div>
+          )}
           {steps[0] && (
             <a className="btn btn-dark" href={`#${steps[0].id}`}>
               {t.project.start}
@@ -138,7 +158,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
             <div>
               <h2>{t.project.team}</h2>
               <ul className="small">
-                {p.team.split(/\s\|\s|\n|,\s(?=[A-ZÁÉÍÓÚ][^,]*\()/).map((m) => <li key={m}>{m.trim()}</li>)}
+                {(lang === "en" ? p.team.replace(/Áreas:/g, "Areas:") : p.team).split(/\s\|\s|\n|,\s(?=[A-ZÁÉÍÓÚ][^,]*\()/).map((m) => <li key={m}>{m.trim()}</li>)}
               </ul>
             </div>
           )}
@@ -152,7 +172,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
       )}
 
       {fallback.map((x) => (
-        <Section key={x.id} id={x.id} title={x.title}><Prose text={x.text} list={"list" in x} /></Section>
+        <Section key={x.id} id={x.id} title={x.title}>
+          {x.text && <Prose text={x.text} list={x.list} targetTag={x.list ? t.project.targetTag : undefined} />}
+          {x.extra && <div className="nb"><Blocks blocks={x.extra.blocks} lang={lang} /></div>}
+        </Section>
       ))}
 
       {sections.map((x) => (

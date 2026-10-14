@@ -263,3 +263,21 @@ export function yearRange(p: Project) {
   if (!a) return b ?? "";
   return b && b !== a ? `${a} - ${b}` : a;
 }
+
+/** Metas, objetivos o cifras pendientes de medir: no son resultados observados y se etiquetan aparte. */
+const TARGET_RE = /\b(target|targets|goal|goals|expected|expect|to measure|pending|meta|metas|objetivo|objetivos|esperad[oa]s?|a medir|pendiente)\b/i;
+export const isTarget = (s: string) => TARGET_RE.test(s);
+/** Un campo de Impacto que empieza como meta/expectativa (no como resultado). */
+export const impactIsTarget = (s: string) => /^\s*(goals?|targets?|target metrics|expected|expected reduction|pending|metas?|objetivos?|m[eé]tricas objetivo|reducci[oó]n esperada|pendiente|tracking metrics|m[eé]tricas de seguimiento)\b/i.test(s);
+
+export const splitFacts = (s: string) => s.split(/\s[|·]\s/).map((x) => x.trim()).filter(Boolean);
+
+/** Hasta `max` datos observados (no metas) para encabezados y tarjetas: Métricas clave primero, si no los de "escala" del Impacto. */
+export function keyFacts(p: Project, lang: Lang, max = 2): { kind: "outcomes" | "scale"; items: string[] } | null {
+  const metrics = splitFacts(pick(p.metrics, lang)).filter((x) => !isTarget(x));
+  if (metrics.length) return { kind: "outcomes", items: metrics.slice(0, max) };
+  const impact = pick(p.impact, lang);
+  const parts = splitFacts(impact);
+  if (parts.length > 1 && !impactIsTarget(impact)) return { kind: "scale", items: parts.slice(0, max) };
+  return null;
+}

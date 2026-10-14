@@ -10,8 +10,8 @@ import FigmaEmbed from "./FigmaEmbed";
 const safeHref = (h?: string | null) => (h && /^(https?:|mailto:)/i.test(h) ? h : undefined);
 const plain = (rich: any[] = []) => rich.map((t) => t.plain_text).join("");
 
-export function Rich({ text, lang }: { text: any[]; lang?: Lang }) {
-  const segs = lang ? localizeRich(text, lang) : text;
+export function Rich({ text, lang, loose }: { text: any[]; lang?: Lang; loose?: boolean }) {
+  const segs = lang ? localizeRich(text, lang, loose) : text;
   return (
     <>
       {segs.map((t, i) => {
@@ -55,7 +55,7 @@ export function toSections(blocks: NBlock[], lang: Lang): Section[] {
   for (const b of cleanBlocks(blocks)) {
     if (b.type === "heading_1" || b.type === "heading_2") {
       push();
-      const title = plainText(localizeRich(b[b.type].rich_text, lang));
+      const title = plainText(localizeRich(b[b.type].rich_text, lang, true));
       let id = title.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "section";
       while (used.has(id)) id += "-2";
       used.add(id);
@@ -87,7 +87,7 @@ export function Blocks({ blocks, lang }: { blocks: NBlock[]; lang: Lang }) {
       nodes.push(
         <Tag key={b.id} className="nb-list">
           {items.map((it) => (
-            <li key={it.id}><Rich text={it[type].rich_text} lang={lang} /><Children b={it} lang={lang} /></li>
+            <li key={it.id}><Rich text={it[type].rich_text} lang={lang} loose /><Children b={it} lang={lang} /></li>
           ))}
         </Tag>,
       );
@@ -105,17 +105,17 @@ function Block({ b, lang }: { b: NBlock; lang: Lang }) {
         <><p className="nb-p"><Rich text={b.paragraph.rich_text} lang={lang} /></p><Children b={b} lang={lang} /></>
       ) : null;
     case "heading_3":
-      return <h3 className="nb-h3"><Rich text={b.heading_3.rich_text} lang={lang} /></h3>;
+      return <h3 className="nb-h3"><Rich text={b.heading_3.rich_text} lang={lang} loose /></h3>;
     case "heading_1":
     case "heading_2":
-      return <h3 className="nb-h3"><Rich text={b[b.type].rich_text} lang={lang} /></h3>;
+      return <h3 className="nb-h3"><Rich text={b[b.type].rich_text} lang={lang} loose /></h3>;
     case "to_do":
       return (
         <p className="nb-p nb-todo"><input type="checkbox" checked={b.to_do.checked} readOnly aria-label="" /> <Rich text={b.to_do.rich_text} lang={lang} /></p>
       );
     case "toggle":
       return (
-        <details className="nb-toggle"><summary><Rich text={b.toggle.rich_text} lang={lang} /></summary><Children b={b} lang={lang} /></details>
+        <details className="nb-toggle"><summary><Rich text={b.toggle.rich_text} lang={lang} loose /></summary><Children b={b} lang={lang} /></details>
       );
     case "quote":
       return <blockquote className="nb-quote"><Rich text={b.quote.rich_text} lang={lang} /><Children b={b} lang={lang} /></blockquote>;
@@ -173,7 +173,7 @@ function Block({ b, lang }: { b: NBlock; lang: Lang }) {
                   {r.table_row.cells.map((cell: any[], ci: number) => {
                     const head = (b.table.has_column_header && ri === 0) || (b.table.has_row_header && ci === 0);
                     const Cell = head ? "th" : "td";
-                    return <Cell key={ci}><Rich text={cell} lang={lang} /></Cell>;
+                    return <Cell key={ci}><Rich text={cell} lang={lang} loose /></Cell>;
                   })}
                 </tr>
               ))}

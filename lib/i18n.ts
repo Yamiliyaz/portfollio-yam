@@ -10,19 +10,20 @@ export const dict = {
   en: {
     nav: { home: "Home", work: "Work", about: "About", resume: "Resume" },
     seo: {
-      home: { title: "Yamil Arroyo — Product Designer", description: "I am a digital product designer with over 11 years of experience, passionate about transforming organizations and building an exceptional digital future." },
+      home: { title: "Yamil Arroyo — Principal Product Designer", description: "Principal Product Designer with 12+ years of experience designing financial products and the systems that help them scale." },
       work: { title: "Work", description: "I am passionate about creating digital products from a “user-centered” approach." },
       about: { title: "About", description: "Principal Product Designer with 12+ years of experience designing financial products and the systems that help them scale." },
     },
     hero: {
       hello: "Hi I’m Yamil!",
       nickname: "Chinno for friends",
-      role: "Product Designer",
-      roleSub: "Product - Design - User Experience",
+      role: "Principal Product Designer",
+      roleSub: "Product Strategy · Design Leadership · Design Systems",
       intro1:
-        "I am a digital product designer with over 11 years of experience, passionate about transforming organizations and building an exceptional digital future.",
+        "I'm a Principal Product Designer with 12+ years of experience designing financial products and the systems that help them scale.",
       intro2:
-        "I am excited about the opportunity to contribute my experience and passion to a visionary team. My ability to lead innovative projects and my strategic approach are valuable assets for any project I take on.",
+        "I work at the intersection of customer experience, business strategy, and technology to simplify complex products and turn design into measurable outcomes.",
+      cta: { work: "Selected work", cv: "Download CV", contact: "Contact" },
     },
     principles: {
       title: "Principles",
@@ -34,12 +35,17 @@ export const dict = {
       ],
     },
     projects: { title: "Featured Projects", more: "See more projects" },
+    testimonials: {
+      title: "What people I've worked with say",
+      lead: "Recommendations received on LinkedIn, in their original language.",
+      pause: "Pause", play: "Play", opens: "(opens LinkedIn)",
+    },
     about: {
       title: "A little bit about me",
       lead: "I am passionate about creating beautiful products that empower people.",
       body: [
         "I am a passionate designer with skills to create user-friendly digital products. I enjoy transforming organizations and envisioning a better future through design.",
-        "Over the past 11 years, I have worked in various sectors such as banking, insurance, retail, and e-commerce, focusing on product management and team leadership.",
+        "Over the past 12+ years, I have worked in various sectors such as banking, insurance, retail, and e-commerce, focusing on product management and team leadership.",
         "My approach revolves around understanding user needs aligned with business goals to create solutions that deliver impactful experiences.",
       ],
       cta: "Know more about me",
@@ -78,6 +84,7 @@ export const dict = {
         introduction: "Introduction",
         highlights: "Highlights",
         metrics: "Key metrics",
+        targets: "Targets & expectations",
         problem: "Problem",
         research: "Research",
         solution: "Solution",
@@ -88,6 +95,9 @@ export const dict = {
       },
       present: "Present",
       prototype: "Prototype",
+      targetTag: "Target",
+      outcomesLabel: "Key results",
+      scaleLabel: "Scale",
       figma: { fullscreen: "Full screen", exit: "Exit full screen", open: "Open in Figma" },
       facts: { company: "Company", period: "Period" },
     },
@@ -95,19 +105,20 @@ export const dict = {
   es: {
     nav: { home: "Inicio", work: "Proyectos", about: "Sobre mí", resume: "CV" },
     seo: {
-      home: { title: "Yamil Arroyo — Product Designer", description: "Soy diseñador de producto digital con más de 11 años de experiencia, apasionado por transformar organizaciones y construir un futuro digital excepcional." },
+      home: { title: "Yamil Arroyo — Principal Product Designer", description: "Principal Product Designer con más de 12 años de experiencia diseñando productos financieros y los sistemas que ayudan a escalarlos." },
       work: { title: "Proyectos", description: "Me apasiona crear productos digitales desde un enfoque “centrado en el usuario”." },
       about: { title: "Sobre mí", description: "Principal Product Designer con más de 12 años de experiencia diseñando productos financieros y los sistemas que ayudan a escalarlos." },
     },
     hero: {
       hello: "¡Hola, soy Yamil!",
       nickname: "Chinno para los amigos",
-      role: "Product Designer",
-      roleSub: "Producto - Diseño - Experiencia de usuario",
+      role: "Principal Product Designer",
+      roleSub: "Estrategia de producto · Liderazgo de diseño · Design Systems",
       intro1:
-        "Soy diseñador de producto digital con más de 11 años de experiencia, apasionado por transformar organizaciones y construir un futuro digital excepcional.",
+        "Soy Principal Product Designer con más de 12 años de experiencia diseñando productos financieros y los sistemas que ayudan a escalarlos.",
       intro2:
-        "Me entusiasma la oportunidad de aportar mi experiencia y pasión a un equipo visionario. Mi capacidad para liderar proyectos innovadores y mi enfoque estratégico son activos valiosos para cualquier proyecto que emprendo.",
+        "Trabajo en la intersección entre experiencia del cliente, estrategia de negocio y tecnología para simplificar productos complejos y convertir el diseño en resultados medibles.",
+      cta: { work: "Trabajo seleccionado", cv: "Descargar CV", contact: "Contacto" },
     },
     principles: {
       title: "Principios",
@@ -119,12 +130,17 @@ export const dict = {
       ],
     },
     projects: { title: "Proyectos destacados", more: "Ver más proyectos" },
+    testimonials: {
+      title: "Lo que dicen quienes han trabajado conmigo",
+      lead: "Recomendaciones recibidas en LinkedIn.",
+      pause: "Pausar", play: "Reproducir", opens: "(abre LinkedIn)",
+    },
     about: {
       title: "Un poco sobre mí",
       lead: "Me apasiona crear productos hermosos que empoderen a las personas.",
       body: [
         "Soy un diseñador apasionado, con habilidades para crear productos digitales fáciles de usar. Disfruto transformar organizaciones e imaginar un mejor futuro a través del diseño.",
-        "En los últimos 11 años he trabajado en sectores como banca, seguros, retail y e-commerce, enfocado en gestión de producto y liderazgo de equipos.",
+        "En más de 12 años he trabajado en sectores como banca, seguros, retail y e-commerce, enfocado en gestión de producto y liderazgo de equipos.",
         "Mi enfoque gira en torno a entender las necesidades del usuario alineadas con los objetivos del negocio para crear soluciones con experiencias de impacto.",
       ],
       cta: "Conoce más sobre mí",
@@ -163,6 +179,7 @@ export const dict = {
         introduction: "Introducción",
         highlights: "Resultados",
         metrics: "Métricas clave",
+        targets: "Metas y expectativas",
         problem: "Problema",
         research: "Research",
         solution: "Solución",
@@ -173,6 +190,9 @@ export const dict = {
       },
       present: "Actual",
       prototype: "Prototipo",
+      targetTag: "Meta",
+      outcomesLabel: "Resultados clave",
+      scaleLabel: "Escala",
       figma: { fullscreen: "Pantalla completa", exit: "Salir de pantalla completa", open: "Abrir en Figma" },
       facts: { company: "Empresa", period: "Periodo" },
     },
