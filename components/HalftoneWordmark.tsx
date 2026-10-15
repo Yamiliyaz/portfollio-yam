@@ -32,8 +32,9 @@ export default function HalftoneWordmark({ word, crop = 0.26, radius = 80 }: Pro
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const css = getComputedStyle(root);
     const family = css.getPropertyValue("--font-body").trim() || "system-ui, sans-serif";
-    const ink = hexToRgb(css.getPropertyValue("--gray-100")) || [242, 244, 247];
-    const warm = hexToRgb(css.getPropertyValue("--blue-100")) || [209, 233, 255];
+    // colores del tema del footer (--ft-dot-0 en reposo, --ft-dot-4 al ser empujados)
+    const ink = hexToRgb(css.getPropertyValue("--ft-dot-0")) || [208, 213, 221];
+    const warm = hexToRgb(css.getPropertyValue("--ft-dot-4")) || [25, 65, 133];
     const inkCss = `rgb(${ink.join(",")})`;
 
     let w = 0, h = 0, dpr = 1, px = -1e5, py = -1e5, raf = 0;
