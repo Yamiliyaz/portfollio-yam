@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Dict, Lang } from "@/lib/i18n";
+import HalftoneWordmark from "./HalftoneWordmark";
 
 const LINKEDIN = "https://www.linkedin.com/in/yamilarroyo";
 const ADPLIST = "https://adplist.org/mentors/yamil-arroyo";
@@ -21,8 +22,8 @@ function Item({ href, children, external }: { href: string; children: React.Reac
 export default function Footer({
   lang, t, nav, compact,
 }: { lang: Lang; t: Dict["footer"]; nav: Dict["nav"]; compact?: boolean }) {
-  return (
-    <footer className="page footer" data-compact={compact || undefined}>
+  const content = (
+    <>
       <div className="footer-ping">
         <p className="t-h3-serif">{t.ping}</p>
         <a className="t-h1" href="mailto:iarroyozuniga@gmail.com">iarroyozuniga@gmail.com</a>
@@ -50,6 +51,18 @@ export default function Footer({
       <div className="footer-legal">
         <span>{t.designedBy}</span>
         <span>{t.copyright}</span>
+      </div>
+    </>
+  );
+  // Compacto (detalle de proyecto): footer corto de siempre. Resto de páginas: footer que se descubre por detrás + wordmark de puntos.
+  if (compact) {
+    return <footer className="page footer" data-compact>{content}</footer>;
+  }
+  return (
+    <footer className="fr">
+      <div className="fr-fixed">
+        <div className="page footer">{content}</div>
+        <HalftoneWordmark word="Yamil" />
       </div>
     </footer>
   );

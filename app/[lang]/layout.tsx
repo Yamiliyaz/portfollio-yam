@@ -8,7 +8,7 @@ import { LANGS, dict, isLang } from "@/lib/i18n";
 import { IS_PRODUCTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "../globals.css";
 
-const manrope = Manrope({ subsets: ["latin"], weight: ["300", "400", "500", "700"], variable: "--font-manrope", display: "swap" });
+const manrope = Manrope({ subsets: ["latin"], weight: ["300", "400", "500", "700", "800"], variable: "--font-manrope", display: "swap" });
 const dmSerif = DM_Serif_Display({ subsets: ["latin"], weight: "400", variable: "--font-dm-serif", display: "swap" });
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {

@@ -154,7 +154,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </Reveal>
 
-      <Reveal><Footer lang={lang} t={t.footer} nav={t.nav} /></Reveal>
+      <Footer lang={lang} t={t.footer} nav={t.nav} />
     </div>
   );
 }
