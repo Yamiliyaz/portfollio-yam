@@ -69,7 +69,7 @@ export const dict = {
       social: "Social",
       mentoring: "Mentoring",
       designedBy: "Designed by Yamil Arroyo",
-      copyright: "Copyright © 2024 Yamil Arroyo",
+      copyright: `Copyright © ${new Date().getFullYear()} Yamil Arroyo`,
     },
     project: {
       back: "Back",
@@ -164,7 +164,7 @@ export const dict = {
       social: "Social",
       mentoring: "Mentoría",
       designedBy: "Diseñado por Yamil Arroyo",
-      copyright: "Copyright © 2024 Yamil Arroyo",
+      copyright: `Copyright © ${new Date().getFullYear()} Yamil Arroyo`,
     },
     project: {
       back: "Volver",

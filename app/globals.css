@@ -160,6 +160,32 @@ img { display: block; max-width: 100%; }
 .footer-link { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
 .footer-legal { display: flex; justify-content: space-between; padding: 24px 0; border-top: 1px solid var(--gray-300); color: var(--gray-500); font: 400 13px/16px var(--font-body); }
 
+/* Footer: se descubre por detrás (fixed + clip-path) y wordmark de puntos — Figma "Footer — reveal + halftone".
+   Tokens --ft-* = colección de variables "Footer / Theme" (Light por defecto; Dark listo para cuando exista el dark mode). */
+:root {
+  --ft-bg: #fff; --ft-text: var(--gray-900); --ft-text-2: var(--gray-700); --ft-muted: var(--gray-500); --ft-line: var(--gray-300);
+  --ft-dot-0: var(--gray-300); --ft-dot-4: var(--blue-900);
+}
+:root[data-theme="dark"] {
+  --ft-bg: var(--gray-900); --ft-text: var(--gray-25); --ft-text-2: var(--gray-300); --ft-muted: var(--gray-400); --ft-line: var(--gray-700);
+  --ft-dot-0: var(--gray-100); --ft-dot-4: var(--blue-100);
+}
+.fr { --fr-h: clamp(840px, 100svh, 1000px); position: relative; height: var(--fr-h); clip-path: inset(0); background: var(--ft-bg); }
+.fr-fixed { position: fixed; bottom: 0; left: 0; width: 100%; height: var(--fr-h); overflow: hidden; background: var(--ft-bg); color: var(--ft-text); border-top: 1px solid var(--ft-line); }
+.fr .footer { position: relative; z-index: 1; min-height: 0; gap: var(--m-2); padding-top: 100px; padding-bottom: 0; } /* 100px: libra la barra de navegación */
+.fr .footer-col { gap: var(--m-05); }
+.fr .footer-link span { color: var(--ft-text-2); }
+.fr .footer-link:hover span { color: var(--ft-muted); }
+.fr .footer-legal { border-top-color: var(--ft-line); color: var(--ft-muted); }
+.hw { position: absolute; left: 50%; bottom: 0; width: min(100%, var(--container)); aspect-ratio: 1440 / 410; transform: translateX(-50%); pointer-events: none; }
+.hw canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; max-width: none; }
+@media (max-width: 960px) {
+  .fr { height: auto; clip-path: none; }
+  .fr-fixed { position: relative; height: auto; }
+  .fr .footer { padding-top: var(--m-5); padding-bottom: var(--m-4); }
+  .hw { position: relative; left: 0; transform: none; width: 100%; }
+}
+
 /* Work: bento */
 .work-head { display: flex; flex-direction: column; gap: 8px; margin-bottom: var(--m-25); }
 .work-head p { color: var(--gray-500); }
