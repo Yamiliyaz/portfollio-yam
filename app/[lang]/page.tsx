@@ -8,6 +8,7 @@ import { dict, isLang } from "@/lib/i18n";
 import { getFeatured, hasDetail, keyFacts, projectName, yearRange } from "@/lib/notion";
 import { getTestimonials } from "@/lib/testimonials";
 import { RESUME_URL } from "@/components/Nav";
+import { CONTACT_EMAIL } from "@/lib/contact";
 import { SITE_URL, pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
@@ -63,7 +64,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <div className="hero-cta">
             <Link className="btn btn-dark" href={`/${lang}/work`}>{t.hero.cta.work}</Link>
             <a className="btn btn-outline" href={RESUME_URL} target="_blank" rel="noreferrer">{t.hero.cta.cv}</a>
-            <a className="btn btn-outline" href="mailto:iarroyozuniga@gmail.com">{t.hero.cta.contact}</a>
+            <a className="btn btn-outline" href={`mailto:${CONTACT_EMAIL[lang]}`}>{t.hero.cta.contact}</a>
           </div>
           <SmoothLink className="scroll" href="#principles" aria-label="Scroll">
             <img src="/icons/arrow-down.svg" alt="" />

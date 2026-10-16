@@ -3,10 +3,10 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import { about } from "@/lib/about";
+import { CONTACT_EMAIL } from "@/lib/contact";
 import { dict, isLang } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
 
-const EMAIL = "iarroyozuniga@gmail.com";
 const LINKEDIN = "https://www.linkedin.com/in/yamilarroyo";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -134,7 +134,7 @@ export default async function About({ params }: { params: Promise<{ lang: string
         <div className="section-inner">
           <h2 id="ab-closing-title" className="t-h3-serif">{c.closing.heading}</h2>
           <div className="ab-actions">
-            <a className="btn btn-dark" href={`mailto:${EMAIL}`}>
+            <a className="btn btn-dark" href={`mailto:${CONTACT_EMAIL[lang]}`}>
               {c.closing.email}
               <img className="icon20" src="/icons/arrow-outward-light.svg" alt="" />
             </a>
