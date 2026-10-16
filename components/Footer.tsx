@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Dict, Lang } from "@/lib/i18n";
+import { CONTACT_EMAIL } from "@/lib/contact";
 import HalftoneWordmark from "./HalftoneWordmark";
 
 const LINKEDIN = "https://www.linkedin.com/in/yamilarroyo";
@@ -26,7 +27,7 @@ export default function Footer({
     <>
       <div className="footer-ping">
         <p className="t-h3-serif">{t.ping}</p>
-        <a className="t-h1" href="mailto:iarroyozuniga@gmail.com">iarroyozuniga@gmail.com</a>
+        <a className="t-h1" href={`mailto:${CONTACT_EMAIL[lang]}`}>{CONTACT_EMAIL[lang]}</a>
       </div>
       <div className="footer-cols">
         <div className="footer-based">
