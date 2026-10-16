@@ -10,6 +10,8 @@ import { LevelIcon, palette } from "@/components/ProjectVisual";
 import Stepper from "@/components/Stepper";
 import { pageMetadata } from "@/lib/seo";
 import { dict, isLang, LANGS } from "@/lib/i18n";
+import StatsBento from "@/components/StatsBento";
+import { bentoStats } from "@/lib/metrics";
 import { formatPeriod, getBlocks, getProject, getVisible, hasDetail, impactIsTarget, isTarget, keyFacts, pick, projectName, splitFacts, yearRange } from "@/lib/notion";
 
 // Las URLs de archivos de Notion caducan a la hora: regenerar seguido.
@@ -84,16 +86,17 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
   // Igual que la página de Notion: primero los campos de texto (Impacto, Problema, Research, Solución…)
   // y después el cuerpo de la página. Nada se omite (Métricas clave queda fuera a propósito: es para About).
   const impactText = pick(p.impact, lang);
+  const bento = bentoStats(p, lang);
   const fallback: { id: string; title: string; text: string; list?: boolean; extra?: typeof bodyLearn }[] = [
     { id: "highlights", title: impactIsTarget(impactText) ? s.targets : s.highlights, text: impactText.replace(/\s\|\s/g, "\n") },
-    { id: "metrics", title: s.metrics, text: splitFacts(pick(p.metrics, lang)).join("\n"), list: true },
+    { id: "metrics", title: s.metrics, text: (bento ? bento.rest : splitFacts(pick(p.metrics, lang))).join("\n"), list: true, extra: undefined },
     { id: "problem", title: s.problem, text: pick(p.problem, lang) },
     { id: "research", title: s.research, text: pick(p.research, lang) },
     { id: "solution", title: s.solution, text: pick(p.solution, lang) },
     { id: "release", title: s.release, text: pick(p.postRelease, lang) },
     { id: "learnings", title: s.learnings, text: pick(p.learnings, lang), extra: bodyLearn },
     { id: "next-steps", title: s.next, text: pick(p.next, lang) },
-  ].filter((x) => x.text || x.extra);
+  ].filter((x) => x.text || x.extra || (x.id === "metrics" && bento));
 
   const steps = [
     ...fallback.map((x) => ({ id: x.id, label: x.title })),
@@ -173,6 +176,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
 
       {fallback.map((x) => (
         <Section key={x.id} id={x.id} title={x.title}>
+          {x.id === "metrics" && bento && <StatsBento stats={bento.stats} label={s.metrics} />}
           {x.text && <Prose text={x.text} list={x.list} targetTag={x.list ? t.project.targetTag : undefined} />}
           {x.extra && <div className="nb"><Blocks blocks={x.extra.blocks} lang={lang} /></div>}
         </Section>
