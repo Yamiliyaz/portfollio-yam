@@ -830,3 +830,15 @@ main.route-exit { opacity: 0; transform: translateY(-8px); }
 .proj-hero2.has-img .ph-media { aspect-ratio: auto; background: transparent; }
 .proj-hero2.has-img .ph-media img { height: auto; }
 @media (max-width: 960px) { .proj-hero2.has-img { grid-template-columns: 1fr; } }
+
+/* Reading progress — Figma "Project detail — reading progress" (variables Light/Dark) */
+:root {
+  --rp-fill: #84cc16; --rp-track: var(--gray-200); --rp-meta: var(--gray-500);
+}
+[data-theme="dark"] {
+  --rp-fill: #c6f135; --rp-track: var(--gray-800); --rp-meta: var(--gray-400);
+}
+.rp { position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 60; background: var(--rp-track); pointer-events: none; }
+.rp-fill { height: 100%; background: var(--rp-fill); transform: scaleX(0); transform-origin: left center; will-change: transform; }
+.wg-read { display: inline-flex; align-items: center; gap: 6px; color: var(--rp-meta); font: 500 13px/16px var(--font-body); }
+.wg-read svg { flex: none; }
