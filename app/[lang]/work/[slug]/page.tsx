@@ -10,6 +10,8 @@ import { LevelIcon, palette } from "@/components/ProjectVisual";
 import Stepper from "@/components/Stepper";
 import { pageMetadata } from "@/lib/seo";
 import { dict, isLang, LANGS } from "@/lib/i18n";
+import ReadingProgress from "@/components/ReadingProgress";
+import { readingMinutes } from "@/lib/reading";
 import StatsBento from "@/components/StatsBento";
 import { bentoStats } from "@/lib/metrics";
 import { formatPeriod, getBlocks, getProject, getVisible, hasDetail, impactIsTarget, isTarget, keyFacts, pick, projectName, splitFacts, yearRange } from "@/lib/notion";
@@ -52,6 +54,15 @@ function Prose({ text, list, targetTag }: { text: string; list?: boolean; target
     );
   }
   return <div className="prose t-p1">{paragraphs(text).map((p, i) => <p key={i}>{p}</p>)}</div>;
+}
+
+function ClockIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 4.6V8l2.2 1.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
 }
 
 function Section({ id, title, children }: { id: string; title?: string; children: React.ReactNode }) {
@@ -98,6 +109,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
     { id: "next-steps", title: s.next, text: pick(p.next, lang) },
   ].filter((x) => x.text || x.extra || (x.id === "metrics" && bento));
 
+  const minutes = readingMinutes(
+    [short, ...fallback.map((x) => x.text)],
+    [...fallback.flatMap((x) => x.extra?.blocks ?? []), ...sections.flatMap((x) => x.blocks)],
+    lang,
+  );
+
   const steps = [
     ...fallback.map((x) => ({ id: x.id, label: x.title })),
     ...sections.map((x) => ({ id: x.id, label: x.title || s.introduction })),
@@ -111,9 +128,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
 
   return (
     <div className="page proj-layout">
+      <ReadingProgress startId="proj-start" endId="proj-end" />
       <Stepper steps={steps} backHref={`/${lang}/work`} backLabel={t.project.back} contentLabel={t.project.content} />
 
-      <section className={`proj-hero2${p.featuredImage ? " has-img" : ""}`}>
+      <section id="proj-start" className={`proj-hero2${p.featuredImage ? " has-img" : ""}`}>
         <div className="ph-copy">
           <div className="wg-foot" style={{ justifyContent: "flex-start", gap: 12 }}>
             <span className="wg-tag">{g.levels[p.level as keyof typeof g.levels] ?? p.level}</span>
@@ -123,6 +141,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
                 {status}
               </span>
             )}
+            <span className="wg-read"><ClockIcon />{minutes} {t.project.readTime}</span>
           </div>
           <h1 className="ph-title">{projectName(p, lang)}</h1>
           <p className="ph-short">{short}</p>
@@ -220,7 +239,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
         </Section>
       )}
 
-      <div className="clear" />
+      <div id="proj-end" className="clear" />
       <Footer lang={lang} t={t.footer} nav={t.nav} compact />
     </div>
   );
