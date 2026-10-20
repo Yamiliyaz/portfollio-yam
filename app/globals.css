@@ -181,7 +181,7 @@ img { display: block; max-width: 100%; }
   --ft-dot-0: var(--gray-300); --ft-dot-4: var(--blue-900);
 }
 [data-theme="dark"] {
-  --ft-bg: #101828; --ft-text: #fcfcfd; --ft-text-2: #d0d5dd; --ft-muted: #98a2b3; --ft-line: #344054;
+  --ft-bg: #0c111d; --ft-text: #fcfcfd; --ft-text-2: #d0d5dd; --ft-muted: #98a2b3; --ft-line: #344054;
   --ft-dot-0: #f2f4f7; --ft-dot-4: #d1e9ff;
 }
 .fr { --fr-h: clamp(840px, 100svh, 1000px); position: relative; height: var(--fr-h); clip-path: inset(0); background: var(--ft-bg); }
@@ -680,7 +680,7 @@ main.route-exit { opacity: 0; transform: translateY(-8px); }
 .wg-chip:hover { border-color: var(--gray-900); color: var(--gray-900); }
 .wg-chip[aria-pressed="true"] { background: var(--gray-900); border-color: var(--gray-900); color: var(--gray-25); }
 .wg-chip:focus-visible, .wg-card:focus-visible { outline: 2px solid var(--gray-900); outline-offset: 2px; }
-.wg-count { margin-left: auto; color: var(--gray-400); font: 400 13px/16px var(--font-body); }
+.wg-count { color: var(--gray-400); font: 400 13px/16px var(--font-body); }
 .wg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .wg-card {
   position: relative; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
@@ -917,3 +917,32 @@ main.route-exit { opacity: 0; transform: translateY(-8px); }
 :root[data-theme="dark"] .mm-ui { background: #344054; }
 :root[data-theme="dark"] .wg-card:hover { box-shadow: 0 16px 32px rgba(0,0,0,.5); }
 :root[data-theme="dark"] .ph-media { box-shadow: 0 20px 40px rgba(0,0,0,.45); }
+
+/* Work · filtros de escritorio como selectores desplegables — Figma "Work — filters (mobile)" (frames "Filters desktop") */
+.wg-full { gap: 8px 12px; }
+.wg-full-meta { display: inline-flex; align-items: center; gap: 16px; margin-left: auto; }
+.wg-dd { position: relative; }
+.wg-dd-btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 14px; border-radius: 36px;
+  border: 1px solid var(--gray-300); background: transparent; color: var(--gray-900); font: 500 14px/20px var(--font-body); cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.wg-dd-btn:hover, .wg-dd-btn[aria-expanded="true"] { border-color: var(--gray-900); }
+.wg-dd-btn[data-active] { background: var(--gray-900); border-color: var(--gray-900); color: var(--gray-25); }
+.wg-dd-btn[data-active] .wg-filter-n { background: var(--gray-25); color: var(--gray-900); }
+.wg-dd-btn svg { flex: none; transition: transform .15s; }
+.wg-dd-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.wg-dd-btn:focus-visible, .wg-dd-opt:focus-visible { outline: 2px solid var(--gray-900); outline-offset: 2px; }
+.wg-dd-menu {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: 6; min-width: 220px; padding: 8px;
+  display: flex; flex-direction: column; gap: 2px; border-radius: 16px; border: 1px solid var(--gray-300);
+  background: var(--bg); box-shadow: 0 12px 28px rgba(16,24,40,.18); animation: wg-pop .14s ease-out;
+}
+.wg-dd-opt { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px; color: var(--gray-900); font: 400 14px/20px var(--font-body); text-align: left; cursor: pointer; }
+.wg-dd-opt:hover { background: var(--gray-100); }
+.wg-dd-opt[aria-checked="true"] { background: var(--gray-100); font-weight: 500; }
+.wg-dd-box { flex: none; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--gray-300); color: transparent; }
+.wg-dd-opt[aria-checked="true"] .wg-dd-box { background: var(--gray-900); border-color: var(--gray-900); color: var(--gray-25); }
+@keyframes wg-pop { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+:root[data-theme="dark"] .wg-dd-menu { box-shadow: 0 12px 28px rgba(0,0,0,.55); }
+@media (prefers-reduced-motion: reduce) { .wg-dd-menu { animation: none; } }
