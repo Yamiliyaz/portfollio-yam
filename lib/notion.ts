@@ -18,6 +18,8 @@ export type Project = {
   start: string;
   end: string;
   tools: string[];
+  /** Propiedad "Plataforma" (multi): Web, App, Web App, TPV. */
+  platforms: string[];
   tags: string[];
   team: string;
   cover: string | null;
@@ -107,6 +109,7 @@ function mapPage(page: any): Project {
     start: date(p["Fecha inicio"]),
     end: date(p["Fecha fin"]),
     tools: multi(p["Herramientas"]),
+    platforms: multi(p["Plataforma"]),
     tags: multi(p["Tags"]),
     team: cleanText(text(p["Equipo"])),
     cover: cover ?? LOCAL_COVERS[slugify(nameEn || name)] ?? null,
@@ -147,7 +150,7 @@ export async function getAllProjects(): Promise<Project[]> {
   if (!process.env.NOTION_TOKEN) {
     // En producción nunca publicar datos de prueba por error: mejor fallar el build.
     if (process.env.VERCEL_ENV === "production") throw new Error("[Notion] Falta NOTION_TOKEN en el entorno de producción.");
-    return (fallback as Project[]).map((p) => ({ ...p, cover: LOCAL_COVERS[p.slug] ?? null, featuredImage: LOCAL_COVERS[p.slug] ?? null, figmaUrl: "", metrics: { en: "", es: "" }, learnings: { en: "", es: "" }, next: { en: "", es: "" } }));
+    return (fallback as Project[]).map((p) => ({ ...p, platforms: p.platforms ?? [], cover: LOCAL_COVERS[p.slug] ?? null, featuredImage: LOCAL_COVERS[p.slug] ?? null, figmaUrl: "", metrics: { en: "", es: "" }, learnings: { en: "", es: "" }, next: { en: "", es: "" } }));
   }
   try {
     return await fetchFromNotion();
