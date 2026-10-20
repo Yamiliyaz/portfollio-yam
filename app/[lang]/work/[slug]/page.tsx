@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -10,6 +11,8 @@ import { LevelIcon, palette } from "@/components/ProjectVisual";
 import Stepper from "@/components/Stepper";
 import { pageMetadata } from "@/lib/seo";
 import { dict, isLang, LANGS } from "@/lib/i18n";
+import VisualBreak from "@/components/VisualBreak";
+import { breakSlots, planBreaks, takeImages } from "@/lib/breaks";
 import ReadingProgress from "@/components/ReadingProgress";
 import { readingMinutes } from "@/lib/reading";
 import StatsBento from "@/components/StatsBento";
@@ -91,7 +94,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
   // "Aprendizajes" existe como campo y como sección del cuerpo: se unen en una sola sección.
   const isLearn = (x: { title: string }) => /^(learnings|aprendizajes)$/i.test(x.title.trim());
   const bodyLearn = allSections.find(isLearn);
-  const sections = allSections.filter((x) => !isLearn(x));
+  const bodySections = allSections.filter((x) => !isLearn(x));
   const prototype = p.figmaUrl && figmaEmbedUrl(p.figmaUrl) ? p.figmaUrl : "";
 
   // Igual que la página de Notion: primero los campos de texto (Impacto, Problema, Research, Solución…)
@@ -108,6 +111,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
     { id: "learnings", title: s.learnings, text: pick(p.learnings, lang), extra: bodyLearn },
     { id: "next-steps", title: s.next, text: pick(p.next, lang) },
   ].filter((x) => x.text || x.extra || (x.id === "metrics" && bento));
+
+  // Descansos visuales: las imágenes del cuerpo van entre las secciones de texto, no al final.
+  const slots = breakSlots(fallback.map((x) => x.id));
+  const taken = takeImages(bodySections);
+  const useBreaks = slots.length > 0 && taken.images.length > 0;
+  const sections = useBreaks ? taken.sections : bodySections;
+  const breaks = useBreaks ? planBreaks(slots, taken.images) : new Map();
 
   const minutes = readingMinutes(
     [short, ...fallback.map((x) => x.text)],
@@ -194,11 +204,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
       )}
 
       {fallback.map((x) => (
-        <Section key={x.id} id={x.id} title={x.title}>
-          {x.id === "metrics" && bento && <StatsBento stats={bento.stats} label={s.metrics} />}
-          {x.text && <Prose text={x.text} list={x.list} targetTag={x.list ? t.project.targetTag : undefined} />}
-          {x.extra && <div className="nb"><Blocks blocks={x.extra.blocks} lang={lang} /></div>}
-        </Section>
+        <Fragment key={x.id}>
+          <Section id={x.id} title={x.title}>
+            {x.id === "metrics" && bento && <StatsBento stats={bento.stats} label={s.metrics} />}
+            {x.text && <Prose text={x.text} list={x.list} targetTag={x.list ? t.project.targetTag : undefined} />}
+            {x.extra && <div className="nb"><Blocks blocks={x.extra.blocks} lang={lang} /></div>}
+          </Section>
+          {breaks.get(x.id) && <VisualBreak images={breaks.get(x.id)} lang={lang} />}
+        </Fragment>
       ))}
 
       {sections.map((x) => (

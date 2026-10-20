@@ -886,3 +886,13 @@ main.route-exit { opacity: 0; transform: translateY(-8px); }
   .wg-bar { margin-bottom: 24px; }
 }
 @media (prefers-reduced-motion: reduce) { .wg-sheet[open], .wg-sheet[open]::backdrop { animation: none; } }
+
+/* Descansos visuales entre secciones — Figma "Project detail — visual breaks" (variables Light/Dark) */
+.proj-break { padding: 0 var(--gutter) 0 calc(var(--gutter) + 192px); margin: 16px 0; }
+.proj-break-grid { display: grid; gap: 16px; align-items: start; grid-template-columns: 1fr; }
+.proj-break-grid.n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.proj-break-grid.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.proj-break-grid .nb { gap: 0; }
+.proj-break-grid .nb-figure { margin: 0; }
+@media (max-width: 960px) { .proj-break { padding-left: var(--gutter); } }
+@media (max-width: 640px) { .proj-break-grid.n2, .proj-break-grid.n3 { grid-template-columns: 1fr; } }
