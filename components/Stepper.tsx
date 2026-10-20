@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Step = { id: string; label: string };
 
@@ -22,8 +22,27 @@ export default function Stepper({ steps, backHref, backLabel, contentLabel }: { 
     return () => io.disconnect();
   }, [steps]);
 
+  // El índice es fijo (sticky) y no cabe en el espacio del footer: se oculta al llegar al final del contenido.
+  const aside = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = aside.current;
+    const end = document.getElementById("proj-end");
+    if (!el || !end) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const last = el.lastElementChild?.getBoundingClientRect().bottom ?? 0;
+      el.toggleAttribute("data-hidden", end.getBoundingClientRect().top < last + 16);
+    };
+    const queue = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("scroll", queue); window.removeEventListener("resize", queue); };
+  }, [steps]);
+
   return (
-    <aside className="stepper" aria-label={contentLabel}>
+    <aside className="stepper" aria-label={contentLabel} ref={aside}>
       <Link className="back" href={backHref}>
         <img src="/icons/arrow-down.svg" alt="" />
         {backLabel}

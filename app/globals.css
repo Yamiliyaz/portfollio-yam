@@ -955,3 +955,12 @@ main.route-exit { opacity: 0; transform: translateY(-8px); }
 .proj-break-grid .nb-figure { margin: 0; }
 @media (max-width: 960px) { .proj-break { padding-left: var(--gutter); } }
 @media (max-width: 640px) { .proj-break-grid.n2, .proj-break-grid.n3 { grid-template-columns: 1fr; } }
+
+/* Índice del detalle: se oculta al llegar al footer */
+.stepper { transition: opacity .2s; }
+.stepper[data-hidden] { opacity: 0; visibility: hidden; pointer-events: none; }
+
+/* Imagen destacada: alto estándar (Figma "Featured image — standard height") */
+.proj-hero2 .ph-media, .proj-hero2.has-img .ph-media { aspect-ratio: auto; height: var(--ph-h, 600px); background: var(--gray-100); }
+.proj-hero2.has-img .ph-media img { height: 100%; }
+@media (max-width: 960px) { .proj-hero2 .ph-media, .proj-hero2.has-img .ph-media { height: auto; aspect-ratio: 4 / 3; } }
