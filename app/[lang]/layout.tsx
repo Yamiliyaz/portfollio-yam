@@ -3,6 +3,7 @@ import { DM_Serif_Display, Manrope } from "next/font/google";
 import { notFound } from "next/navigation";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import RouteTransition from "@/components/RouteTransition";
 import ScrollMemory from "@/components/ScrollMemory";
@@ -50,6 +51,7 @@ export default async function RootLayout({
         <RouteTransition>
           <main>{children}</main>
         </RouteTransition>
+        <Footer lang={lang} t={dict[lang].footer} nav={dict[lang].nav} />
         <SpeedInsights />
         <Analytics />
       </body>

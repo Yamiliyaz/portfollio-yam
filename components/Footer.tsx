@@ -20,9 +20,8 @@ function Item({ href, children, external }: { href: string; children: React.Reac
   );
 }
 
-export default function Footer({
-  lang, t, nav, compact,
-}: { lang: Lang; t: Dict["footer"]; nav: Dict["nav"]; compact?: boolean }) {
+/** Footer único y transversal (como la Nav): se monta en el layout y se descubre por detrás con el wordmark de puntos. */
+export default function Footer({ lang, t, nav }: { lang: Lang; t: Dict["footer"]; nav: Dict["nav"] }) {
   const content = (
     <>
       <div className="footer-ping">
@@ -55,10 +54,6 @@ export default function Footer({
       </div>
     </>
   );
-  // Compacto (detalle de proyecto): footer corto de siempre. Resto de páginas: footer que se descubre por detrás + wordmark de puntos.
-  if (compact) {
-    return <footer className="page footer" data-compact>{content}</footer>;
-  }
   return (
     <footer className="fr">
       <div className="fr-fixed">

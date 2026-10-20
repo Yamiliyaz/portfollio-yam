@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import { about } from "@/lib/about";
 import { CONTACT_EMAIL } from "@/lib/contact";
@@ -145,8 +144,6 @@ export default async function About({ params }: { params: Promise<{ lang: string
           </div>
         </div>
       </Reveal>
-
-      <Footer lang={lang} t={t.footer} nav={t.nav} />
     </div>
   );
 }

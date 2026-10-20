@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Footer from "@/components/Footer";
 import { dict, isLang } from "@/lib/i18n";
 import WorkGallery, { type GalleryItem } from "@/components/WorkGallery";
 import { formatPeriod, getGallery, hasDetail, impactIsTarget, keyFacts, pick, projectName } from "@/lib/notion";
@@ -48,7 +47,6 @@ export default async function Work({ params }: { params: Promise<{ lang: string 
           <WorkGallery items={items} t={{ ...t.work.gallery, readMore: t.work.readMore }} />
         </div>
       </section>
-      <Footer lang={lang} t={t.footer} nav={t.nav} />
     </div>
   );
 }
