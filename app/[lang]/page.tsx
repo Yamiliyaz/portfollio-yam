@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import SmoothLink from "@/components/SmoothLink";
 import TestimonialsMarquee from "@/components/TestimonialsMarquee";
@@ -154,8 +153,6 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </div>
       </Reveal>
-
-      <Footer lang={lang} t={t.footer} nav={t.nav} />
     </div>
   );
 }

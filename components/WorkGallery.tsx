@@ -37,7 +37,23 @@ const MAX_TOOLS = 4;
 export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: GalleryLabels }) {
   const [sel, setSel] = useState<Record<Group, string[]>>({ level: [], company: [], status: [] });
   const [open, setOpen] = useState(false);
+  const [menu, setMenu] = useState<Group | null>(null);
   const sheet = useRef<HTMLDialogElement>(null);
+  const bar = useRef<HTMLDivElement>(null);
+
+  // Menús de escritorio: se cierran con Esc (devuelve el foco al botón) o al hacer click fuera.
+  useEffect(() => {
+    if (!menu) return;
+    const onDown = (e: MouseEvent) => { if (!bar.current?.contains(e.target as Node)) setMenu(null); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setMenu(null);
+      bar.current?.querySelector<HTMLElement>(`[data-dd="${menu}"] .wg-dd-btn`)?.focus();
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("mousedown", onDown); document.removeEventListener("keydown", onKey); };
+  }, [menu]);
 
   // Hoja de filtros (móvil): <dialog> modal; bloquea el scroll de la página mientras está abierta.
   useEffect(() => {
@@ -106,13 +122,54 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
     </div>
   ));
 
+  const onMenuKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+    e.preventDefault();
+    const items = [...e.currentTarget.querySelectorAll<HTMLElement>('[role="menuitemcheckbox"]')];
+    const i = items.indexOf(document.activeElement as HTMLElement);
+    items[(i + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length]?.focus();
+  };
+
+  const dropdowns = (["level", "company", "status"] as Group[]).map((g) => (
+    <div className="wg-dd" data-dd={g} key={g}>
+      <button
+        type="button"
+        className="wg-dd-btn"
+        aria-haspopup="menu"
+        aria-expanded={menu === g}
+        data-active={sel[g].length > 0 || undefined}
+        onClick={() => setMenu(menu === g ? null : g)}
+        onKeyDown={(e) => { if (e.key === "ArrowDown") { e.preventDefault(); setMenu(g); requestAnimationFrame(() => bar.current?.querySelector<HTMLElement>(`[data-dd="${g}"] [role="menuitemcheckbox"]`)?.focus()); } }}
+      >
+        {t[g]}
+        {sel[g].length > 0 && <span className="wg-filter-n">{sel[g].length}</span>}
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+      </button>
+      {menu === g && (
+        <div className="wg-dd-menu" role="menu" aria-label={t[g]} onKeyDown={onMenuKey}>
+          {options[g].map((v) => (
+            <button type="button" key={v} role="menuitemcheckbox" aria-checked={sel[g].includes(v)} className="wg-dd-opt" onClick={() => toggle(g, v)}>
+              <span className="wg-dd-box" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </span>
+              {label(g, v)}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  ));
+
   return (
     <>
-      <div className="wg-bar" role="group" aria-label="Filters">
+      <div className="wg-bar" role="group" aria-label="Filters" ref={bar}>
         <div className="wg-full">
           <button type="button" className="wg-chip" aria-pressed={!anyActive} onClick={clear}>{t.all}</button>
-          {groups}
-          <span className="wg-count" aria-live="polite">{shown.length} {t.count}</span>
+          {dropdowns}
+          <span className="wg-full-meta">
+            {anyActive && <button type="button" className="wg-link" onClick={clear}>{t.clear}</button>}
+            <span className="wg-count" aria-live="polite">{shown.length} {t.count}</span>
+          </span>
         </div>
 
         <div className="wg-compact">

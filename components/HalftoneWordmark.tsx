@@ -33,9 +33,14 @@ export default function HalftoneWordmark({ word, crop = 0.26, radius = 80 }: Pro
     const css = getComputedStyle(root);
     const family = css.getPropertyValue("--font-body").trim() || "system-ui, sans-serif";
     // colores del tema del footer (--ft-dot-0 en reposo, --ft-dot-4 al ser empujados)
-    const ink = hexToRgb(css.getPropertyValue("--ft-dot-0")) || [208, 213, 221];
-    const warm = hexToRgb(css.getPropertyValue("--ft-dot-4")) || [25, 65, 133];
-    const inkCss = `rgb(${ink.join(",")})`;
+    let ink: [number, number, number] = [208, 213, 221], warm: [number, number, number] = [25, 65, 133], inkCss = "";
+    const readColors = () => {
+      const c = getComputedStyle(root);
+      ink = hexToRgb(c.getPropertyValue("--ft-dot-0")) || [208, 213, 221];
+      warm = hexToRgb(c.getPropertyValue("--ft-dot-4")) || [25, 65, 133];
+      inkCss = `rgb(${ink.join(",")})`;
+    };
+    readColors();
 
     let w = 0, h = 0, dpr = 1, px = -1e5, py = -1e5, raf = 0;
     let awake = true, started = false, alive = true;
@@ -179,6 +184,10 @@ export default function HalftoneWordmark({ word, crop = 0.26, radius = 80 }: Pro
     }, { rootMargin: "300px 0px" });
     io.observe(host);
 
+    // cambio de tema: vuelve a leer los colores y repinta
+    const mo = new MutationObserver(() => { readColors(); if (started) { draw(performance.now()); wake(); } });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
     const ro = new ResizeObserver(() => { if (started) { layout(); wake(); } });
     ro.observe(root);
     // el área de interacción es todo el footer, no solo el canvas
@@ -190,6 +199,7 @@ export default function HalftoneWordmark({ word, crop = 0.26, radius = 80 }: Pro
       alive = false;
       cancelAnimationFrame(raf);
       io.disconnect();
+      mo.disconnect();
       ro.disconnect();
       host.removeEventListener("pointermove", onMove);
       host.removeEventListener("pointerleave", onLeave);

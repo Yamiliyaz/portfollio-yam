@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import FigmaEmbed from "@/components/FigmaEmbed";
 import { figmaEmbedUrl } from "@/lib/figma";
@@ -240,7 +239,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ lang: 
       )}
 
       <div id="proj-end" className="clear" />
-      <Footer lang={lang} t={t.footer} nav={t.nav} compact />
     </div>
   );
 }
