@@ -8,7 +8,7 @@ export function isLang(v: string): v is Lang {
 // Textos estáticos del diseño de Figma (EN es el original; ES es traducción para revisar).
 export const dict = {
   en: {
-    nav: { home: "Home", work: "Work", about: "About", resume: "Resume" },
+    nav: { home: "Home", work: "Work", about: "About", resume: "Resume", theme: { toDark: "Switch to dark mode", toLight: "Switch to light mode" } },
     seo: {
       home: { title: "Yamil Arroyo — Principal Product Designer", description: "Principal Product Designer with 12+ years of experience designing financial products and the systems that help them scale." },
       work: { title: "Work", description: "I am passionate about creating digital products from a “user-centered” approach." },
@@ -105,7 +105,7 @@ export const dict = {
     },
   },
   es: {
-    nav: { home: "Inicio", work: "Proyectos", about: "Sobre mí", resume: "CV" },
+    nav: { home: "Inicio", work: "Proyectos", about: "Sobre mí", resume: "CV", theme: { toDark: "Cambiar a modo oscuro", toLight: "Cambiar a modo claro" } },
     seo: {
       home: { title: "Yamil Arroyo — Principal Product Designer", description: "Principal Product Designer con más de 12 años de experiencia diseñando productos financieros y los sistemas que ayudan a escalarlos." },
       work: { title: "Proyectos", description: "Me apasiona crear productos digitales desde un enfoque “centrado en el usuario”." },

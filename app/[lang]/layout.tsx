@@ -13,6 +13,9 @@ import "../globals.css";
 const manrope = Manrope({ subsets: ["latin"], weight: ["300", "400", "500", "700", "800"], variable: "--font-manrope", display: "swap" });
 const dmSerif = DM_Serif_Display({ subsets: ["latin"], weight: "400", variable: "--font-dm-serif", display: "swap" });
 
+// Antes de pintar: tema guardado, o el del sistema. Evita el parpadeo claro → oscuro.
+const THEME_SCRIPT = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){}`;
+
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const t = isLang(lang) ? dict[lang].seo.home : dict.en.seo.home;
@@ -37,7 +40,10 @@ export default async function RootLayout({
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   return (
-    <html lang={lang} className={`${manrope.variable} ${dmSerif.variable}`}>
+    <html lang={lang} className={`${manrope.variable} ${dmSerif.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
         <Nav lang={lang} t={dict[lang].nav} />
         <ScrollMemory />

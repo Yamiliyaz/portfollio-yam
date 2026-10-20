@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Dict, Lang } from "@/lib/i18n";
+import ThemeToggle from "./ThemeToggle";
 
 export const RESUME_URL =
   "https://drive.google.com/file/d/1mM8qlWMb0JJ_8SNZcykObdMzCpc4waKC/view?usp=drive_link";
@@ -39,6 +40,7 @@ export default function Nav({ lang, t }: { lang: Lang; t: Dict["nav"] }) {
               </Link>
             ))}
           </div>
+          <ThemeToggle labels={t.theme} />
           <a className="btn btn-outline" href={RESUME_URL} target="_blank" rel="noreferrer">
             {t.resume}
             <img className="icon20" src="/icons/arrow-outward-dark.svg" alt="" />
