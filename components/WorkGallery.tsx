@@ -16,6 +16,7 @@ export type GalleryItem = {
   short: string;
   impact: string;
   tools: string[];
+  platforms: string[];
   cover: string | null;
   pinned: "featured" | "recent" | null;
   /** false = proyecto en progreso: tarjeta deshabilitada, sin detalle. */
@@ -23,19 +24,22 @@ export type GalleryItem = {
 };
 
 export type GalleryLabels = {
-  all: string; level: string; company: string; status: string;
+  all: string; platform: string; level: string; company: string; status: string;
   featured: string; recent: string; soon: string; inProgress: string; done: string; more: string; impact: string;
   empty: string; clear: string; count: string; readMore: string;
   filters: string; showN: string; close: string; remove: string;
   levels: Record<string, string>;
   statuses: Record<string, string>;
+  platforms: Record<string, string>;
 };
 
-type Group = "level" | "company" | "status";
+type Group = "platform" | "level" | "company" | "status";
+const GROUPS: Group[] = ["platform", "level", "company", "status"];
+const EMPTY: Record<Group, string[]> = { platform: [], level: [], company: [], status: [] };
 const MAX_TOOLS = 4;
 
 export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: GalleryLabels }) {
-  const [sel, setSel] = useState<Record<Group, string[]>>({ level: [], company: [], status: [] });
+  const [sel, setSel] = useState<Record<Group, string[]>>(EMPTY);
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<Group | null>(null);
   const sheet = useRef<HTMLDialogElement>(null);
@@ -75,7 +79,7 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem("wg-filters");
-      if (raw) setSel({ level: [], company: [], status: [], ...JSON.parse(raw) });
+      if (raw) setSel({ ...EMPTY, ...JSON.parse(raw) });
     } catch {}
   }, []);
   useEffect(() => {
@@ -85,6 +89,7 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
   const options = useMemo(() => {
     const uniq = (f: (i: GalleryItem) => string) => [...new Set(items.map(f).filter(Boolean))];
     return {
+      platform: ["Web", "App", "Web App", "TPV"].filter((v) => items.some((i) => i.platforms.includes(v))),
       level: ["Proyecto", "Iniciativa", "Feature"].filter((l) => items.some((i) => i.level === l)),
       company: uniq((i) => i.company),
       status: ["Completado", "En progreso"].filter((s) => items.some((i) => i.status === s)),
@@ -93,23 +98,24 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
 
   const toggle = (g: Group, v: string) =>
     setSel((s) => ({ ...s, [g]: s[g].includes(v) ? s[g].filter((x) => x !== v) : [...s[g], v] }));
-  const anyActive = sel.level.length + sel.company.length + sel.status.length > 0;
-  const clear = () => setSel({ level: [], company: [], status: [] });
+  const activeCount = GROUPS.reduce((n, g) => n + sel[g].length, 0);
+  const anyActive = activeCount > 0;
+  const clear = () => setSel(EMPTY);
 
   // Dentro de un grupo: OR. Entre grupos: AND.
   const shown = items.filter(
     (i) =>
+      (!sel.platform.length || i.platforms.some((v) => sel.platform.includes(v))) &&
       (!sel.level.length || sel.level.includes(i.level)) &&
       (!sel.company.length || sel.company.includes(i.company)) &&
       (!sel.status.length || sel.status.includes(i.status)),
   );
 
-  const activeCount = sel.level.length + sel.company.length + sel.status.length;
-  const activeChips = (["level", "company", "status"] as Group[]).flatMap((g) => sel[g].map((v) => ({ g, v })));
+  const activeChips = GROUPS.flatMap((g) => sel[g].map((v) => ({ g, v })));
 
-  const label = (g: Group, v: string) => (g === "level" ? t.levels[v] : g === "status" ? t.statuses[v] : v) ?? v;
+  const label = (g: Group, v: string) => (g === "level" ? t.levels[v] : g === "status" ? t.statuses[v] : g === "platform" ? t.platforms[v] : v) ?? v;
 
-  const groups = (["level", "company", "status"] as Group[]).map((g) => (
+  const groups = GROUPS.filter((g) => options[g].length).map((g) => (
     <div className="wg-group" key={g} role="group" aria-label={t[g]}>
       <span className="wg-group-label">{t[g]}</span>
       <div className="wg-group-chips">
@@ -130,7 +136,7 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
     items[(i + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length]?.focus();
   };
 
-  const dropdowns = (["level", "company", "status"] as Group[]).map((g) => (
+  const dropdowns = GROUPS.filter((g) => options[g].length).map((g) => (
     <div className="wg-dd" data-dd={g} key={g}>
       <button
         type="button"

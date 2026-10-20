@@ -55,12 +55,13 @@ export const dict = {
       lead: "I am passionate about creating digital products from a “user-centered” approach.",
       readMore: "Read more",
       gallery: {
-        all: "All", level: "Type", company: "Company", status: "Status",
+        all: "All", platform: "Platform", level: "Type", company: "Company", status: "Status",
         featured: "Featured", recent: "Recent", more: "more", impact: "Impact",
         soon: "Coming soon", inProgress: "In progress", done: "Completed", empty: "No projects match these filters.", clear: "Clear filters", count: "projects",
         filters: "Filters", showN: "Show {n} projects", close: "Close", remove: "Remove filter",
         levels: { Proyecto: "Project", Iniciativa: "Initiative", Feature: "Feature" },
         statuses: { Completado: "Completed", "En progreso": "In progress" },
+        platforms: { Web: "Web", App: "App", "Web App": "Web App", TPV: "POS terminal" },
       },
     },
     footer: {
@@ -152,12 +153,13 @@ export const dict = {
       lead: "Me apasiona crear productos digitales desde un enfoque “centrado en el usuario”.",
       readMore: "Leer más",
       gallery: {
-        all: "Todos", level: "Tipo", company: "Empresa", status: "Estado",
+        all: "Todos", platform: "Plataforma", level: "Tipo", company: "Empresa", status: "Estado",
         featured: "Destacado", recent: "Reciente", more: "más", impact: "Impacto",
         soon: "Próximamente", inProgress: "En progreso", done: "Completados", empty: "Ningún proyecto coincide con estos filtros.", clear: "Quitar filtros", count: "proyectos",
         filters: "Filtros", showN: "Ver {n} proyectos", close: "Cerrar", remove: "Quitar filtro",
         levels: { Proyecto: "Proyecto", Iniciativa: "Iniciativa", Feature: "Feature" },
         statuses: { Completado: "Completado", "En progreso": "En progreso" },
+        platforms: { Web: "Web", App: "App", "Web App": "Web App", TPV: "TPV" },
       },
     },
     footer: {

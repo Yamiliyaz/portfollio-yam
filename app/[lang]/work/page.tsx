@@ -31,6 +31,7 @@ export default async function Work({ params }: { params: Promise<{ lang: string 
     short: pick(p.short, lang),
     impact: keyFacts(p, lang, 1)?.items[0] ?? (impactIsTarget(pick(p.impact, lang)) ? "" : firstLine(pick(p.impact, lang))),
     tools: p.tools,
+    platforms: p.platforms,
     cover: p.cover,
     pinned: p.pinned,
     enabled: hasDetail(p),
