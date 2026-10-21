@@ -206,11 +206,21 @@ export async function getProjects(): Promise<Project[]> {
   return all.filter((p) => p.level === "Proyecto" && p.status !== "Archivado").sort(byOrder);
 }
 
-/** Proyectos con "Destacado" marcado, en orden; si no hay ninguno, los 3 primeros. */
+/** Tope de destacados (acordeón de Work y lista del Home). */
+export const MAX_FEATURED = 7;
+
+/** Destacados = proyectos completados con "Destacado" marcado, por Orden y luego fecha (más reciente primero), hasta MAX_FEATURED. */
+export function pickFeatured<T extends Project>(projects: T[]): T[] {
+  return projects
+    .filter((p) => p.featured && p.status !== "En progreso")
+    .sort((a, b) => a.order - b.order || (b.start || "").localeCompare(a.start || ""))
+    .slice(0, MAX_FEATURED);
+}
+
+/** Destacados del Home: los mismos que en Work; si no hay ninguno marcado, los 3 primeros proyectos. */
 export async function getFeatured(): Promise<Project[]> {
-  const projects = await getProjects();
-  const featured = projects.filter((p) => p.featured);
-  return (featured.length ? featured : projects).slice(0, 3);
+  const featured = pickFeatured(await getVisible());
+  return featured.length ? featured : (await getProjects()).slice(0, 3);
 }
 
 /** Cuerpo de la página de Notion (bloques), con sus hijos. Vacío sin token (desarrollo). */
