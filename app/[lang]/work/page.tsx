@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { dict, isLang } from "@/lib/i18n";
 import WorkGallery, { type GalleryItem } from "@/components/WorkGallery";
-import { formatPeriod, getGallery, hasDetail, impactIsTarget, keyFacts, pick, projectName } from "@/lib/notion";
+import { formatPeriod, getGallery, hasDetail, pickFeatured, impactIsTarget, keyFacts, pick, projectName } from "@/lib/notion";
 import { pageMetadata } from "@/lib/seo";
 
 export const revalidate = 1800;
@@ -12,7 +12,6 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return pageMetadata({ lang, path: "/work", ...dict[lang].seo.work });
 }
 
-const MAX_FEATURED = 7;
 const firstLine = (s: string) => s.split(/\s\|\s|\n/)[0]?.trim() ?? "";
 
 export default async function Work({ params }: { params: Promise<{ lang: string }> }) {
@@ -21,11 +20,7 @@ export default async function Work({ params }: { params: Promise<{ lang: string 
   const t = dict[lang];
   // Solo proyectos completados. Destacados (campo "Destacado" de Notion): por Orden y luego fecha, hasta MAX_FEATURED.
   const projects = (await getGallery()).filter(hasDetail);
-  const featuredIds = projects
-    .filter((p) => p.featured)
-    .sort((a, b) => a.order - b.order || (b.start || "").localeCompare(a.start || ""))
-    .slice(0, MAX_FEATURED)
-    .map((p) => p.id);
+  const featuredIds = pickFeatured(projects).map((p) => p.id);
   const byDate = [...projects].sort((a, b) => (b.start || "").localeCompare(a.start || "") || a.order - b.order);
   const items: GalleryItem[] = byDate.map((p) => ({
     id: p.id,
