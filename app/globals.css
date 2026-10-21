@@ -1049,3 +1049,12 @@ main.route-exit { opacity: 0; transform: translateY(-8px); }
 :root[data-theme="dark"] .fa-panel, :root[data-theme="dark"] .wl, :root[data-theme="dark"] .wl-row { border-color: var(--gray-200); }
 
 @media (max-width: 640px) { .figma-embed { height: clamp(460px, 74vh, 640px); } }
+
+/* Destacados ↔ filtros: el bloque se pliega (la lista sube por encima) y se despliega al limpiar */
+.fa-wrap { display: grid; grid-template-rows: 1fr; }
+.fa-wrap-in { min-height: 0; overflow: hidden; }
+.fa-wrap[data-animate] { transition: grid-template-rows .7s cubic-bezier(.32, .72, 0, 1); }
+.fa-wrap[data-animate] .fa { transition: transform .7s cubic-bezier(.32, .72, 0, 1), opacity .45s ease; }
+.fa-wrap.is-collapsed { grid-template-rows: 0fr; }
+.fa-wrap.is-collapsed .fa { transform: translateY(-26%) scale(.97); opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .fa-wrap[data-animate], .fa-wrap[data-animate] .fa { transition: none; } }

@@ -45,6 +45,7 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
   const [sel, setSel] = useState<Record<Group, string[]>>(EMPTY);
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<Group | null>(null);
+  const [ready, setReady] = useState(false); // activa las transiciones después de restaurar los filtros guardados
   const sheet = useRef<HTMLDialogElement>(null);
   const bar = useRef<HTMLDivElement>(null);
 
@@ -84,6 +85,8 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
       const raw = sessionStorage.getItem("wg-filters");
       if (raw) setSel({ ...EMPTY, ...JSON.parse(raw) });
     } catch {}
+    const id = window.setTimeout(() => setReady(true), 80);
+    return () => window.clearTimeout(id);
   }, []);
   useEffect(() => {
     try { sessionStorage.setItem("wg-filters", JSON.stringify(sel)); } catch {}
@@ -172,7 +175,14 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
 
   return (
     <>
-      {!anyActive && featured.length > 0 && <FeaturedAccordion items={featured} t={t} />}
+      {featured.length > 0 && (
+        // Al filtrar, el bloque de destacados se pliega y la lista sube por encima; al limpiar, se despliega de nuevo.
+        <div className={`fa-wrap${anyActive ? " is-collapsed" : ""}`} data-animate={ready || undefined} inert={anyActive} aria-hidden={anyActive || undefined}>
+          <div className="fa-wrap-in">
+            <FeaturedAccordion items={featured} t={t} />
+          </div>
+        </div>
+      )}
       <div className="wg-bar" role="group" aria-label="Filters" ref={bar}>
         <div className="wg-full">
           <button type="button" className="wg-chip" aria-pressed={!anyActive} onClick={clear}>{t.all}</button>
