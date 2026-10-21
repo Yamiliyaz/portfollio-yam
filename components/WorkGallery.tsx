@@ -19,6 +19,8 @@ export type GalleryItem = {
   platforms: string[];
   cover: string | null;
   pinned: "featured" | "recent" | null;
+  /** Posición en el acordeón de destacados (0 = primero); null = va en la lista. */
+  featuredRank: number | null;
   /** false = proyecto en progreso: tarjeta deshabilitada, sin detalle. */
   enabled: boolean;
 };
@@ -28,15 +30,16 @@ export type GalleryLabels = {
   featured: string; recent: string; soon: string; inProgress: string; done: string; more: string; impact: string;
   empty: string; clear: string; count: string; readMore: string;
   filters: string; showN: string; close: string; remove: string;
+  viewCase: string; loadMore: string; showing: string; selected: string;
   levels: Record<string, string>;
   statuses: Record<string, string>;
   platforms: Record<string, string>;
 };
 
-type Group = "platform" | "level" | "company" | "status";
-const GROUPS: Group[] = ["platform", "level", "company", "status"];
-const EMPTY: Record<Group, string[]> = { platform: [], level: [], company: [], status: [] };
-const MAX_TOOLS = 4;
+type Group = "platform" | "level" | "company";
+const GROUPS: Group[] = ["platform", "level", "company"];
+const EMPTY: Record<Group, string[]> = { platform: [], level: [], company: [] };
+const STEP = 3; // la lista se revela de 3 en 3
 
 export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: GalleryLabels }) {
   const [sel, setSel] = useState<Record<Group, string[]>>(EMPTY);
@@ -92,7 +95,6 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
       platform: ["Web", "App", "Web App", "TPV"].filter((v) => items.some((i) => i.platforms.includes(v))),
       level: ["Proyecto", "Iniciativa", "Feature"].filter((l) => items.some((i) => i.level === l)),
       company: uniq((i) => i.company),
-      status: ["Completado", "En progreso"].filter((s) => items.some((i) => i.status === s)),
     };
   }, [items]);
 
@@ -107,13 +109,15 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
     (i) =>
       (!sel.platform.length || i.platforms.some((v) => sel.platform.includes(v))) &&
       (!sel.level.length || sel.level.includes(i.level)) &&
-      (!sel.company.length || sel.company.includes(i.company)) &&
-      (!sel.status.length || sel.status.includes(i.status)),
+      (!sel.company.length || sel.company.includes(i.company)),
   );
 
   const activeChips = GROUPS.flatMap((g) => sel[g].map((v) => ({ g, v })));
 
-  const label = (g: Group, v: string) => (g === "level" ? t.levels[v] : g === "status" ? t.statuses[v] : g === "platform" ? t.platforms[v] : v) ?? v;
+  const featured = items.filter((i) => i.featuredRank !== null).sort((a, b) => (a.featuredRank as number) - (b.featuredRank as number));
+  const listItems = anyActive ? shown : items.filter((i) => i.featuredRank === null);
+
+  const label = (g: Group, v: string) => (g === "level" ? t.levels[v] : g === "platform" ? t.platforms[v] : v) ?? v;
 
   const groups = GROUPS.filter((g) => options[g].length).map((g) => (
     <div className="wg-group" key={g} role="group" aria-label={t[g]}>
@@ -168,6 +172,7 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
 
   return (
     <>
+      {!anyActive && featured.length > 0 && <FeaturedAccordion items={featured} t={t} />}
       <div className="wg-bar" role="group" aria-label="Filters" ref={bar}>
         <div className="wg-full">
           <button type="button" className="wg-chip" aria-pressed={!anyActive} onClick={clear}>{t.all}</button>
@@ -228,71 +233,98 @@ export default function WorkGallery({ items, t }: { items: GalleryItem[]; t: Gal
         </div>
       </dialog>
 
-      {shown.length === 0 ? (
+      {anyActive && shown.length === 0 ? (
         <div className="wg-empty">
           <p className="t-h6">{t.empty}</p>
           <button type="button" className="btn btn-outline" onClick={clear}>{t.clear}</button>
         </div>
       ) : (
         <>
-          {(() => {
-            const card = (p: GalleryItem, idx: number) => {
-            const c = palette(p.company);
-            const Card: React.ElementType = p.enabled ? Link : "div";
-            return (
-              <Card
-                key={p.id}
-                {...(p.enabled ? { href: p.href } : { "aria-disabled": true })}
-                className={`wg-card${p.enabled ? "" : " is-disabled"}`}
-                style={{ ["--accent" as string]: c.accent, ["--from" as string]: c.from, ["--to" as string]: c.to, ["--i" as string]: idx % 9 }}
-              >
-                <div className="wg-top">
-                  <span className="wg-num">( {String(idx + 1).padStart(3, "0")} )</span>
-                  {!p.enabled ? <span className="wg-badge soon">{t.soon}</span> : p.pinned && <span className="wg-badge">{p.pinned === "featured" ? t.featured : t.recent}</span>}
-                </div>
-                <LevelIcon level={p.level} />
-                <div className="wg-body">
-                  <span className="wg-company">{p.company}</span>
-                  <h2 className="wg-title">{p.title}</h2>
-                  <p className="wg-meta">{[p.role, p.period].filter(Boolean).join(" · ")}</p>
-                  <p className="wg-short">{p.short}</p>
-                  {p.enabled && p.impact && <p className="wg-impact"><b>{t.impact}</b> {p.impact}</p>}
-                  <div className="wg-foot">
-                    <span className="wg-tag">{label("level", p.level)}</span>
-                    <span className="wg-status">
-                      <i className={`wg-dot ${p.status === "En progreso" ? "live" : "done"}`} />
-                      {label("status", p.status)}
-                    </span>
-                  </div>
-                  {p.tools.length > 0 && (
-                    <div className="wg-tools">
-                      {p.tools.slice(0, MAX_TOOLS).map((x) => <span key={x} className="wg-tool">{x}</span>)}
-                      {p.tools.length > MAX_TOOLS && <span className="wg-tool">+{p.tools.length - MAX_TOOLS} {t.more}</span>}
-                    </div>
-                  )}
-                </div>
-                <div className="wg-overlay" />
-              </Card>
-            );
-          };
-            const done = shown.filter((p) => p.enabled);
-            const wip = shown.filter((p) => !p.enabled);
-            return (
-              <>
-                {done.length > 0 && <div className="wg-grid">{done.map((p, i) => card(p, i))}</div>}
-                {wip.length > 0 && (
-                  <>
-                    <div className="wg-divider" role="separator" aria-label={t.inProgress}>
-                      <span>{t.inProgress}</span>
-                    </div>
-                    <div className="wg-grid">{wip.map((p, i) => card(p, done.length + i))}</div>
-                  </>
-                )}
-              </>
-            );
-          })()}
+          <ProjectList items={listItems} offset={anyActive ? 0 : featured.length} resetKey={JSON.stringify(sel)} t={t} labelLevel={(v) => label("level", v)} labelPlatform={(v) => label("platform", v)} />
         </>
       )}
     </>
+  );
+}
+
+/** Lista compacta: se revela de 3 en 3 al llegar al final (IntersectionObserver) o con el botón. */
+function ProjectList({ items, offset, resetKey, t, labelPlatform }: { items: GalleryItem[]; offset: number; resetKey: string; t: GalleryLabels; labelLevel: (v: string) => string; labelPlatform: (v: string) => string }) {
+  const [visible, setVisible] = useState(STEP);
+  const sentinel = useRef<HTMLDivElement>(null);
+  useEffect(() => { setVisible(STEP); }, [resetKey]);
+  useEffect(() => {
+    const el = sentinel.current;
+    if (!el || visible >= items.length) return;
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible((v) => Math.min(items.length, v + STEP)); }, { rootMargin: "0px 0px -12% 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [visible, items.length]);
+  if (!items.length) return null;
+  const shownItems = items.slice(0, visible);
+  return (
+    <>
+      <ul className="wl">
+        {shownItems.map((p, i) => (
+          <li key={p.id} style={{ ["--i" as string]: i % STEP }}>
+            <Link href={p.href} className="wl-row">
+              <span className="wl-num">( {String(offset + i + 1).padStart(3, "0")} )</span>
+              <span className="wl-title">{p.title}</span>
+              <span className="wl-co">{p.company}</span>
+              <span className="wl-year">{p.period}</span>
+              <span className="wl-plat">{p.platforms.map((v) => <span key={v} className="wl-chip">{labelPlatform(v)}</span>)}</span>
+              <svg className="wl-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5.8 14.2L14.2 5.8M6.7 5.8h7.5v7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <div className="wl-more" ref={sentinel}>
+        <p className="wl-count">{t.showing.replace("{n}", String(shownItems.length)).replace("{total}", String(items.length))}</p>
+        {visible < items.length && <button type="button" className="btn btn-outline" onClick={() => setVisible((v) => Math.min(items.length, v + STEP))}>{t.loadMore}</button>}
+      </div>
+    </>
+  );
+}
+
+/** Destacados: acordeón horizontal (escritorio) / vertical (móvil). Abre con hover, foco o toque. */
+function FeaturedAccordion({ items, t }: { items: GalleryItem[]; t: GalleryLabels }) {
+  const [active, setActive] = useState(0);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return (
+    <ul className="fa" style={{ ["--n" as string]: items.length }} aria-label={t.selected}>
+      {items.map((p, i) => {
+        const c = palette(p.company);
+        const open = i === active;
+        return (
+          <li key={p.id} className={`fa-panel${open ? " is-open" : ""}`} style={{ ["--accent" as string]: c.accent }}>
+            <button
+              type="button"
+              className="fa-rail"
+              aria-expanded={open}
+              onPointerEnter={(e) => { if (e.pointerType === "mouse") setActive(i); }}
+              onFocus={() => setActive(i)}
+              onClick={() => setActive(i)}
+            >
+              <span className="fa-rail-title">{p.title}</span>
+              <span className="fa-rail-meta">{p.period}</span>
+            </button>
+            <div className="fa-media" aria-hidden={!open}>
+              {p.cover ? <img src={p.cover} alt="" draggable={false} loading={i === 0 ? "eager" : "lazy"} /> : <LevelIcon level={p.level} className="fa-icon" />}
+              <div className="fa-scrim" />
+              <span className="fa-counter">{pad(i + 1)} / {pad(items.length)}</span>
+              {p.impact && p.impact.length <= 32 && <span className="fa-metric">{p.impact}</span>}
+              <div className="fa-body">
+                <span className="fa-company">{p.company}</span>
+                <h2 className="fa-title">{p.title}</h2>
+                {p.short && <p className="fa-short">{p.short}</p>}
+              </div>
+              <Link href={p.href} className="fa-cta" tabIndex={open ? 0 : -1}>
+                {t.viewCase}
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5.8 14.2L14.2 5.8M6.7 5.8h7.5v7.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </Link>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

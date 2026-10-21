@@ -12,14 +12,22 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return pageMetadata({ lang, path: "/work", ...dict[lang].seo.work });
 }
 
+const MAX_FEATURED = 7;
 const firstLine = (s: string) => s.split(/\s\|\s|\n/)[0]?.trim() ?? "";
 
 export default async function Work({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const t = dict[lang];
-  const projects = await getGallery();
-  const items: GalleryItem[] = projects.map((p) => ({
+  // Solo proyectos completados. Destacados (campo "Destacado" de Notion): por Orden y luego fecha, hasta MAX_FEATURED.
+  const projects = (await getGallery()).filter(hasDetail);
+  const featuredIds = projects
+    .filter((p) => p.featured)
+    .sort((a, b) => a.order - b.order || (b.start || "").localeCompare(a.start || ""))
+    .slice(0, MAX_FEATURED)
+    .map((p) => p.id);
+  const byDate = [...projects].sort((a, b) => (b.start || "").localeCompare(a.start || "") || a.order - b.order);
+  const items: GalleryItem[] = byDate.map((p) => ({
     id: p.id,
     href: `/${lang}/work/${p.slug}`,
     title: projectName(p, lang),
@@ -34,6 +42,7 @@ export default async function Work({ params }: { params: Promise<{ lang: string 
     platforms: p.platforms,
     cover: p.cover,
     pinned: p.pinned,
+    featuredRank: featuredIds.includes(p.id) ? featuredIds.indexOf(p.id) : null,
     enabled: hasDetail(p),
   }));
 
