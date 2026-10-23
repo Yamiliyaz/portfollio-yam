@@ -35,7 +35,7 @@ export default async function Work({ params }: { params: Promise<{ lang: string 
     impact: keyFacts(p, lang, 1)?.items[0] ?? (impactIsTarget(pick(p.impact, lang)) ? "" : firstLine(pick(p.impact, lang))),
     tools: p.tools,
     platforms: p.platforms,
-    cover: p.cover,
+    cover: p.featuredImage ?? p.cover, // la "Imagen destacada" de Notion manda; si no hay, la portada de la página
     pinned: p.pinned,
     featuredRank: featuredIds.includes(p.id) ? featuredIds.indexOf(p.id) : null,
     enabled: hasDetail(p),

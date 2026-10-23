@@ -108,7 +108,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 </div>
                 <div className="right t-p1">{yearRange(p)}</div>
                 <img className="row-arrow icon20" src="/icons/arrow-outward-light.svg" alt="" />
-                {p.cover && <img className="row-preview" src={p.cover} alt="" aria-hidden="true" />}
+                {(p.featuredImage ?? p.cover) && <img className="row-preview" src={(p.featuredImage ?? p.cover) as string} alt="" aria-hidden="true" />}
               </Link>
             ))}
             <Link className="proj-row more" href={`/${lang}/work`}>
