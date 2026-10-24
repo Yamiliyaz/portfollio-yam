@@ -209,11 +209,14 @@ export async function getProjects(): Promise<Project[]> {
 /** Tope de destacados (acordeón de Work y lista del Home). */
 export const MAX_FEATURED = 7;
 
-/** Destacados = proyectos completados con "Destacado" marcado, por Orden y luego fecha (más reciente primero), hasta MAX_FEATURED. */
+/** Fecha más reciente del proyecto (fin o inicio): define el orden de los destacados. */
+const latestDate = (p: Project) => (p.end > p.start ? p.end : p.start) || "";
+
+/** Destacados = proyectos completados con "Destacado" marcado, del más reciente al más antiguo, hasta MAX_FEATURED. */
 export function pickFeatured<T extends Project>(projects: T[]): T[] {
   return projects
     .filter((p) => p.featured && p.status !== "En progreso")
-    .sort((a, b) => a.order - b.order || (b.start || "").localeCompare(a.start || ""))
+    .sort((a, b) => latestDate(b).localeCompare(latestDate(a)) || a.order - b.order)
     .slice(0, MAX_FEATURED);
 }
 
