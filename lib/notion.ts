@@ -216,7 +216,7 @@ const latestDate = (p: Project) => (p.end > p.start ? p.end : p.start) || "";
 /** Destacados = proyectos completados con "Destacado" marcado, del más reciente al más antiguo, hasta MAX_FEATURED. */
 export function pickFeatured<T extends Project>(projects: T[]): T[] {
   return projects
-    .filter((p) => p.featured && p.status !== "En progreso")
+    .filter((p) => p.featured && (p.status !== "En progreso" || isProtectedSlug(p.slug)))
     .sort((a, b) => latestDate(b).localeCompare(latestDate(a)) || a.order - b.order)
     .slice(0, MAX_FEATURED);
 }
