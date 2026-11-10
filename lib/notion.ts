@@ -1,6 +1,7 @@
 import { Client } from "@notionhq/client";
 import fallback from "@/data/fallback.json";
 import type { Lang } from "./i18n";
+import { isProtectedSlug } from "./protected";
 
 export type Bi = { en: string; es: string };
 
@@ -215,7 +216,7 @@ const latestDate = (p: Project) => (p.end > p.start ? p.end : p.start) || "";
 /** Destacados = proyectos completados con "Destacado" marcado, del más reciente al más antiguo, hasta MAX_FEATURED. */
 export function pickFeatured<T extends Project>(projects: T[]): T[] {
   return projects
-    .filter((p) => p.featured && p.status !== "En progreso")
+    .filter((p) => p.featured && (p.status !== "En progreso" || isProtectedSlug(p.slug)))
     .sort((a, b) => latestDate(b).localeCompare(latestDate(a)) || a.order - b.order)
     .slice(0, MAX_FEATURED);
 }
@@ -247,7 +248,8 @@ export async function getBlocks(pageId: string): Promise<NBlock[]> {
 }
 
 /** Estados sin página de detalle: se muestran deshabilitados ("Próximamente"). */
-export const hasDetail = (p: Pick<Project, "status">) => p.status !== "En progreso";
+export const hasDetail = (p: Pick<Project, "status"> & { slug?: string }) =>
+  p.status !== "En progreso" || (!!p.slug && isProtectedSlug(p.slug));
 
 export async function getProject(slug: string) {
   const all = await getAllProjects();

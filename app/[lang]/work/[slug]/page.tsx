@@ -8,6 +8,7 @@ import { figmaEmbedUrl } from "@/lib/figma";
 import { Blocks, toSections } from "@/components/NotionBlocks";
 import { LevelIcon, palette } from "@/components/ProjectVisual";
 import Stepper from "@/components/Stepper";
+import { isProtectedSlug } from "@/lib/protected";
 import { pageMetadata } from "@/lib/seo";
 import { dict, isLang, LANGS } from "@/lib/i18n";
 import VisualBreak from "@/components/VisualBreak";
@@ -33,6 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const data = isLang(lang) ? await getProject(slug) : null;
   if (!data || !isLang(lang)) return {};
   const { project } = data;
+  if (isProtectedSlug(slug)) return { title: projectName(project, lang), robots: { index: false, follow: false } };
   return pageMetadata({
     lang,
     path: `/work/${slug}`,
