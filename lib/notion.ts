@@ -1,6 +1,7 @@
 import { Client } from "@notionhq/client";
 import fallback from "@/data/fallback.json";
 import type { Lang } from "./i18n";
+import { isProtectedSlug } from "./protected";
 
 export type Bi = { en: string; es: string };
 
@@ -247,7 +248,8 @@ export async function getBlocks(pageId: string): Promise<NBlock[]> {
 }
 
 /** Estados sin página de detalle: se muestran deshabilitados ("Próximamente"). */
-export const hasDetail = (p: Pick<Project, "status">) => p.status !== "En progreso";
+export const hasDetail = (p: Pick<Project, "status"> & { slug?: string }) =>
+  p.status !== "En progreso" || (!!p.slug && isProtectedSlug(p.slug));
 
 export async function getProject(slug: string) {
   const all = await getAllProjects();
