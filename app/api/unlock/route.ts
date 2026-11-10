@@ -10,9 +10,10 @@ export async function POST(req: NextRequest) {
   const lang = next.startsWith("/es") ? "es" : "en";
   const target = NEXT_OK.test(next) ? next : `/${lang}/work`;
 
+  const wantsJson = (req.headers.get("accept") ?? "").includes("application/json");
   const expected = await expectedToken();
   if (expected && password && safeEqual(await tokenFor(password), expected)) {
-    const res = NextResponse.redirect(new URL(target, req.url), 303);
+    const res = wantsJson ? NextResponse.json({ ok: true, next: target }) : NextResponse.redirect(new URL(target, req.url), 303);
     res.cookies.set(UNLOCK_COOKIE, expected, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -24,6 +25,7 @@ export async function POST(req: NextRequest) {
   }
 
   await new Promise((r) => setTimeout(r, 600)); // frena la fuerza bruta
+  if (wantsJson) return NextResponse.json({ ok: false, error: expected ? "wrong" : "off" }, { status: expected ? 401 : 503 });
   const back = new URL(`/${lang}/unlock`, req.url);
   back.searchParams.set("error", expected ? "1" : "2");
   if (NEXT_OK.test(next)) back.searchParams.set("next", next);

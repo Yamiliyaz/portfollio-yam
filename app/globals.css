@@ -1058,14 +1058,32 @@ main.route-exit { opacity: 0; transform: translateY(-8px); }
 .fa-wrap.is-collapsed .fa { transform: translateY(-26%) scale(.97); opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .fa-wrap[data-animate], .fa-wrap[data-animate] .fa { transition: none; } }
 
-/* Proyecto privado: pantalla de contraseña */
-.unlock { max-width: 480px; margin: 0 auto; padding: var(--m-25) var(--gutter) var(--m-15); display: flex; flex-direction: column; gap: 16px; min-height: 60vh; justify-content: center; }
-.unlock-title { color: var(--gray-900); font: 600 clamp(28px, 3vw, 36px)/1.15 var(--font-body); letter-spacing: -.02em; }
-.unlock-lead { color: var(--gray-700); font: 400 16px/24px var(--font-body); }
-.unlock-form { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 8px; }
-.unlock-label { color: var(--gray-500); font: 500 12px/16px var(--font-body); text-transform: uppercase; letter-spacing: .08em; }
-.unlock-input { width: 100%; padding: 14px 16px; border: 1px solid var(--gray-300); border-radius: 12px; background: transparent; color: var(--gray-900); font: 400 16px/24px var(--font-body); }
-.unlock-input:focus-visible { outline: 2px solid var(--gray-900); outline-offset: 2px; }
-.unlock-input[aria-invalid="true"] { border-color: #d92d20; }
-.unlock-error { color: #d92d20; font: 400 14px/20px var(--font-body); }
-.unlock-back { color: var(--gray-500); font: 400 14px/20px var(--font-body); text-decoration: underline; }
+/* Proyecto privado: modal de contraseña (Figma "Private project — password modal") */
+.unlock-bg { min-height: 100vh; }
+.pm { margin: auto; width: min(440px, calc(100vw - 32px)); padding: 0; border: 1px solid var(--gray-300); border-radius: 20px; background: var(--gray-25); color: var(--gray-900); box-shadow: 0 24px 48px -8px rgba(16,24,40,.22); }
+.pm::backdrop { background: rgba(16,24,40,.5); }
+:root[data-theme="dark"] .pm::backdrop { background: rgba(16,24,40,.7); }
+.pm[open] { animation: pm-in .28s var(--ease-out3, ease-out); }
+.pm[open]::backdrop { animation: wg-fade .28s ease-out; }
+@keyframes pm-in { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
+.pm-in { display: flex; flex-direction: column; gap: 16px; padding: 32px; }
+.pm-head { display: flex; align-items: flex-start; justify-content: space-between; }
+.pm-badge { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--gray-100); color: var(--gray-800); }
+.pm-close { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; color: var(--gray-500); }
+.pm-close:hover { background: var(--gray-100); color: var(--gray-900); }
+.pm-title { font: 600 26px/34px var(--font-body); letter-spacing: -.02em; color: var(--gray-900); }
+.pm-lead { color: var(--gray-700); font: 400 15px/23px var(--font-body); }
+.pm-field { display: flex; flex-direction: column; gap: 8px; }
+.pm-label { color: var(--gray-500); font: 500 11px/16px var(--font-body); text-transform: uppercase; letter-spacing: .08em; }
+.pm-input { display: flex; align-items: center; gap: 8px; padding: 0 8px 0 16px; border: 1px solid var(--gray-300); border-radius: 12px; background: var(--bg); }
+.pm-input:focus-within { outline: 2px solid var(--gray-900); outline-offset: 2px; }
+.pm-input.is-error { border-color: #d92d20; border-width: 1.5px; }
+.pm-input input { flex: 1; min-width: 0; padding: 13px 0; border: 0; outline: 0; background: transparent; color: var(--gray-900); font: 500 16px/22px var(--font-body); }
+.pm-eye { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; color: var(--gray-500); }
+.pm-eye:hover { color: var(--gray-900); }
+.pm-error { color: #d92d20; font: 500 14px/20px var(--font-body); }
+.pm-cta { width: 100%; justify-content: center; }
+.pm-cta:disabled { opacity: .65; cursor: progress; }
+.pm-back { align-self: center; color: var(--gray-500); font: 500 14px/20px var(--font-body); }
+.pm-back:hover { color: var(--gray-900); text-decoration: underline; }
+@media (prefers-reduced-motion: reduce) { .pm[open], .pm[open]::backdrop { animation: none; } }
